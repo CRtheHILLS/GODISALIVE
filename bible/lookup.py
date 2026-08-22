@@ -10,8 +10,10 @@
 
 본문: KRV(개역한글) · WLCa(히브리어 WLC+스트롱) · SBLGNT(그리스어 신약) ·
       LXX(칠십인역) · KJV · WEB   — 전부 퍼블릭 도메인/자유 라이선스.
+      ESV — Crossway API 실시간 조회 (키: .omc/secrets/esv-api-key.txt).
+      ⚖ ESV 약관 준수: 쿼리당 500절 이하, 로컬 저장·캐시 안 함, "(ESV)" 표기 유지.
 """
-import argparse, gzip, json, re, sys
+import argparse, gzip, json, re, sys, urllib.parse, urllib.request
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8")
@@ -70,7 +72,33 @@ TEXT_FILES = {  # code -> (경로, 언어 라벨)
 }
 OT_ONLY, NT_ONLY = {"WLCa", "LXX"}, {"SBLGNT"}
 DEFAULT_ORDER = ["KRV", "WLCa", "SBLGNT", "KJV", "WEB"]
-ALL_ORDER = ["KRV", "WLCa", "SBLGNT", "LXX", "KJV", "WEB"]
+ALL_ORDER = ["KRV", "WLCa", "SBLGNT", "LXX", "KJV", "WEB", "ESV"]
+
+def fetch_esv(bid, ch, v1, v2):
+    """Crossway ESV API 실시간 조회. 저장·캐시하지 않는다 (약관)."""
+    key_path = ROOT.parent / ".omc" / "secrets" / "esv-api-key.txt"
+    if not key_path.exists():
+        return None, "API 키 없음 (.omc/secrets/esv-api-key.txt)"
+    if v1 and v2 and (v2 - v1 + 1) > 500:
+        return None, "ESV 약관: 쿼리당 500절 초과 불가"
+    eng = next(b[3] for b in BOOKS if b[0] == bid)
+    q = f"{eng} {ch}" + (f":{v1}" + (f"-{v2}" if v2 and v2 != v1 else "") if v1 else "")
+    params = urllib.parse.urlencode({
+        "q": q, "include-passage-references": "false", "include-headings": "false",
+        "include-footnotes": "false", "include-verse-numbers": "true",
+        "include-short-copyright": "true",
+    })
+    req = urllib.request.Request(
+        f"https://api.esv.org/v3/passage/text/?{params}",
+        headers={"Authorization": f"Token {key_path.read_text().strip()}",
+                 "User-Agent": "GODISALIVE-lookup (personal study)"})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            data = json.loads(r.read().decode())
+    except Exception as e:
+        return None, f"조회 실패: {e}"
+    passages = data.get("passages") or []
+    return ("\n".join(p.strip() for p in passages), None) if passages else (None, "해당 구절 없음")
 
 STRONG_RE = re.compile(r"<S>\d+</S>")   # 스트롱 번호(내용 포함) 제거
 TAG_RE = re.compile(r"<[^>]*>")          # 기타 마크업 태그 제거
@@ -130,6 +158,11 @@ def main():
     print(f"\n📖 {kf} {span}\n" + "=" * 60)
 
     for code in codes:
+        if code == "ESV":
+            text, err = fetch_esv(bid, ch, v1, v2)
+            print(f"\n── ESV · English Standard Version (Crossway API 실시간) " + "─" * 8)
+            print(text if text else f"(불가 — {err})")
+            continue
         idx = load_sblgnt(bid) if code == "SBLGNT" else load_bolls(code)
         if idx is None:
             print(f"\n[{code}] 본문 파일 없음 — 건너뜀"); continue

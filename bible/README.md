@@ -45,12 +45,17 @@ Peter 제공 형식:
 
 **구절 조회**: `python bible/lookup.py "요 21:15-17"` — 옵션: `--texts all` (전 본문), `--texts KRV,WLCa`, `--raw`(스트롱 태그 유지). 검증 완료: 창 1:1 · 요 3:16 · 요 21:15 · 벧후 1:16.
 
+**ESV 실시간 조회 (2026-08-22 연결)**: `--texts KRV,ESV` 식으로 사용. Crossway API 키는
+`.omc/secrets/esv-api-key.txt`(git 제외). **약관 준수 내장**: 쿼리당 500절 제한, 로컬 저장·캐시 없음(실시간만),
+"(ESV)" 표기 유지. 인용 출판 시 표준 저작권 고지 필요 — 약관 원문은 api.esv.org 참조.
+
 bolls.life에 추가로 있는 것 (필요 시 열람/API — 저작권 주의): 새번역(RNKSV), 알레포 사본(HAC),
 Delitzsch 히브리어 신약(DHNT), Tischendorf(TISCH), Textus Receptus(TR).
 
 ## 남은 확보 과제
 
-- [ ] ESV API 키 (api.esv.org — CR 등록) · api.bible 키 (scripture.api.bible — NIV 접근)
+- [x] ESV API 키 — 발급·연결 완료 (2026-08-22)
+- [ ] api.bible 키 (scripture.api.bible — NIV 접근, 진행 중)
 - [ ] NET Bible 확보 (netbible.org — 역주 60,000개)
 - [ ] LXX 굴절형 본문 교체 (저순위)
 - [ ] morphhb 형태소 분석 XML (Phase 4 단어 연구 시작 시)
