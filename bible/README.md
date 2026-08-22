@@ -47,15 +47,23 @@ Peter 제공 형식:
 
 **ESV 실시간 조회 (2026-08-22 연결)**: `--texts KRV,ESV` 식으로 사용. Crossway API 키는
 `.omc/secrets/esv-api-key.txt`(git 제외). **약관 준수 내장**: 쿼리당 500절 제한, 로컬 저장·캐시 없음(실시간만),
-"(ESV)" 표기 유지. 인용 출판 시 표준 저작권 고지 필요 — 약관 원문은 api.esv.org 참조.
+"(ESV)" 표기 유지. 인용 출판 시 표준 저작권 고지 필요 — 약관 원문은 api.esv.org 참조. 한도 5,000회/일.
+
+**api.bible 실시간 조회 (2026-08-22 연결)**: 코드 — **NIV**(2011) · **NLT** · ASV(1901) ·
+**JPS**(유대 타나크 1917) · **LXXE**(브렌튼 칠십인역 영역) · **TGM**(타르굼 온켈로스 영역, 오경).
+ID 매핑: `bible/apibible-ids.json`, 키: `.omc/secrets/apibible-key.txt`(git 제외).
+⚠ **Starter 플랜 월 5,000회** (매월 22일 리셋) — 봉독용으로만, 대량 조회는 로컬 PD 본문 사용.
+저작권 표기는 응답에 포함되어 자동 출력. 저장·캐시 없음. 웹 공개 시 FUMS 스크립트 필요(그때 구현).
+비고: NASB는 현재 키 목록에 없음(추가 승인 확인 필요, 선택) · 한국어 성경은 api.bible에 없음(로컬 KRV 사용).
 
 bolls.life에 추가로 있는 것 (필요 시 열람/API — 저작권 주의): 새번역(RNKSV), 알레포 사본(HAC),
 Delitzsch 히브리어 신약(DHNT), Tischendorf(TISCH), Textus Receptus(TR).
 
 ## 남은 확보 과제
 
-- [x] ESV API 키 — 발급·연결 완료 (2026-08-22)
-- [ ] api.bible 키 (scripture.api.bible — NIV 접근, 진행 중)
+- [x] ESV API — 발급·연결 완료 (2026-08-22)
+- [x] api.bible — 발급·연결 완료 (2026-08-22): NIV·NLT·ASV·JPS·LXXE·TGM
+- [ ] (선택) api.bible 대시보드에서 NASB 추가 여부 확인
 - [ ] NET Bible 확보 (netbible.org — 역주 60,000개)
 - [ ] LXX 굴절형 본문 교체 (저순위)
 - [ ] morphhb 형태소 분석 XML (Phase 4 단어 연구 시작 시)

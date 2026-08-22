@@ -1,0 +1,9 @@
+{
+  "_comment": "api.bible에서 이 키로 열리는 성경 ID 매핑 (2026-08-22 확인). lookup.py가 읽는다.",
+  "NIV":  {"id": "78a9f6124f344018-01", "name": "New International Version 2011"},
+  "NLT":  {"id": "d6e14a625393b4da-01", "name": "New Living Translation"},
+  "ASV":  {"id": "06125adad2d5898a-01", "name": "American Standard Version 1901"},
+  "JPS":  {"id": "bf8f1c7f3f9045a5-01", "name": "JPS TaNaKH 1917 (유대 영역, 구약만)"},
+  "LXXE": {"id": "6bab4d6c61b31b80-01", "name": "Brenton English Septuagint (칠십인역 영역, 구약만)"},
+  "TGM":  {"id": "ec290b5045ff54a5-01", "name": "Targum Onkelos, Etheridge 영역 (오경만)"}
+}

@@ -74,6 +74,42 @@ OT_ONLY, NT_ONLY = {"WLCa", "LXX"}, {"SBLGNT"}
 DEFAULT_ORDER = ["KRV", "WLCa", "SBLGNT", "KJV", "WEB"]
 ALL_ORDER = ["KRV", "WLCa", "SBLGNT", "LXX", "KJV", "WEB", "ESV"]
 
+USFM = ["GEN","EXO","LEV","NUM","DEU","JOS","JDG","RUT","1SA","2SA","1KI","2KI","1CH","2CH",
+        "EZR","NEH","EST","JOB","PSA","PRO","ECC","SNG","ISA","JER","LAM","EZK","DAN","HOS",
+        "JOL","AMO","OBA","JON","MIC","NAM","HAB","ZEP","HAG","ZEC","MAL","MAT","MRK","LUK",
+        "JHN","ACT","ROM","1CO","2CO","GAL","EPH","PHP","COL","1TH","2TH","1TI","2TI","TIT",
+        "PHM","HEB","JAS","1PE","2PE","1JN","2JN","3JN","JUD","REV"]
+
+def apibible_registry():
+    p = ROOT / "apibible-ids.json"
+    if not p.exists():
+        return {}
+    reg = json.loads(p.read_text(encoding="utf-8"))
+    reg.pop("_comment", None)
+    return reg
+
+def fetch_apibible(entry, bid, ch, v1, v2):
+    """api.bible 실시간 조회 (Starter: 월 5,000회 — 봉독용으로만, 대량 조회 금지). 저장·캐시 안 함."""
+    key_path = ROOT.parent / ".omc" / "secrets" / "apibible-key.txt"
+    if not key_path.exists():
+        return None, "API 키 없음 (.omc/secrets/apibible-key.txt)"
+    code = USFM[bid - 1]
+    pid = f"{code}.{ch}" + (f".{v1}-{code}.{ch}.{v2}" if v1 and v2 and v2 != v1 else (f".{v1}" if v1 else ""))
+    params = urllib.parse.urlencode({"content-type": "text", "include-verse-numbers": "true",
+                                     "include-titles": "false", "include-notes": "false"})
+    req = urllib.request.Request(
+        f"https://rest.api.bible/v1/bibles/{entry['id']}/passages/{pid}?{params}",
+        headers={"api-key": key_path.read_text().strip(), "User-Agent": "GODISALIVE-lookup",
+                 "Accept": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            data = json.loads(r.read().decode()).get("data", {})
+    except Exception as e:
+        return None, f"조회 실패: {e}"
+    content = (data.get("content") or "").strip()
+    cp = (data.get("copyright") or "").strip()
+    return (content + (f"\n© {cp}" if cp else ""), None) if content else (None, "해당 구절 없음")
+
 def fetch_esv(bid, ch, v1, v2):
     """Crossway ESV API 실시간 조회. 저장·캐시하지 않는다 (약관)."""
     key_path = ROOT.parent / ".omc" / "secrets" / "esv-api-key.txt"
@@ -157,10 +193,17 @@ def main():
     span = f"{ch}" + (f":{v1}" + (f"-{v2}" if v2 and v2 != v1 else "") if v1 else "")
     print(f"\n📖 {kf} {span}\n" + "=" * 60)
 
+    apireg = apibible_registry()
     for code in codes:
         if code == "ESV":
             text, err = fetch_esv(bid, ch, v1, v2)
             print(f"\n── ESV · English Standard Version (Crossway API 실시간) " + "─" * 8)
+            print(text if text else f"(불가 — {err})")
+            continue
+        if code in apireg:
+            entry = apireg[code]
+            text, err = fetch_apibible(entry, bid, ch, v1, v2)
+            print(f"\n── {code} · {entry['name']} (api.bible 실시간) " + "─" * 8)
             print(text if text else f"(불가 — {err})")
             continue
         idx = load_sblgnt(bid) if code == "SBLGNT" else load_bolls(code)
