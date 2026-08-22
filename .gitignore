@@ -1,0 +1,19 @@
+# 대용량 바이너리는 git에 넣지 않는다 — Railway Volume + catalog.json으로 관리
+assets/cache/
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.mp4
+*.zip
+!assets/maps/*.png
+
+# 산출물 중간본
+outputs/*.docx
+outputs/*.pdf
+
+# 시스템
+Thumbs.db
+Desktop.ini
+.omc/
