@@ -32,12 +32,25 @@ Peter 제공 형식:
 4. 요청 시: 현대인의성경/개역개정/NIV 핵심 구절 인용 (출처 명시)
 5. **목격자의 회상** — Peter의 감성적 해설 (그 자리에 있던 사람의 시선)
 
-## 확보 체크리스트 (Phase 1)
+## 확보 현황 (2026-08-22 — 1차 확보 완료)
 
-- [ ] WLC 다운로드 (openscriptures/morphhb) → `hebrew/`
-- [ ] SBLGNT 다운로드 → `greek/`
-- [ ] 개역한글 전문 확보 (bolls.life 또는 공개 데이터 검증) → `korean/`
-- [ ] KJV · WEB 다운로드 (ebible.org) → `english/`
-- [ ] ESV API 키 발급 (api.esv.org 무료 등록)
-- [ ] api.bible 키 발급 (NIV 접근 확인)
-- [ ] 구절 조회 유틸리티 (책/장/절 → 각 본문 병렬 출력) 제작
+| 파일 | 본문 | 비고 |
+|---|---|---|
+| `korean/KRV.json.gz` | **개역한글(1961)** 전 66권 31,103절 | bolls.life, 퍼블릭 도메인 ✅ |
+| `hebrew/WLCa.json.gz` | **WLC 히브리어 구약** 39권 23,213절 | 모음·악센트·스트롱 번호 포함 ✅ |
+| `greek/sblgnt/*.txt` | **SBLGNT 신약** 27권 | LogosBible 공식 배포본, 라이선스 동봉 ✅ |
+| `greek/LXX.json.gz` | 칠십인역 (외경 포함 52권) | ⚠ bolls판은 lemma(원형) 처리 본문 — 검색용. 굴절형 본문은 추후 CCAT/Swete로 교체 |
+| `english/KJV.json.gz` | KJV + 스트롱 번호 (외경 포함) | 퍼블릭 도메인 ✅ |
+| `english/WEB.json.gz` | World English Bible | 퍼블릭 도메인 ✅ |
+
+**구절 조회**: `python bible/lookup.py "요 21:15-17"` — 옵션: `--texts all` (전 본문), `--texts KRV,WLCa`, `--raw`(스트롱 태그 유지). 검증 완료: 창 1:1 · 요 3:16 · 요 21:15 · 벧후 1:16.
+
+bolls.life에 추가로 있는 것 (필요 시 열람/API — 저작권 주의): 새번역(RNKSV), 알레포 사본(HAC),
+Delitzsch 히브리어 신약(DHNT), Tischendorf(TISCH), Textus Receptus(TR).
+
+## 남은 확보 과제
+
+- [ ] ESV API 키 (api.esv.org — CR 등록) · api.bible 키 (scripture.api.bible — NIV 접근)
+- [ ] NET Bible 확보 (netbible.org — 역주 60,000개)
+- [ ] LXX 굴절형 본문 교체 (저순위)
+- [ ] morphhb 형태소 분석 XML (Phase 4 단어 연구 시작 시)

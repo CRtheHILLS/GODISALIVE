@@ -4,24 +4,33 @@
 
 ## 대기 중 (우선순위 순)
 
-1. **[CR 액션] Railway Volume 프로비저닝** — railway.app 로그인 → 새 프로젝트 `godisalive-assets` →
-   Filebrowser 템플릿(또는 도커 이미지 `filebrowser/filebrowser`) 배포 + Volume `/data` 마운트(5GB).
-   완료 후 Peter에게 URL 알려주기. (설계: assets/README.md)
-2. **성경 본문 1차 확보** (Peter) — WLC(히브리어) · SBLGNT(그리스어) · 개역한글 · KJV · WEB 다운로드
-   → `bible/` 저장 및 구절 조회 검증. (체크리스트: bible/README.md)
-3. **A등급 증거 노트 첫 5건** (Peter) — 텔단 석비, 빌라도 석비, 케테프 힌놈 은두루마리, 실로암 비문,
-   테일러 프리즘. (템플릿: evidence/README.md)
-4. **ESV API 키 발급** (CR 5분 + Peter) — api.esv.org 무료 등록. NIV용 api.bible 키도 함께.
-5. **첫 봉독 세션** — CR이 본문 지정 (제안: 요한복음 21장 — 베드로의 회복. Peter가 가장 잘 아는 장면).
+1. **[CR 액션] Railway 대시보드 정리 (2분)** —
+   ① 고장난 `GODISALIVE` 서비스 삭제 (저장소를 앱으로 빌드하려다 실패하는 서비스 — Settings → Delete Service).
+      프로젝트 토큰으로는 삭제 권한이 없어 Peter가 못 지움.
+   ② filebrowser 첫 로그인 후 관리자 비밀번호 변경 (주소·초기 암호: `.omc/secrets/railway.md`)
+      → 변경한 비밀번호를 Peter에게 알려줘야 자산 업로드 자동화가 계속 가능.
+2. **[CR 액션] 번역본 API 키 발급 (각 5분)** —
+   ESV: https://api.esv.org (계정 생성 → API 키) · NIV 등: https://scripture.api.bible (앱 등록 → 키)
+   → 키를 Peter에게 전달하면 `.omc/secrets/`에 보관.
+3. **[Peter] A등급 증거 노트 확장** — 5/20 완료. 다음 15건: 블랙 오벨리스크, 키루스 실린더, 메사 석비,
+   라기스 부조, 바벨론 연대기, 히스기야 인장, 게셀 달력, 성전 경고석, 이슈타르 문, 여호야긴 배급 토판,
+   메르넵타 석비, 사해사본(이사야), 요세푸스(야고보), 타키투스 15.44, 플리니우스 10.96.
+4. **[Peter] 유물 이미지 수집 시작** — Wikimedia PD/CC0 확인 → `assets/catalog.json` 등록 → Railway `/srv/archaeology/` 업로드.
+5. **[Peter] NET Bible 확보** + LXX 굴절형 본문 교체 (저순위 — 현 LXX는 lemma 본문).
+6. **첫 봉독 세션** — 제안 유지: 요한복음 21장 (베드로의 회복). CR이 "봉독 시작하자"라고 하면 진행.
 
-## 논의 필요 (급하지 않음)
+## 논의 필요
 
-- 책 주제 3후보 중 방향 (book/README.md) — 2026 H2 중 결정
+- **책 주제 결정 — 2026년 말 재논의 (CR 지시, 2026-08-22).** 후보 3개는 book/README.md.
 - BAS Library 유료 구독 여부 — Phase 1 3개월 차
 - 매주 정기 봉독 요일/분량
 
 ## 완료
 
+- 2026-08-22 (2차 세션): **성경 본문 1차 확보** — KRV·WLCa(스트롱 포함)·SBLGNT·LXX·KJV·WEB 6종 +
+  구절 조회기 `bible/lookup.py` 검증. **Railway 자산 저장소 가동** — filebrowser 서비스+볼륨(/srv)+도메인
+  프로비저닝, 폴더 5개 생성 (Peter가 GraphQL API로 직접 구축). **A등급 증거 노트 5건** — 텔단 석비,
+  빌라도 석비, 케테프 힌놈, 실로암 비문, 테일러 프리즘.
 - 2026-08-22: GitHub 첫 push 완료 (main 브랜치 연결)
 - 2026-08-22: 프로젝트 창설 — 저장소 구조, PLAN.md(10년 마스터플랜), SOURCES.md(소스 카탈로그),
   PETER.md(페르소나 헌장), 출력 스킬, 바탕화면 출력 폴더, Claude 영구 메모리 등록.

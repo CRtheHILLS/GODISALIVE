@@ -47,8 +47,8 @@
 | Peter 페르소나 헌장 + Claude 영구 메모리 등록 | ✅ 2026-08-22 |
 | 바탕화면 출력 폴더 (`C:\Users\droli\Desktop\GODISALIVE`) | ✅ 2026-08-22 |
 | 문서 출력 스킬 (docx/pdf/md/txt) | ✅ `.claude/skills/godisalive-export` |
-| **Railway Volume 프로비저닝** (시각자료 저장소) | ⏳ CR의 Railway 로그인 필요 — NEXT.md 참조 |
-| 퍼블릭 도메인 성경 본문 1차 다운로드 | ⏳ 다음 세션 |
+| **Railway Volume 프로비저닝** (시각자료 저장소) | ✅ 2026-08-22 — filebrowser 가동, 상세: [assets/README.md](assets/README.md) |
+| 퍼블릭 도메인 성경 본문 1차 다운로드 | ✅ 2026-08-22 — 6종 확보 + 조회기, 상세: [bible/README.md](bible/README.md) |
 
 ### Railway Volume 설계 (시각자료 저장소)
 - Railway 프로젝트 `godisalive-assets` 생성 → 서비스 1개 + **Volume** 마운트(`/data`).
