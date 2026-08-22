@@ -1,1 +1,32 @@
-{"assets": []}
+{
+  "assets": [
+    {
+      "id": "img-0001",
+      "title": "대시편 두루마리 (11Q5) — 쿰란 제11동굴",
+      "source": "Wikimedia Commons",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Dead_Sea_Scrolls_-_Psalm.jpg",
+      "license": "CC BY-SA 4.0",
+      "commercial_ok": true,
+      "credit": "J. A. Sanders, The Psalms Scroll of Qumran Cave 11 (DJD IV), via Wikimedia Commons, CC BY-SA 4.0 (저작자표시·동일조건변경허락)",
+      "railway_path": "/srv/manuscripts/psalms-scroll-11q5/main.jpg",
+      "local_cache": "assets/cache/psalms-scroll-11q5.jpg",
+      "evidence_id": "ev-manu-psalms-scrolls",
+      "verses": ["시편"],
+      "added": "2026-08-22"
+    },
+    {
+      "id": "img-0002",
+      "title": "레닌그라드 사본 카펫 페이지 (AD 1008)",
+      "source": "Wikimedia Commons",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Leningrad_Codex_Carpet_Page_closeup.jpg",
+      "license": "Public domain",
+      "commercial_ok": true,
+      "credit": "Leningrad Codex (1008), 러시아 국립도서관 소장 — public domain via Wikimedia Commons",
+      "railway_path": "/srv/manuscripts/leningrad-codex/carpet-page.jpg",
+      "local_cache": "assets/cache/leningrad-codex-carpet.jpg",
+      "evidence_id": "ev-manu-psalms-scrolls",
+      "verses": ["구약 전체", "시편"],
+      "added": "2026-08-22"
+    }
+  ]
+}
