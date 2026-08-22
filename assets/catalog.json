@@ -11,7 +11,9 @@
       "railway_path": "/srv/manuscripts/psalms-scroll-11q5/main.jpg",
       "local_cache": "assets/cache/psalms-scroll-11q5.jpg",
       "evidence_id": "ev-manu-psalms-scrolls",
-      "verses": ["시편"],
+      "verses": [
+        "시편"
+      ],
       "added": "2026-08-22"
     },
     {
@@ -25,7 +27,28 @@
       "railway_path": "/srv/manuscripts/leningrad-codex/carpet-page.jpg",
       "local_cache": "assets/cache/leningrad-codex-carpet.jpg",
       "evidence_id": "ev-manu-psalms-scrolls",
-      "verses": ["구약 전체", "시편"],
+      "verses": [
+        "구약 전체",
+        "시편"
+      ],
+      "added": "2026-08-22"
+    },
+    {
+      "id": "img-0003",
+      "title": "타작마당 — 할훌 마을 (헤브론 길), 20세기 초",
+      "source": "Wikimedia Commons (미 의회도서관 Matson Collection)",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Halhul_village_at_kilom(eter)_30_on_Hebron_road._Threshing_floors_of_Halhul_showing_sun_through_a_haze_with_Neby_Yunis_shrine,_closer_view_of_winnowing_LOC_matpc.20316.jpg",
+      "license": "Public domain",
+      "commercial_ok": true,
+      "credit": "Matson Photo Service, Library of Congress — public domain via Wikimedia Commons",
+      "railway_path": "/srv/book/psalm-imagery/threshing-floors-halhul.jpg",
+      "local_cache": "assets/cache/threshing-floors-halhul.jpg",
+      "evidence_id": null,
+      "verses": [
+        "시 1:4",
+        "룻 3장",
+        "마 3:12"
+      ],
       "added": "2026-08-22"
     }
   ]
