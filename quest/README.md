@@ -74,5 +74,11 @@ quest/runs/<날짜>-<슬러그>/
 - 박물관 중 API 없는 곳(대영박물관·이스라엘 박물관·페르가몬)은 Commons·Wikidata 경로가 기본이다.
 - 두뇌는 Claude Code 세션의 Peter다. 무인 데몬이 아니다 (설계서 §13).
 
-## 검증
-`python quest/selftest.py` (네트워크 없이 픽스처) · 실전 1호: 라기스 부조 — `quest/runs/2026-10-25-lachish-reliefs/`
+## 검증 기록
+- `python quest/selftest.py` 215건 통과 (네트워크 없이 픽스처) · 실전 1호 라기스 부조 완료(26행동, 4/4) — `quest/runs/2026-10-25-lachish-reliefs/`
+- 2026-10-25 architect 검토(설계서 §3 금지선·예외 누출·용량 한도·플레이북 일관성) → **고침**: 영상 사후 용량 검사·부산물 정리, 퀘스트 총량(quest_mb) 강제,
+  부분 파일 finally 정리·고유 .part 이름, fetch 본문 50MB 상한, yt-dlp `--ignore-config --no-cookies-from-browser`, 영상 외 모든 grab에 robots 확인,
+  Playwright finally 종료, storage usage 무예외·스트리밍 업로드·용량 확인 실패 시 중단, `read --force` 기록, 200·본문 없음 → js-required 판정과
+  empty-js 사다리, 검색 유형별 적립·addresult 통계 제외·엔진 오류 통계 제외, done 중복 적립 방지, 플레이북 원자적 저장, 폴더 이름 독립(HOME).
+- **남긴 LOW(후속)**: manifest가 절대 경로를 저장(폴더 이동 시 깨짐) · robots.txt를 못 받으면 허용으로 간주 · 403 뒤 다른 브라우저 UA로 1회 재시도(차단 회피가
+  아니라 통상 재시도지만 명시함) · ddg/bing/louvre 검색 결과 HTML은 단건 질의라 robots 확인 생략 · `--all-iiif` 최대 50장.

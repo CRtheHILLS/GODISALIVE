@@ -33,7 +33,8 @@ def need_run():
 def playbook():
     try:
         from core import learn as L; return L, L.load_playbook()
-    except Exception: return None, None
+    except Exception as e:
+        print(f"⚠ 플레이북을 불러오지 못함 — 학습 생략: {e.__class__.__name__}: {str(e)[:120]}", file=sys.stderr); return None, None
 
 def plugin():
     try: return importlib.import_module(f"plugins.{W.CONFIG.get('plugin')}")
@@ -104,22 +105,29 @@ def cmd_read(a):
     run = need_run(); st = W.load_state(run); from core import read as R, http as H
     page = R.read_url(a.url, js=a.js, force=a.force, want_links=not a.no_links, want_images=not a.no_images)
     step = st["steps"] + 1; path = None
+    chars = len(page.get("text", "")); status = page.get("status")
+    thin = not page.get("error") and status == 200 and chars < 200 and page.get("via") != "pdf"   # 200인데 본문이 없다 = JS 페이지 가능성
     if not page.get("error"): path = R.save_page(page, run / "pages", step)
-    ok = not page.get("error")
-    W.log_action(run, "read", {"url": a.url, "js": a.js}, ok, (f"{page.get('title','')[:50]} · {len(page.get('text',''))}자 · {page.get('via')}" if ok else f"실패 {page.get('error')}"),
+    ok = not page.get("error") and not thin
+    summary = (f"{page.get('title','')[:50]} · {chars}자 · {page.get('via')}" if ok
+               else f"본문 거의 없음({chars}자) — JS 렌더링 필요? `read --js`" if thin else f"실패 {page.get('error')}")
+    W.log_action(run, "read", {"url": a.url, "js": a.js, "force": a.force}, ok, summary,
                  path=str(path.relative_to(W.ROOT)) if path else None,
-                 data={"domain": H.domain_of(a.url), "via": page.get("via"), "status": page.get("status"), "chars": len(page.get("text", ""))})
+                 data={"domain": H.domain_of(a.url), "via": page.get("via"), "status": status, "chars": chars, "thin": thin})
     if ok:
-        print(f"📄 {page.get('title')} · {len(page['text'])}자 · via {page['via']} · 링크 {len(page.get('links', []))} · 이미지 {len(page.get('images', []))}\n→ {path}\n")
-        print(page["text"][:1500] + ("\n…(이하 파일)" if len(page["text"]) > 1500 else ""))
-    else:
-        print(f"✖ {page.get('error')}")
-        try:
-            from core import escalate as E
-            b = "403" if "403" in str(page.get("error")) else "404" if "404" in str(page.get("error")) else "empty-js" if "본문" in str(page.get("error")) else "403"
-            first = E.ladder(b, domain=H.domain_of(a.url), pb=playbook()[1])[0]
-            print(f"다음 시도 → {first['title']}: {first['command']}")
-        except Exception: pass
+        print(f"📄 {page.get('title')} · {chars}자 · via {page['via']} · 링크 {len(page.get('links', []))} · 이미지 {len(page.get('images', []))}\n→ {path}\n")
+        print(page["text"][:1500] + ("\n…(이하 파일)" if chars > 1500 else ""))
+        return
+    err = str(page.get("error") or "")
+    print(f"✖ {summary}")
+    if "robots.txt" in err:
+        print("robots.txt가 막은 페이지 — 다른 보관처(commons·wikidata·ia)나 사람 경로로. 단건이 꼭 필요하면 --force (기록됨)"); return
+    try:
+        from core import escalate as E
+        b = ("empty-js" if thin else "403" if status in (401, 403, 429) else "404" if status in (404, 410) else "403")
+        first = E.ladder(b, domain=H.domain_of(a.url), pb=playbook()[1])[0]
+        print(f"다음 시도 ({b}) → {first['title']}: {first['command']}")
+    except Exception: pass
 
 def cmd_grab(a):
     run = need_run(); from core import grab as G, http as H
@@ -172,10 +180,12 @@ def cmd_done(a):
     if status == "done" and remaining:
         status = "partial"; print("완료 조건이 남아 있어 partial로 기록:"); [print(f"   ☐ {t}") for t in remaining]
     L, pb = playbook(); summary = {}
-    if L:
+    if L and not st.get("learned"):
         summary = L.record_run(run, pb)
         if a.lesson: L.add_lesson(pb, run.name, st["goal_type"], a.lesson)
         L.save_playbook(pb)
+        st2 = W.load_state(run); st2["learned"] = True; W.save_state(run, st2)   # done을 두 번 쳐도 두 번 적립하지 않는다
+    elif st.get("learned"): print("(이미 학습된 퀘스트 — 플레이북 재적립 생략)")
     W.finish(run, status, a.lesson)
     try:
         from core import grab as G; files = len(G.load_manifest(run / "downloads"))

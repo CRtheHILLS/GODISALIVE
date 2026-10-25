@@ -320,7 +320,7 @@ def _yt_dlp():
 def _e_youtube(q, lang, n):
     exe = _yt_dlp()
     if not exe: raise RuntimeError("yt-dlp 없음")
-    p = subprocess.run([exe, f"ytsearch{n}:{q}", "--flat-playlist", "--encoding", "utf-8", "--print", "%(id)s|%(title)s|%(channel)s|%(duration)s"],
+    p = subprocess.run([exe, "--ignore-config", "--no-cookies-from-browser", f"ytsearch{n}:{q}", "--flat-playlist", "--encoding", "utf-8", "--print", "%(id)s|%(title)s|%(channel)s|%(duration)s"],
                        capture_output=True, timeout=90)
     if p.returncode != 0 and not p.stdout: raise RuntimeError(p.stderr.decode("utf-8", "replace")[-200:])
     out = []

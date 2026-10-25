@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """QUEST 확보 — 이미지·PDF·IIIF·영상 다운로드 + manifest.json + 라이선스 조회.
 한도(스트리밍 누적) · sha256 중복 방지. 예외를 밖으로 던지지 않는다: grab은 Entry 또는 {"error": ...}."""
-import hashlib, json, mimetypes, re, shutil, subprocess, urllib.parse, urllib.request
+import hashlib, json, mimetypes, os, random, re, shutil, subprocess, urllib.parse, urllib.request
 from pathlib import Path
 from urllib.parse import urlparse, unquote
 
@@ -13,6 +13,8 @@ CHUNK = 1024 * 1024
 IMG_EXT = (".jpg", ".jpeg", ".png", ".gif", ".webp", ".tif", ".tiff", ".bmp", ".svg")
 VID_EXT = (".mp4", ".webm", ".mkv", ".mov")
 VID_HOSTS = ("youtube.com", "youtu.be", "vimeo.com")
+VIDEO_HOSTS = VID_HOSTS
+MAX_IIIF = 50            # --all-iiif 로 한 매니페스트에서 받는 최대 장수
 LIMIT_KEY = {"image": "image_mb", "iiif": "image_mb", "pdf": "pdf_mb", "video": "video_mb", "file": "pdf_mb"}
 
 def sniff_kind(url: str, content_type: str | None) -> str:
@@ -168,19 +170,36 @@ def _yt_dlp():
 def _grab_video(url, dest, source_page, license_hint, limits):
     exe = _yt_dlp()
     if not exe: return {"error": "yt-dlp 없음: pip install yt-dlp 또는 ~/.local/bin/yt-dlp.exe"}
-    lim, _ = _limit_mb("video", limits); h = lim.get("video_max_height", 1080)
+    lim, _ = _limit_mb("video", limits); h = lim.get("video_max_height", 1080); vcap = int(lim.get("video_mb", 2048)) * 1048576
     before = {p.name for p in Path(dest).iterdir()}
+    def _cleanup():
+        for p in Path(dest).iterdir():
+            if p.name not in before:
+                try: p.unlink()
+                except Exception: pass
     try:
-        r = subprocess.run([exe, "-f", f"bestvideo[height<={h}]+bestaudio/best", "--merge-output-format", "mp4", "--write-info-json",
-                            "--encoding", "utf-8", "--max-filesize", f"{int(lim.get('video_mb', 2048))}M", "--no-playlist",
+        # --ignore-config / --no-cookies-from-browser: 사용자 yt-dlp 설정의 쿠키·계정 옵션이 몰래 적용되는 것을 막는다 (반목표 §3)
+        r = subprocess.run([exe, "--ignore-config", "--no-cookies-from-browser", "-f", f"bestvideo[height<={h}]+bestaudio/best",
+                            "--merge-output-format", "mp4", "--write-info-json", "--encoding", "utf-8",
+                            "--max-filesize", f"{int(lim.get('video_mb', 2048))}M", "--no-playlist",
                             "-o", str(Path(dest) / "%(id)s.%(ext)s"), url], capture_output=True, timeout=3600)
-    except Exception as e:
+    except BaseException as e:
+        _cleanup();
+        if not isinstance(e, Exception): raise
         return {"error": f"yt-dlp 실행 실패: {e.__class__.__name__}"}
     new = [p for p in Path(dest).iterdir() if p.name not in before]
     vids = [p for p in new if p.suffix.lower() in VID_EXT]
     if r.returncode != 0 or not vids:
+        _cleanup()
         return {"error": "yt-dlp 실패: " + (r.stderr.decode("utf-8", "replace").strip().splitlines() or ["?"])[-1][:200]}
     vid = max(vids, key=lambda p: p.stat().st_size); meta = {}
+    if vid.stat().st_size > vcap:                         # --max-filesize는 크기를 모르는 스트림·병합 결과를 못 본다 → 사후 검사
+        size = vid.stat().st_size; _cleanup()
+        return {"error": f"한도 초과 {_mb(size)} MB > {lim.get('video_mb', 2048)} MB (영상)"}
+    for p in new:                                          # 부산물(.part/.ytdl/분할 스트림) 정리 — 최종 영상·info.json만 남긴다
+        if p != vid and not p.name.endswith(".info.json"):
+            try: p.unlink()
+            except Exception: pass
     info = next((p for p in new if p.name.endswith(".info.json")), None)
     if info:
         try:
@@ -189,7 +208,9 @@ def _grab_video(url, dest, source_page, license_hint, limits):
         except Exception: pass
     sha = _sha_file(vid); rows = load_manifest(dest)
     d = _dup(rows, sha)
-    if d: return d
+    if d:
+        if str(vid) != d.get("path"): _cleanup()          # 같은 영상을 다시 받았으면 새 파일은 지운다
+        return d
     entry = {"id": f"vid-{sha[:8]}", "url": url, "source_page": source_page, "kind": "video", "path": str(vid), "sha256": sha,
              "bytes": vid.stat().st_size, "license": license_hint, "commercial_ok": license_class(license_hint)[1],
              "credit": meta.get("uploader"), "retrieved_at": now(), "meta": meta}
@@ -200,7 +221,11 @@ def _mb(n): return round(n / 1048576, 1)
 
 def _download(url, dest, kind, limits):
     """→ (part_path, ctype, ext, kind) | {"error"}. 스트리밍 누적 한도 검사."""
-    dest = Path(dest); part = dest / ".part"
+    dest = Path(dest); part = dest / f".part-{os.getpid()}-{random.randrange(1 << 24):06x}"   # 동시 실행 충돌 방지
+    used = sum(int(e.get("bytes") or 0) for e in load_manifest(dest))                        # 퀘스트 전체 한도(quest_mb)
+    def _qcap(limits):
+        lim, _ = _limit_mb("file", limits); return int(lim.get("quest_mb", 500)) * 1048576, int(lim.get("quest_mb", 500))
+    qcap, qmb = _qcap(limits)
     if url.startswith("file:"):
         src = Path(urllib.request.url2pathname(urlparse(url).path))
         if not src.exists(): return {"error": f"파일 없음: {src}"}
@@ -208,11 +233,13 @@ def _download(url, dest, kind, limits):
         kind = kind or sniff_kind(src.name, ctype)
         _, mx = _limit_mb(kind, limits)
         if src.stat().st_size > mx * 1048576: return {"error": f"한도 초과 {_mb(src.stat().st_size)} MB > {mx} MB"}
+        if used + src.stat().st_size > qcap: return {"error": f"퀘스트 총량 초과 {_mb(used + src.stat().st_size)} MB > {qmb} MB"}
         shutil.copyfile(src, part)
         return part, ctype, src.suffix.lower() or ".bin", kind
     r = fetch(url, stream=True, timeout=60)
     resp = r.get("response")
     if resp is None: return {"error": r["error"] or "연결 실패"}
+    ok_done = False
     try:
         if not r["ok"]: return {"error": f"HTTP {r['status']}"}
         ctype = resp.headers.get("Content-Type", "")
@@ -221,18 +248,20 @@ def _download(url, dest, kind, limits):
         _, mx = _limit_mb(kind, limits); cap = mx * 1048576
         cl = resp.headers.get("Content-Length")
         if cl and cl.isdigit() and int(cl) > cap: return {"error": f"한도 초과 {_mb(int(cl))} MB > {mx} MB"}
+        if cl and cl.isdigit() and used + int(cl) > qcap: return {"error": f"퀘스트 총량 초과 {_mb(used + int(cl))} MB > {qmb} MB"}
         total = 0
         with open(part, "wb") as f:
             for chunk in resp.iter_content(CHUNK):
                 total += len(chunk)
-                if total > cap:
-                    f.close(); part.unlink(missing_ok=True)
-                    return {"error": f"한도 초과 {_mb(total)}+ MB > {mx} MB"}
+                if total > cap: return {"error": f"한도 초과 {_mb(total)}+ MB > {mx} MB"}
+                if used + total > qcap: return {"error": f"퀘스트 총량 초과 {_mb(used + total)}+ MB > {qmb} MB"}
                 f.write(chunk)
+        ok_done = True
         return part, ctype, _ext_for(r["url"], ctype), kind
     except Exception as e:
-        part.unlink(missing_ok=True); return {"error": f"{e.__class__.__name__}: {str(e)[:160]}"}
+        return {"error": f"{e.__class__.__name__}: {str(e)[:160]}"}
     finally:
+        if not ok_done: part.unlink(missing_ok=True)     # 한도 초과·예외·중단(KeyboardInterrupt) 어느 경우에도 부분 파일을 남기지 않는다
         try: resp.close()
         except Exception: pass
 
@@ -242,15 +271,17 @@ def grab(url: str, dest_dir: Path, *, kind: str | None = None, source_page: str 
         dest = Path(dest_dir); dest.mkdir(parents=True, exist_ok=True)
         is_file = url.startswith("file:")
         kind = kind or (None if is_file else sniff_kind(url, None))
-        if kind == "video": return _grab_video(url, dest, source_page, license_hint, limits)
-        if not is_file and urlparse(url).netloc != "upload.wikimedia.org" and not robots_allowed(url):
+        host = urlparse(url).netloc.lower()
+        # robots.txt 확인 — 영상 플랫폼(yt-dlp가 공식 재생 API로 받는 곳)과 커먼즈 업로드 서버만 예외
+        if not is_file and host != "upload.wikimedia.org" and not any(host.endswith(h) for h in VIDEO_HOSTS) and not robots_allowed(url):
             return {"error": "robots.txt 금지"}
+        if kind == "video": return _grab_video(url, dest, source_page, license_hint, limits)
         if kind == "iiif" and not url.lower().split("?")[0].endswith(IMG_EXT):
             man = fetch_json(url, timeout=30)
             urls = iiif_image_urls(man) if isinstance(man, dict) else []
             if not urls: return {"error": "IIIF 매니페스트에서 이미지를 찾지 못함"}
             ents = [grab(u, dest, kind="image", source_page=source_page or url, license_hint=license_hint, limits=limits)
-                    for u in (urls if all_iiif else urls[:1])]
+                    for u in (urls[:MAX_IIIF] if all_iiif else urls[:1])]       # 매니페스트 전체는 최대 MAX_IIIF장
             good = [e for e in ents if "error" not in e]
             if not good: return ents[0]
             first = dict(good[0]); first["meta"] = dict(first.get("meta") or {}, iiif_manifest=url, iiif_ids=[e["id"] for e in good])

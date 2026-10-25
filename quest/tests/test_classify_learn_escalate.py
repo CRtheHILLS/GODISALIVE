@@ -66,10 +66,10 @@ def run(check):
             with (run_dir / "log.jsonl").open("a", encoding="utf-8") as f: f.write('{"broken":\n')
             pb = {"engines": {}, "domains": {}, "routes": {}, "lessons": []}
             res = L.record_run(run_dir, pb)
-            check("record summary", res, {"engines_updated": 3, "domains_updated": 1})
+            check("record summary", res, {"engines_updated": 2, "domains_updated": 1})   # bing=-1(엔진 오류)은 통계 제외
             check("engine commons", pb["engines"]["commons"]["image"], {"tries": 1, "hits": 1})
             check("engine ddg", pb["engines"]["ddg"]["image"], {"tries": 1, "hits": 0})
-            check("engine error tries only", pb["engines"]["bing"]["image"], {"tries": 1, "hits": 0})
+            check("engine error excluded", "bing" in pb["engines"], False)   # 검증 지적 4.6: 키 없음·오류는 적중률을 깎지 않는다
             check("domain status", pb["domains"]["britishmuseum.org"]["status"], "ok")
             check("domain via", pb["domains"]["britishmuseum.org"]["via_success"], ["wayback"])
             check("route wayback", pb["routes"]["blocked->wayback"]["success"], 1)
@@ -107,7 +107,9 @@ def run(check):
     check("domain_note none", L.domain_note(pb, "nope.org"), None)
     check("report", "commons" in L.report(pb) and "britishmuseum.org" in L.report(pb), True)
     check("playbook path", L.PLAYBOOK_PATH.name, "playbook.json")
-    check("default playbook", json.loads(L.PLAYBOOK_PATH.read_text(encoding="utf-8")), {"engines": {}, "domains": {}, "routes": {}, "lessons": []})
+    real = json.loads(L.PLAYBOOK_PATH.read_text(encoding="utf-8"))   # 실제 플레이북은 퀘스트가 돌수록 채워진다 — 구조(키)만 검사
+    check("playbook structure", sorted(real.keys()), ["domains", "engines", "lessons", "routes"])
+    check("default playbook", L._empty(), {"engines": {}, "domains": {}, "routes": {}, "lessons": []})
 
     # ── escalate ─────────────────────────────────────────────────────────
     lad = E.ladder("403", domain="www.britishmuseum.org")

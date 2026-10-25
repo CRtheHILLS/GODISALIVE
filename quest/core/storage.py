@@ -27,12 +27,17 @@ def login() -> str:
 def _auth(token): return {"X-Auth": token}
 
 def usage(token: str | None = None) -> dict:
-    base = credentials()[0]; token = token or login()
-    r = fetch(base + "/api/usage/", headers=_auth(token), timeout=30)
-    if not r["ok"]: raise RuntimeError(f"usage 실패: {r['error'] or r['status']}")
-    d = json.loads(r["text"]) if r["text"] else {}
-    total, used = int(d.get("total", 0) or 0), int(d.get("used", 0) or 0)
-    return {"total": total, "used": used, "pct": round(used * 100 / total, 1) if total else 0.0}
+    """→ {"total","used","pct"} — 실패하면 {"total":0,"used":0,"pct":0.0,"error":...} (예외를 던지지 않는다)"""
+    try:
+        base = credentials()[0]; token = token or login()
+        r = fetch(base + "/api/usage/", headers=_auth(token), timeout=30)
+        if not r["ok"]: return {"total": 0, "used": 0, "pct": 0.0, "error": f"usage 실패: {r['error'] or r['status']}"}
+        d = json.loads(r["text"]) if r["text"] else {}
+        if not isinstance(d, dict): return {"total": 0, "used": 0, "pct": 0.0, "error": "usage 응답 형식 이상"}
+        total, used = int(d.get("total", 0) or 0), int(d.get("used", 0) or 0)
+        return {"total": total, "used": used, "pct": round(used * 100 / total, 1) if total else 0.0}
+    except Exception as e:
+        return {"total": 0, "used": 0, "pct": 0.0, "error": f"{e.__class__.__name__}: {str(e)[:160]}"}
 
 def _quote(path): return urllib.parse.quote(path.strip("/"), safe="/")
 
@@ -54,12 +59,15 @@ def upload(local: Path, remote_path: str, token: str | None = None) -> dict:
         remote_path = normalize_remote(remote_path)
         token = token or login()
         u = usage(token)
+        if u.get("error"):
+            return {"ok": False, "status": 0, "remote": remote_path, "error": f"용량 확인 실패 → 업로드 중단: {u['error']}"}
         if u["pct"] >= CONFIG["storage"]["warn_pct"]:
             return {"ok": False, "status": 0, "remote": remote_path, "error": f"용량 경고 {u['pct']}%"}
         ensure_dir(Path(remote_path.replace("\\", "/")).parent.as_posix(), token)
         base = credentials()[0]
-        r = fetch(f"{base}/api/resources/{_quote(remote_path)}?override=true", method="POST", data=Path(local).read_bytes(),
-                  headers={**_auth(token), "Content-Type": "application/octet-stream"}, timeout=600, retries=1)
+        with open(local, "rb") as fh:          # 파일 핸들을 그대로 넘겨 스트리밍 업로드 (2GB 영상도 메모리에 안 올림)
+            r = fetch(f"{base}/api/resources/{_quote(remote_path)}?override=true", method="POST", data=fh,
+                      headers={**_auth(token), "Content-Type": "application/octet-stream"}, timeout=1800, retries=0)
         out = {"ok": bool(r["ok"]), "status": r["status"], "remote": remote_path}
         if not r["ok"]: out["error"] = r["error"]
         return out

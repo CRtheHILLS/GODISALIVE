@@ -4,7 +4,8 @@
 
 BLOCKAGES = ["no-results", "403", "404", "empty-js", "paywall", "login", "captcha", "rate-limit"]
 
-Q = "python quest/q.py"
+from core.workspace import HOME
+Q = f"python {HOME.name}/q.py"   # 폴더 이름이 바뀌어도 명령이 맞도록
 
 
 def _dom(d):

@@ -3,7 +3,13 @@
   "runs_dir": "quest/runs",
   "plugin": "godisalive",
   "default_budget": 40,
-  "limits": {"quest_mb": 500, "image_mb": 25, "pdf_mb": 100, "video_mb": 2048, "video_max_height": 1080},
+  "limits": {
+    "quest_mb": 500,
+    "image_mb": 25,
+    "pdf_mb": 100,
+    "video_mb": 2048,
+    "video_max_height": 1080
+  },
   "storage": {
     "kind": "filebrowser",
     "base_url": "https://assets-production-f04b.up.railway.app",
@@ -13,17 +19,57 @@
   },
   "catalog": "assets/catalog.json",
   "engines_default": {
-    "web": ["ddg", "bing", "wikipedia"],
-    "text": ["wikipedia", "ia", "sefaria", "ddg"],
-    "image": ["commons", "met", "loc", "wikidata", "ddg"],
-    "object": ["wikidata", "met", "louvre", "commons", "ddg"],
-    "paper": ["openalex", "crossref", "semanticscholar", "ia"],
-    "video": ["youtube", "ia"],
-    "place": ["pleiades", "wikipedia", "wikidata"],
-    "mixed": ["ddg", "wikipedia", "commons", "wikidata", "openalex"]
+    "web": [
+      "ddg",
+      "bing",
+      "wikipedia"
+    ],
+    "text": [
+      "wikipedia",
+      "ia",
+      "sefaria",
+      "ddg"
+    ],
+    "image": [
+      "commons",
+      "met",
+      "loc",
+      "wikidata",
+      "ddg"
+    ],
+    "object": [
+      "wikidata",
+      "met",
+      "louvre",
+      "commons",
+      "ddg"
+    ],
+    "paper": [
+      "openalex",
+      "crossref",
+      "semanticscholar",
+      "ia"
+    ],
+    "video": [
+      "youtube",
+      "ia"
+    ],
+    "place": [
+      "pleiades",
+      "wikipedia",
+      "wikidata"
+    ],
+    "mixed": [
+      "ddg",
+      "wikipedia",
+      "commons",
+      "wikidata",
+      "openalex"
+    ]
   },
   "secrets": {
     "europeana": ".omc/secrets/europeana-key.txt",
     "smithsonian": ".omc/secrets/smithsonian-key.txt"
-  }
+  },
+  "spec_ref": "docs/superpowers/specs/2026-10-25-quest-design.md §3"
 }

@@ -109,12 +109,15 @@ def _render_js(url, p, want_links, want_images):
     try:
         with sync_playwright() as pw:
             b = pw.chromium.launch(headless=True)
-            ctx = b.new_context(user_agent=UAS[0], viewport={"width": 1280, "height": 900}, locale="en-US")
-            pg = ctx.new_page()
-            resp = pg.goto(url, timeout=40000, wait_until="domcontentloaded")   # networkidle은 추적 스크립트 때문에 영원히 안 끝날 수 있다
-            try: pg.wait_for_load_state("networkidle", timeout=8000)
-            except Exception: pg.wait_for_timeout(3000)
-            html = pg.content(); final = pg.url; b.close()
+            try:
+                ctx = b.new_context(user_agent=UAS[0], viewport={"width": 1280, "height": 900}, locale="en-US")
+                pg = ctx.new_page()
+                resp = pg.goto(url, timeout=40000, wait_until="domcontentloaded")   # networkidle은 추적 스크립트 때문에 영원히 안 끝날 수 있다
+                try: pg.wait_for_load_state("networkidle", timeout=8000)
+                except Exception: pg.wait_for_timeout(3000)
+                html = pg.content(); final = pg.url
+            finally:
+                b.close()                                                          # 예외가 나도 크로미움 프로세스를 남기지 않는다
         title, text, links, images = extract_main(html, final, want_links, want_images)
         p.update(final_url=final, status=resp.status if resp else 200, title=title, text=text, links=links, images=images, via="js", error=None)
     except Exception as e:

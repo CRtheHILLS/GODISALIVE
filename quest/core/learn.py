@@ -6,7 +6,8 @@ from pathlib import Path
 
 from core.workspace import ROOT, read_log, load_state, now
 
-PLAYBOOK_PATH = ROOT / "quest" / "playbook.json"
+from core.workspace import HOME
+PLAYBOOK_PATH = HOME / "playbook.json"
 
 
 def _empty() -> dict:
@@ -25,7 +26,9 @@ def load_playbook() -> dict:
 
 
 def save_playbook(pb: dict) -> None:
-    PLAYBOOK_PATH.write_text(json.dumps(pb, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    tmp = PLAYBOOK_PATH.with_suffix(".json.tmp")          # 원자적 저장 — 쓰다 죽어도 기존 플레이북은 남는다
+    tmp.write_text(json.dumps(pb, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    tmp.replace(PLAYBOOK_PATH)
 
 
 def _dom(d) -> str:
@@ -55,20 +58,24 @@ def record_run(run: Path, pb: dict | None = None) -> dict:
             if d in pending:
                 r = _route(pb, f"{pending.pop(d)}->{data.get('via') or tool}"); r["tries"] += 1; r["success"] += 1
         if tool == "search":
+            if data.get("manual"): continue                   # addresult(세션 WebSearch 편입)는 엔진 통계에 넣지 않는다
+            gt = data.get("goal_type") or goal_type           # search --type X 로 돌린 검색은 X 유형으로 적립
             for eng, count in (data.get("per_engine") or {}).items():
-                rec = pb["engines"].setdefault(eng, {}).setdefault(goal_type, {"tries": 0, "hits": 0})
+                if not isinstance(count, (int, float)) or count < 0: continue   # -1 = 엔진 오류(키 없음 등) → 통계 제외
+                rec = pb["engines"].setdefault(eng, {}).setdefault(gt, {"tries": 0, "hits": 0})
                 rec["tries"] += 1
-                if isinstance(count, (int, float)) and count > 0: rec["hits"] += 1      # -1 = 엔진 오류 → 시도만 센다
-                engines_touched.add((eng, goal_type))
+                if count > 0: rec["hits"] += 1
+                engines_touched.add((eng, gt))
         elif tool == "read":
             domain = _dom(data.get("domain"))
             if not domain: continue
             via, status = data.get("via"), data.get("status")
             prev = pb["domains"].get(domain, {})
             if ok: st = "ok"
-            elif data.get("chars") == 0 and status == 200: st = "js-required"
+            elif status == 200 and (data.get("chars") or 0) < 200: st = "js-required"   # 200인데 본문이 거의 없음 → JS 렌더링 필요
             elif status in (401, 403, 429): st = "blocked"
             elif status in (404, 410): st = "dead"
+            elif not status: st = "error"                                               # 연결 실패 — 차단이 아니다
             else: st = "blocked"
             vias = set(prev.get("via_success", []))
             if ok and via: vias.add(via)

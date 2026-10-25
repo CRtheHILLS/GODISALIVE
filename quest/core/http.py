@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """QUEST 공용 HTTP — UA · 재시도 · 도메인별 예절 지연 · robots.txt · 웨이백.
 네트워크 함수는 예외를 밖으로 던지지 않는다: fetch()는 항상 dict를 돌려준다."""
-import time, urllib.parse, urllib.robotparser
+import re, time, urllib.parse, urllib.robotparser
 from urllib.parse import urlparse
 
 import requests
@@ -27,9 +27,19 @@ def polite_delay(domain: str, seconds: float = 0.7) -> None:
         if wait > 0: time.sleep(wait)
     _last_call[domain] = time.monotonic()
 
+MAX_BYTES = 50 * 1024 * 1024   # 비스트리밍 응답 본문 상한 — 거대한 PDF·매니페스트가 메모리를 삼키지 않도록
+
+def _decode(content: bytes, headers: dict) -> str:
+    ct = (headers.get("Content-Type") or "").lower()
+    m = re.search(r"charset=([\w-]+)", ct)
+    enc = m.group(1) if m else "utf-8"          # 헤더에 charset이 없으면 utf-8 (requests의 ISO-8859-1 기본값은 한글을 깨뜨린다)
+    try: return content.decode(enc, "replace")
+    except LookupError: return content.decode("utf-8", "replace")
+
 def fetch(url: str, *, method: str = "GET", params=None, data=None, headers=None, timeout: int = 30,
-          retries: int = 2, json_body=None, stream: bool = False) -> dict:
-    """→ {"ok", "status", "url", "text", "content", "headers", "error", "elapsed", "response"(stream일 때)}"""
+          retries: int = 2, json_body=None, stream: bool = False, max_bytes: int = MAX_BYTES) -> dict:
+    """→ {"ok", "status", "url", "text", "content", "headers", "error", "elapsed", "response"(stream일 때)}
+    비스트리밍이면 본문을 max_bytes까지만 읽고 넘으면 error '응답 크기 초과'."""
     dom = domain_of(url); polite_delay(dom)
     out = {"ok": False, "status": 0, "url": url, "text": "", "content": b"", "headers": {}, "error": None, "elapsed": 0.0}
     ua_i = 0; delay = 1.0
@@ -39,17 +49,21 @@ def fetch(url: str, *, method: str = "GET", params=None, data=None, headers=None
         t0 = time.monotonic()
         try:
             r = _session.request(method, url, params=params, data=data, json=json_body, headers=h, timeout=timeout,
-                                 allow_redirects=True, stream=stream)
+                                 allow_redirects=True, stream=True)
             out.update({"status": r.status_code, "url": r.url, "headers": dict(r.headers), "elapsed": round(time.monotonic() - t0, 2)})
             if r.status_code == 403 and attempt < retries:
-                ua_i += 1; time.sleep(delay); continue                # UA 바꿔 1회 재시도
+                r.close(); ua_i += 1; time.sleep(delay); continue      # 다른 브라우저 UA로 1회 재시도 (README에 명시)
             if r.status_code in (429, 500, 502, 503, 504) and attempt < retries:
-                time.sleep(delay); delay *= 2; continue
+                r.close(); time.sleep(delay); delay *= 2; continue
             if stream:
                 out["response"] = r; out["ok"] = r.ok; return out
-            out["content"] = r.content
-            try: out["text"] = r.text if r.encoding or "text" in r.headers.get("Content-Type", "") else r.content.decode("utf-8", "replace")
-            except Exception: out["text"] = r.content.decode("utf-8", "replace")
+            buf = bytearray()
+            for chunk in r.iter_content(1024 * 1024):
+                buf.extend(chunk)
+                if len(buf) > max_bytes:
+                    r.close(); out["error"] = f"응답 크기 초과 > {max_bytes // 1048576} MB"; out["ok"] = False; return out
+            r.close()
+            out["content"] = bytes(buf); out["text"] = _decode(out["content"], out["headers"])
             out["ok"] = r.ok
             if not r.ok: out["error"] = f"HTTP {r.status_code}"
             return out

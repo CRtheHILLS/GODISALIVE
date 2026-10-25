@@ -9,8 +9,9 @@ import json, os, re, sys
 from datetime import datetime
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-CONFIG = json.loads((ROOT / "quest" / "config.json").read_text(encoding="utf-8"))
+HOME = Path(__file__).resolve().parents[1]          # quest/ 폴더 (이름이 바뀌어도 동작)
+ROOT = HOME.parent                                   # 프로젝트 루트
+CONFIG = json.loads((HOME / "config.json").read_text(encoding="utf-8"))
 
 def _runs_dir() -> Path:
     env = os.environ.get("QUEST_RUNS_DIR")
@@ -43,7 +44,7 @@ def new_run(goal: str, goal_type: str, criteria: list, budget: int | None = None
     (run / "goal.md").write_text(
         f"# 목표\n{goal}\n\n- 유형: {goal_type} · 예산: {budget} 행동 · 생성: {state['created']}\n\n## 완료 조건\n"
         + "".join(f"- [ ] {c}\n" for c in crit)
-        + "\n## 제약\n- 합법 경로만 (docs/superpowers/specs/2026-10-25-quest-design.md §3). 라이선스 미확인 이미지는 책에 쓰지 않음.\n"
+        + f"\n## 제약\n- 합법 경로만 ({CONFIG.get('spec_ref', '설계서 반목표 절')}). 라이선스 미확인 이미지는 책에 쓰지 않음.\n"
         + "- 출처 없는 발견은 발견이 아니다 — findings.md의 모든 항목에 URL.\n", encoding="utf-8")
     (run / "todo.md").write_text("# TODO (매 단계 갱신 — Manus recitation)\n- [ ] 첫 검색: 목표의 핵심 명칭으로 기본 엔진 돌리기\n", encoding="utf-8")
     (run / "log.jsonl").write_text("", encoding="utf-8")
