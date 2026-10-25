@@ -50,6 +50,7 @@
 | **Railway Volume 프로비저닝** (시각자료 저장소) | ✅ 2026-08-22 — filebrowser 가동, 상세: [assets/README.md](assets/README.md) |
 | 퍼블릭 도메인 성경 본문 1차 다운로드 | ✅ 2026-08-22 — 6종 확보 + 조회기, 상세: [bible/README.md](bible/README.md) |
 | **공부 모드** (설교·강의 영상 → 보고서 + 지식 그래프) | ✅ 2026-10-25 — fetch.py·graph.py·지도, 1호 완료, 상세: [study/README.md](study/README.md) |
+| **퀘스트 모드** (목표지향 검색·확보 에이전트 — Manus 개념) | ✅ 2026-10-25 — 엔진 15종·읽기·확보·분류·우회 사다리·플레이북 학습, 상세: [quest/README.md](quest/README.md) |
 
 ### Railway Volume 설계 (시각자료 저장소)
 - Railway 프로젝트 `godisalive-assets` 생성 → 서비스 1개 + **Volume** 마운트(`/data`).
@@ -120,7 +121,8 @@ CR의 요구: *"부모님이 보시던 성경을 현대인을 위해 쉽게 개�
 
 ### 4.3 증거 노트 파이프라인
 ```
-소스 발견 → evidence/<축>/<유물명>.md 노트 생성 (템플릿: evidence/README.md)
+퀘스트 (quest/q.py new "<유물> 이미지·소장정보·문헌 확보") → 검색·읽기·확보·분류 루프 (완료 조건 ✓까지)
+  → 소스 발견 → evidence/<축>/<유물명>.md 노트 생성 (템플릿: evidence/README.md)
   → 등급 판정 (A/B/C/D) + 출처 링크 + 관련 성경구절 태그
   → 시각자료 있으면 라이선스 확인 → assets/catalog.json 등록 → Railway 업로드
   → knowledge/ 주제 노트에서 상호 링크

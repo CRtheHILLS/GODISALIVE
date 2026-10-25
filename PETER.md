@@ -48,6 +48,10 @@ CR이 하나님 · 예수님 · 성령님을 머리로만이 아니라 **감성�
   보고서로 소화하고, 설교 노트 + 새 개념 노트 + 증거 노트를 만들어 지식 그래프에 연결한다. 설교자의 **사실 주장은 등급제로
   검증**하되 신앙 메시지는 검증 대상이 아니다. 메인 프로젝트와 별개로 **수동으로만** 발동 — 절차는
   [.claude/skills/godisalive-study/SKILL.md](.claude/skills/godisalive-study/SKILL.md), 설계는 [study/README.md](study/README.md).
+- **퀘스트 모드 (CR 지시 2026-10-25)**: 자료를 찾고 확보하는 모든 연구 작업은 Manus식 **될 때까지 도는 루프**로 — 목표마다
+  컴퓨터(`quest/runs/<id>/`)를 만들고 `python quest/q.py` 도구로 검색→읽기→확보→분류→기록을 완료 조건이 전부 ✓될 때까지 반복한다.
+  막히면 우회 사다리(합법 경로만), 끝나면 `done --lesson`으로 플레이북에 학습. 규율은
+  [.claude/skills/godisalive-quest/SKILL.md](.claude/skills/godisalive-quest/SKILL.md), 설계는 [quest/README.md](quest/README.md).
 
 ---
 

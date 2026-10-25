@@ -42,8 +42,16 @@ def ensure_dir(remote_dir: str, token: str) -> None:
         cur += "/" + part
         fetch(f"{base}/api/resources{_quote(cur)}/", method="POST", headers=_auth(token), data=b"", timeout=30, retries=0)  # 409(이미 있음)은 무시
 
+def normalize_remote(remote_path: str) -> str:
+    """Git Bash(MSYS)가 '/srv/...' 인자를 'C:/Program Files/Git/srv/...'로 바꿔 넘기는 사고 방지 — 마지막 '/srv/'부터만 취한다."""
+    p = str(remote_path).replace("\\", "/")
+    root = CONFIG["storage"].get("root", "/srv")
+    if re.match(r"^[A-Za-z]:", p) and (root + "/") in p: p = p[p.rindex(root + "/"):]
+    return "/" + p.lstrip("/")
+
 def upload(local: Path, remote_path: str, token: str | None = None) -> dict:
     try:
+        remote_path = normalize_remote(remote_path)
         token = token or login()
         u = usage(token)
         if u["pct"] >= CONFIG["storage"]["warn_pct"]:

@@ -6,7 +6,7 @@ from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
 
-from core.http import fetch, robots_allowed, wayback_latest
+from core.http import fetch, robots_allowed, wayback_latest, UAS
 from core.workspace import now, slugify
 
 NOISE = ["script", "style", "noscript", "nav", "header", "footer", "aside", "form", "iframe", "svg"]
@@ -42,7 +42,13 @@ def extract_main(html: str, base_url: str, want_links: bool = True, want_images:
     soup = _soup(html or "")
     h1 = soup.find("h1")
     title = (h1.get_text(" ", strip=True) if h1 else "") or (soup.title.get_text(" ", strip=True) if soup.title else "")
+    # JS 앱의 <noscript>에는 종종 '진짜' 본문(박물관 소장 데이터 등)이 들어 있다 — 버리기 전에 따로 보관
+    noscript_text = "\n".join(n.get_text("\n", strip=True) for n in soup.find_all("noscript"))
     for t in soup.find_all(NOISE): t.decompose()
+    # 쿠키 동의 대화상자(Quantcast·OneTrust 류)는 수천 줄의 '파트너 목록'을 본문에 쏟아 넣는다 — 제거
+    _junk = re.compile(r"consent|cookie|gdpr|qc-cmp|onetrust|didomi|cmp-", re.I)
+    for t in soup.find_all(lambda tag: tag.get("role") == "dialog" or _junk.search(tag.get("id", "") or "") or _junk.search(" ".join(tag.get("class", []) or []))):
+        t.decompose()
     root = soup.find("article") or soup.find("main") or soup.find(attrs={"role": "main"})
     if root is None:
         best, best_len = None, 0
@@ -57,6 +63,15 @@ def extract_main(html: str, base_url: str, want_links: bool = True, want_images:
         parts.append("# " + s if el.name in ("h1", "h2", "h3") else s)
     text = "\n\n".join(parts) if parts else root.get_text("\n", strip=True)
     text = re.sub(r"\n{3,}", "\n\n", text).strip()
+    if len(text) < 200:
+        # 박물관 소장 페이지처럼 <p> 없이 <dl>/<dd>/<table>로만 짜인 문서 — 본문 전체 텍스트로 대체 (더 길면)
+        body = soup.body or soup
+        full = re.sub(r"[ \t]+", " ", body.get_text("\n", strip=True)); full = re.sub(r"\n{3,}", "\n\n", full).strip()
+        if len(full) > len(text): text = full
+    if len(text) < 200 and len(noscript_text) > len(text):
+        text = re.sub(r"\n{3,}", "\n\n", noscript_text).strip()
+    # 공백 없는 초장문 줄(base64·JSON 덩어리)은 본문이 아니다
+    text = "\n".join(l for l in text.split("\n") if not (len(l) > 1500 and " " not in l.strip()))
     links, images = _collect(root, base_url, want_links, want_images)
     if want_links and not links: links, _ = _collect(soup, base_url, True, False)
     if want_images and not images: _, images = _collect(soup, base_url, False, True)
@@ -93,8 +108,12 @@ def _render_js(url, p, want_links, want_images):
         p["error"] = PW_MSG; return p
     try:
         with sync_playwright() as pw:
-            b = pw.chromium.launch(headless=True); pg = b.new_page()
-            resp = pg.goto(url, timeout=45000, wait_until="networkidle")
+            b = pw.chromium.launch(headless=True)
+            ctx = b.new_context(user_agent=UAS[0], viewport={"width": 1280, "height": 900}, locale="en-US")
+            pg = ctx.new_page()
+            resp = pg.goto(url, timeout=40000, wait_until="domcontentloaded")   # networkidle은 추적 스크립트 때문에 영원히 안 끝날 수 있다
+            try: pg.wait_for_load_state("networkidle", timeout=8000)
+            except Exception: pg.wait_for_timeout(3000)
             html = pg.content(); final = pg.url; b.close()
         title, text, links, images = extract_main(html, final, want_links, want_images)
         p.update(final_url=final, status=resp.status if resp else 200, title=title, text=text, links=links, images=images, via="js", error=None)

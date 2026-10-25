@@ -1,1 +1,96 @@
-{"engines": {}, "domains": {}, "routes": {}, "lessons": []}
+{
+  "engines": {
+    "commons": {
+      "object": {
+        "tries": 4,
+        "hits": 4
+      }
+    },
+    "wikidata": {
+      "object": {
+        "tries": 1,
+        "hits": 1
+      }
+    },
+    "wikipedia": {
+      "object": {
+        "tries": 1,
+        "hits": 1
+      }
+    },
+    "openalex": {
+      "object": {
+        "tries": 4,
+        "hits": 4
+      }
+    },
+    "ia": {
+      "object": {
+        "tries": 3,
+        "hits": 2
+      }
+    },
+    "met": {
+      "object": {
+        "tries": 1,
+        "hits": 1
+      }
+    },
+    "crossref": {
+      "object": {
+        "tries": 2,
+        "hits": 2
+      }
+    }
+  },
+  "domains": {
+    "web.archive.org": {
+      "status": "ok",
+      "via_success": [
+        "direct"
+      ],
+      "last": "2026-10-25T12:35:10",
+      "grabs": 0
+    },
+    "en.wikipedia.org": {
+      "status": "ok",
+      "via_success": [
+        "direct"
+      ],
+      "last": "2026-10-25T12:29:13",
+      "grabs": 0
+    },
+    "britishmuseum.org": {
+      "status": "ok",
+      "via_success": [
+        "js"
+      ],
+      "last": "2026-10-25T12:35:22",
+      "grabs": 0
+    },
+    "upload.wikimedia.org": {
+      "status": "ok",
+      "via_success": [],
+      "last": "2026-10-25T12:35:03",
+      "grabs": 2
+    }
+  },
+  "routes": {
+    "403->*": {
+      "tries": 1,
+      "success": 0
+    },
+    "403->js": {
+      "tries": 1,
+      "success": 1
+    }
+  },
+  "lessons": [
+    {
+      "date": "2026-10-25",
+      "run": "2026-10-25-lachish-reliefs",
+      "goal_type": "object",
+      "text": "대영박물관 collection 페이지는 봇 요청에 403이지만 ① 웨이백 사본의 <noscript> ② Playwright JS 렌더링 둘 다 소장 데이터(등록번호·출토·전시실)를 준다. 이미지는 커먼즈 incategory:\"<분류>\" 검색이 PD/CC BY 후보를 가장 빨리 보여주고 Wellcome 드로잉(CC BY 4.0)이 책용으로 최적. DDG·Bing·LOC·Mojeek은 이 IP에서 봇 차단 → web 유형은 세션 WebSearch + addresult로. Git Bash에서 /srv 인자는 MSYS_NO_PATHCONV=1 필요(storage가 정규화함)."
+    }
+  ]
+}

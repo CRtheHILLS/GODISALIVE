@@ -22,7 +22,8 @@ python study/tools/fetch.py "<URL>"
 ## 2. 소화 (Peter가 직접 — 심부름꾼에게 맡기지 않는다)
 - `study/sources/<id>/transcript.<lang>.txt` **전체**를 읽는다. 부분만 읽고 요약하지 않는다.
 - 설교 본문 구절을 `python bible/lookup.py "<구절>" --texts KRV,SBLGNT`(구약은 WLCa)로 뽑는다.
-- 설교자의 **사실 주장**(역사·배경·원어·인용)을 목록으로 뽑아 자료로 확인 → 등급(A/B/C/D, 정정, 해석). 필요하면 WebSearch 1~3회.
+- 설교자의 **사실 주장**(역사·배경·원어·인용)을 목록으로 뽑아 자료로 확인 → 등급(A/B/C/D, 정정, 해석). 간단하면 WebSearch 1~3회,
+  유물·문헌·이미지를 실제로 확보해야 하면 **퀘스트 모드**(`.claude/skills/godisalive-quest/SKILL.md`)로 넘긴다.
 - 기존 노트와의 연결점을 찾는다: `python study/tools/graph.py --no-desktop`으로 현재 점들을 보고, 같은 구절·인물·주제가 있으면 [[링크]].
 
 ## 3. 산출 (순서대로)

@@ -70,6 +70,20 @@ def test_license():
              ("© Trustees of the British Museum", ("ⓒ", False)), ("", ("unknown", None)), (None, ("unknown", None)), ("© J. Doe, CC BY-SA 3.0", ("CC-BY-SA", True))]
     for s, want in cases: check(f"license {s!r}", lc(s), want)
 
+def test_read_fallbacks():
+    section("read-fallbacks")
+    from core.read import extract_main
+    html = ('<html><head><title>T</title></head><body><div id="app"></div><noscript><dl><dt>Museum number</dt><dd>124905</dd>'
+            '<dt>Findspot</dt><dd>South West Palace (Nineveh), Room XXXVI</dd></dl></noscript></body></html>')
+    title, text, links, images = extract_main(html, "https://ex.org/")
+    check("noscript fallback", "124905" in text and "Room XXXVI" in text, True)
+    html2 = "<html><body><main><p>짧은 본문</p><p>" + "A" * 3000 + "</p></main></body></html>"
+    _, text2, _, _ = extract_main(html2, "https://ex.org/")
+    check("drops base64-like line", "AAAA" not in text2 and "짧은 본문" in text2, True)
+    html3 = "<html><body><table><tr><th>등록번호</th><td>1856,0909.14</td></tr><tr><th>전시</th><td>Room 10</td></tr></table></body></html>"
+    _, text3, _, _ = extract_main(html3, "https://ex.org/")
+    check("table-only page", "1856,0909.14" in text3, True)
+
 def test_cli():
     section("cli")
     q = HERE / "q.py"
@@ -101,7 +115,7 @@ def external_sections():
         out.append(make())
     return out
 
-SECTIONS = [test_workspace, test_http, test_license] + external_sections() + [test_cli]
+SECTIONS = [test_workspace, test_http, test_license] + external_sections() + [test_read_fallbacks, test_cli]
 
 if __name__ == "__main__":
     want = set(sys.argv[1:])

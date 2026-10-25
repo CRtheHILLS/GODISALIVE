@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-25T11:39:27",
+ "generated_at": "2026-10-25T12:41:32",
  "root": "C:\\Users\\droli\\App Developing\\GODISALIVE",
  "nodes": [
   {
@@ -283,6 +283,37 @@
    "degree": 8
   },
   {
+   "id": "ev-arch-lachish-reliefs",
+   "title": "라기스 부조 (Lachish Reliefs) — 산헤립의 유다 침공을 새긴 앗수르 궁전 벽판",
+   "type": "evidence",
+   "subtype": "archaeology",
+   "path": "evidence/archaeology/ev-arch-lachish-reliefs.md",
+   "uri": "file:///C:/Users/droli/App%20Developing/GODISALIVE/evidence/archaeology/ev-arch-lachish-reliefs.md",
+   "date": "2026-10-25",
+   "grade": "A",
+   "tags": [
+    "앗수르",
+    "산헤립",
+    "히스기야",
+    "라기스",
+    "유다침공",
+    "니네베",
+    "부조",
+    "701BC"
+   ],
+   "verses": [
+    "왕하 18:13-17",
+    "왕하 19:8",
+    "대하 32:9",
+    "사 36:1-2",
+    "사 37:8",
+    "미 1:13"
+   ],
+   "source": "",
+   "speaker": "",
+   "degree": 16
+  },
+  {
    "id": "ev-arch-pilate-stone",
    "title": "빌라도 석비 (Pilate Stone)",
    "type": "evidence",
@@ -333,7 +364,7 @@
    ],
    "source": "",
    "speaker": "",
-   "degree": 9
+   "degree": 10
   },
   {
    "id": "ev-arch-taylor-prism",
@@ -359,7 +390,7 @@
    ],
    "source": "",
    "speaker": "",
-   "degree": 11
+   "degree": 12
   },
   {
    "id": "ev-arch-tel-dan-stele",
@@ -1064,6 +1095,104 @@
    "degree": 1
   },
   {
+   "id": "verse:왕하 18",
+   "title": "왕하 18",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 2
+  },
+  {
+   "id": "verse:왕하 19",
+   "title": "왕하 19",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 2
+  },
+  {
+   "id": "verse:대하 32",
+   "title": "대하 32",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 3
+  },
+  {
+   "id": "verse:사 36",
+   "title": "사 36",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 2
+  },
+  {
+   "id": "verse:사 37",
+   "title": "사 37",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 2
+  },
+  {
+   "id": "verse:미 1",
+   "title": "미 1",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "tag:앗수르",
+   "title": "앗수르",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 3
+  },
+  {
+   "id": "tag:산헤립",
+   "title": "산헤립",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 2
+  },
+  {
+   "id": "tag:히스기야",
+   "title": "히스기야",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 3
+  },
+  {
+   "id": "tag:라기스",
+   "title": "라기스",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 1
+  },
+  {
+   "id": "tag:유다침공",
+   "title": "유다침공",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 1
+  },
+  {
+   "id": "tag:니네베",
+   "title": "니네베",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 1
+  },
+  {
+   "id": "tag:부조",
+   "title": "부조",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 1
+  },
+  {
+   "id": "tag:701BC",
+   "title": "701BC",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 1
+  },
+  {
    "id": "ev-hist-tacitus-annals",
    "title": "ev-hist-tacitus-annals",
    "type": "missing",
@@ -1148,25 +1277,11 @@
    "degree": 1
   },
   {
-   "id": "verse:대하 32",
-   "title": "대하 32",
-   "type": "verse",
-   "subtype": "verse",
-   "degree": 2
-  },
-  {
    "id": "verse:사 22",
    "title": "사 22",
    "type": "verse",
    "subtype": "verse",
    "degree": 1
-  },
-  {
-   "id": "tag:히스기야",
-   "title": "히스기야",
-   "type": "tag",
-   "subtype": "tag",
-   "degree": 2
   },
   {
    "id": "tag:수로",
@@ -1178,48 +1293,6 @@
   {
    "id": "tag:예루살렘",
    "title": "예루살렘",
-   "type": "tag",
-   "subtype": "tag",
-   "degree": 1
-  },
-  {
-   "id": "tag:앗수르",
-   "title": "앗수르",
-   "type": "tag",
-   "subtype": "tag",
-   "degree": 2
-  },
-  {
-   "id": "verse:왕하 18",
-   "title": "왕하 18",
-   "type": "verse",
-   "subtype": "verse",
-   "degree": 1
-  },
-  {
-   "id": "verse:왕하 19",
-   "title": "왕하 19",
-   "type": "verse",
-   "subtype": "verse",
-   "degree": 1
-  },
-  {
-   "id": "verse:사 36",
-   "title": "사 36",
-   "type": "verse",
-   "subtype": "verse",
-   "degree": 1
-  },
-  {
-   "id": "verse:사 37",
-   "title": "사 37",
-   "type": "verse",
-   "subtype": "verse",
-   "degree": 1
-  },
-  {
-   "id": "tag:산헤립",
-   "title": "산헤립",
    "type": "tag",
    "subtype": "tag",
    "degree": 1
@@ -2129,6 +2202,86 @@
    "kind": "tag"
   },
   {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "ev-arch-taylor-prism",
+   "kind": "link"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "ev-arch-siloam-inscription",
+   "kind": "link"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "verse:왕하 18",
+   "kind": "verse"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "verse:왕하 19",
+   "kind": "verse"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "verse:대하 32",
+   "kind": "verse"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "verse:사 36",
+   "kind": "verse"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "verse:사 37",
+   "kind": "verse"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "verse:미 1",
+   "kind": "verse"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "tag:앗수르",
+   "kind": "tag"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "tag:산헤립",
+   "kind": "tag"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "tag:히스기야",
+   "kind": "tag"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "tag:라기스",
+   "kind": "tag"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "tag:유다침공",
+   "kind": "tag"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "tag:니네베",
+   "kind": "tag"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "tag:부조",
+   "kind": "tag"
+  },
+  {
+   "source": "ev-arch-lachish-reliefs",
+   "target": "tag:701BC",
+   "kind": "tag"
+  },
+  {
    "source": "ev-arch-pilate-stone",
    "target": "ev-hist-tacitus-annals",
    "kind": "link"
@@ -2430,22 +2583,22 @@
   }
  ],
  "stats": {
-  "notes": 15,
-  "nodes": 148,
-  "edges": 211,
+  "notes": 16,
+  "nodes": 155,
+  "edges": 227,
   "nodes_by_type": {
    "knowledge": 8,
-   "evidence": 7,
-   "verse": 66,
-   "tag": 64,
+   "evidence": 8,
+   "verse": 67,
+   "tag": 69,
    "speaker": 1,
    "missing": 2
   },
   "edges_by_kind": {
    "evidence": 8,
-   "link": 17,
-   "verse": 103,
-   "tag": 82,
+   "link": 19,
+   "verse": 109,
+   "tag": 90,
    "speaker": 1
   },
   "dangling": {
@@ -2495,13 +2648,18 @@
     "degree": 16
    },
    {
-    "id": "ev-arch-pilate-stone",
-    "title": "빌라도 석비 (Pilate Stone)",
-    "degree": 11
+    "id": "ev-arch-lachish-reliefs",
+    "title": "라기스 부조 (Lachish Reliefs) — 산헤립의 유다 침공을 새긴 앗수르 궁전 벽판",
+    "degree": 16
    },
    {
     "id": "ev-arch-taylor-prism",
     "title": "테일러 프리즘 (Taylor Prism) — 산헤립의 예루살렘 침공 기록",
+    "degree": 12
+   },
+   {
+    "id": "ev-arch-pilate-stone",
+    "title": "빌라도 석비 (Pilate Stone)",
     "degree": 11
    },
    {
@@ -2513,11 +2671,6 @@
     "id": "ev-manu-psalms-scrolls",
     "title": "시편 사본 증거 — 쿰란·마사다·대사본 (어디서 발견되었나)",
     "degree": 11
-   },
-   {
-    "id": "kn-books-psalms",
-    "title": "시편 (테힐림 תְּהִלִּים) — 권 프로파일",
-    "degree": 10
    }
   ]
  }

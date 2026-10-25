@@ -42,7 +42,7 @@ def plugin():
 # ── 명령 ─────────────────────────────────────────────────────────────────
 def cmd_new(a):
     crit = [c for c in a.criteria.split(";")] if a.criteria else []
-    run = W.new_run(a.goal, a.type, crit, a.budget)
+    run = W.new_run(a.goal, a.type, crit, a.budget, slug=a.slug)
     print(f"🧭 퀘스트 생성: {run}\n" + W.brief(run))
 
 def cmd_brief(a):
@@ -89,6 +89,16 @@ def cmd_search(a):
                  path=str(path.relative_to(W.ROOT)), data={"per_engine": per, "goal_type": gtype})
     print(S.format_table(res, a.limit)); print(f"→ {path}")
     if total == 0: print("0건 — `python quest/q.py escalate no-results` 로 사다리를 보라")
+
+def cmd_addresult(a):
+    """Peter가 세션 도구(WebSearch 등)로 얻은 결과를 검색 기록에 편입 — ddg/bing이 봇 차단일 때의 공식 경로."""
+    run = need_run(); st = W.load_state(run)
+    row = {"engine": a.engine, "type": a.type or "web", "title": a.title, "url": a.url, "snippet": a.snippet or "", "license": a.license, "extra": {}}
+    step = st["steps"] + 1; path = run / "search" / f"{step:03d}-{a.engine}-{W.slugify(a.title, 30)}.json"
+    path.write_text(json.dumps({"query": a.query or a.title, "goal_type": st["goal_type"], "results": {a.engine: [row]}}, ensure_ascii=False, indent=1), encoding="utf-8")
+    W.log_action(run, "search", {"q": a.query or a.title, "engines": [a.engine]}, True, f"[{a.engine}] {a.title[:60]} — {a.url[:60]}",
+                 path=str(path.relative_to(W.ROOT)), data={"per_engine": {a.engine: 1}, "goal_type": st["goal_type"], "manual": True})
+    print(f"＋ [{a.engine}] {a.title} — {a.url}\n→ {path}")
 
 def cmd_read(a):
     run = need_run(); st = W.load_state(run); from core import read as R, http as H
@@ -181,7 +191,7 @@ def cmd_learn(a):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest="cmd", required=True)
-    p = sp.add_parser("new"); p.add_argument("goal"); p.add_argument("--type", default="mixed", choices=["web", "text", "image", "object", "paper", "video", "place", "mixed"]); p.add_argument("--criteria", default=""); p.add_argument("--budget", type=int); p.set_defaults(f=cmd_new)
+    p = sp.add_parser("new"); p.add_argument("goal"); p.add_argument("--type", default="mixed", choices=["web", "text", "image", "object", "paper", "video", "place", "mixed"]); p.add_argument("--criteria", default=""); p.add_argument("--budget", type=int); p.add_argument("--slug", help="폴더 이름 (기본: 목표에서 생성)"); p.set_defaults(f=cmd_new)
     sp.add_parser("brief").set_defaults(f=cmd_brief)
     p = sp.add_parser("todo"); p.add_argument("text", nargs="?"); p.add_argument("--done", type=int); p.set_defaults(f=cmd_todo)
     p = sp.add_parser("check"); p.add_argument("--mark", type=int); p.set_defaults(f=cmd_check)
@@ -189,6 +199,7 @@ def main():
     p = sp.add_parser("log"); p.add_argument("tool"); p.add_argument("summary"); p.add_argument("--fail", action="store_true"); p.set_defaults(f=cmd_log)
     p = sp.add_parser("finding"); p.add_argument("text"); p.add_argument("--url", required=True); p.add_argument("--grade"); p.set_defaults(f=cmd_finding)
     p = sp.add_parser("search"); p.add_argument("query"); p.add_argument("--engines"); p.add_argument("--lang", default="en,ko"); p.add_argument("--n", type=int, default=10); p.add_argument("--type"); p.add_argument("--limit", type=int, default=12); p.set_defaults(f=cmd_search)
+    p = sp.add_parser("addresult"); p.add_argument("title"); p.add_argument("url"); p.add_argument("--snippet"); p.add_argument("--engine", default="websearch"); p.add_argument("--type"); p.add_argument("--license"); p.add_argument("--query"); p.set_defaults(f=cmd_addresult)
     p = sp.add_parser("read"); p.add_argument("url"); p.add_argument("--js", action="store_true"); p.add_argument("--force", action="store_true"); p.add_argument("--no-links", action="store_true"); p.add_argument("--no-images", action="store_true"); p.set_defaults(f=cmd_read)
     p = sp.add_parser("grab"); p.add_argument("url"); p.add_argument("--kind"); p.add_argument("--source-page"); p.add_argument("--license"); p.add_argument("--all-iiif", action="store_true")
     p.add_argument("--upload", action="store_true"); p.add_argument("--remote"); p.add_argument("--title"); p.add_argument("--evidence"); p.add_argument("--verses"); p.set_defaults(f=cmd_grab)

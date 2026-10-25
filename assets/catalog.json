@@ -50,6 +50,42 @@
         "마 3:12"
       ],
       "added": "2026-08-22"
+    },
+    {
+      "id": "img-0004",
+      "title": "라기스 포위 장면 드로잉 — 레이어드 니네베 원정(1840-50년대), Wellcome Collection",
+      "source": "commons.wikimedia.org",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Drawing_of_the_Siege_of_Lachish_from_the_Ninevah_expedition_Wellcome_M0004432.jpg",
+      "license": "CC BY 4.0",
+      "commercial_ok": true,
+      "credit": "Wellcome Collection, London (Layard 니네베 원정 드로잉, M0004432) — CC BY 4.0, via Wikimedia Commons",
+      "railway_path": "/srv/archaeology/lachish-reliefs/ima-a940ef59.jpg",
+      "local_cache": "quest/runs/2026-10-25-lachish-reliefs/downloads/ima-a940ef59.jpg",
+      "evidence_id": "ev-arch-lachish-reliefs",
+      "verses": [
+        "왕하 18:13-17",
+        "대하 32:9",
+        "사 36:1-2",
+        "미 1:13"
+      ],
+      "added": "2026-10-25"
+    },
+    {
+      "id": "img-0005",
+      "title": "라기스 부조 실물 — 대영박물관 (Mike Peel 촬영, 2014)",
+      "source": "commons.wikimedia.org",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Lachish_Relief,_British_Museum_6.jpg",
+      "license": "CC BY-SA 4.0",
+      "commercial_ok": true,
+      "credit": "Photograph by Mike Peel (www.mikepeel.net)., Own work",
+      "railway_path": "/srv/archaeology/lachish-reliefs/ima-5ede4086.jpg",
+      "local_cache": "quest/runs/2026-10-25-lachish-reliefs/downloads/ima-5ede4086.jpg",
+      "evidence_id": "ev-arch-lachish-reliefs",
+      "verses": [
+        "왕하 18:13-17",
+        "사 36:1-2"
+      ],
+      "added": "2026-10-25"
     }
   ]
 }

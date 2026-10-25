@@ -1,0 +1,33 @@
+{
+  "id": "2026-10-25-lachish-reliefs",
+  "goal": "라기스 부조(대영박물관) — 책에 쓸 수 있는 PD/CC 이미지 1장, 등록번호·소장 정보, 1차 문헌 2건 확보",
+  "goal_type": "object",
+  "criteria": [
+    {
+      "text": "commercial_ok 이미지 1장 확보·Railway 업로드·catalog 등록",
+      "done": true
+    },
+    {
+      "text": "BM 등록번호와 전시실·출토지 확인(출처 URL)",
+      "done": true
+    },
+    {
+      "text": "1차 문헌(발굴 보고·학술) 2건 URL 확보",
+      "done": true
+    },
+    {
+      "text": "evidence 노트 ev-arch-lachish-reliefs A등급 작성",
+      "done": true
+    }
+  ],
+  "budget": 40,
+  "steps": 26,
+  "status": "done",
+  "blocked": {
+    "type": "403",
+    "domain": "www.britishmuseum.org"
+  },
+  "created": "2026-10-25T12:28:06",
+  "finished": "2026-10-25T12:40:00",
+  "lesson": "대영박물관 collection 페이지는 봇 요청에 403이지만 ① 웨이백 사본의 <noscript> ② Playwright JS 렌더링 둘 다 소장 데이터(등록번호·출토·전시실)를 준다. 이미지는 커먼즈 incategory:\"<분류>\" 검색이 PD/CC BY 후보를 가장 빨리 보여주고 Wellcome 드로잉(CC BY 4.0)이 책용으로 최적. DDG·Bing·LOC·Mojeek은 이 IP에서 봇 차단 → web 유형은 세션 WebSearch + addresult로. Git Bash에서 /srv 인자는 MSYS_NO_PATHCONV=1 필요(storage가 정규화함)."
+}

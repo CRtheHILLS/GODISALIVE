@@ -19,6 +19,7 @@
 | [NEXT.md](NEXT.md) | 다음 세션 할 일 (매 세션 시작 시 확인) |
 | [sources/SOURCES.md](sources/SOURCES.md) | 전 세계 근거 자료 소스 카탈로그 (박물관 · 문헌 · API) |
 | [study/README.md](study/README.md) | 공부 모드 — 설교·강의 영상을 소화해 지식 그래프(뉴런)에 연결하는 체계 |
+| [quest/README.md](quest/README.md) | 퀘스트 모드 — Manus식 "될 때까지" 검색·확보 에이전트 (설계서 docs/superpowers/specs/) |
 
 ## 디렉터리 구조
 
@@ -28,6 +29,8 @@ evidence/   실존 근거 데이터베이스 (고고학 · 역사 · 과학 · �
 sources/    소스 카탈로그 — 어디서 무엇을 찾는가
 knowledge/  축적되는 지식 노트 (인물 · 지리 · 연대기 · 주제 · 설교/강의) + graph/ 지식 그래프
 study/      공부 모드 — 유튜브 설교·강의 수집 도구와 영상 색인 (study/README.md)
+quest/      퀘스트 모드 — 목표지향 검색·확보 에이전트 (검색 엔진 15종·읽기·확보·분류·플레이북 학습) (quest/README.md)
+docs/       설계서·실행 계획 (superpowers 규격)
 book/       책 출간 프로젝트 (2027 집필 → 2028 출간 목표)
 assets/     시각 자료 (로컬 캐시 — 원본은 Railway Volume)
 outputs/    산출물 스테이징 (최종본은 바탕화면 GODISALIVE 폴더로)

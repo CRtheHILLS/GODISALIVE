@@ -47,8 +47,13 @@ def record_run(run: Path, pb: dict | None = None) -> dict:
     for k, v in _empty().items(): pb.setdefault(k, v)
     goal_type = load_state(run).get("goal_type", "mixed")
     engines_touched, domains_touched = set(), set()
+    pending = {}   # escalate 뒤 같은 도메인에서 처음 성공한 read/grab → "<막힘>-><경로>" 성공으로 기록
     for row in read_log(run):
         tool, data, ok, ts = row.get("tool"), row.get("data") or {}, bool(row.get("ok")), row.get("ts") or now()
+        if tool in ("read", "grab") and ok:
+            d = _dom(data.get("domain"))
+            if d in pending:
+                r = _route(pb, f"{pending.pop(d)}->{data.get('via') or tool}"); r["tries"] += 1; r["success"] += 1
         if tool == "search":
             for eng, count in (data.get("per_engine") or {}).items():
                 rec = pb["engines"].setdefault(eng, {}).setdefault(goal_type, {"tries": 0, "hits": 0})
@@ -78,7 +83,9 @@ def record_run(run: Path, pb: dict | None = None) -> dict:
             domains_touched.add(domain)
         elif tool == "escalate":
             b = data.get("blockage")
-            if b: _route(pb, f"{b}->*")["tries"] += 1
+            if b:
+                _route(pb, f"{b}->*")["tries"] += 1
+                if data.get("domain"): pending[_dom(data.get("domain"))] = b
     if own: save_playbook(pb)
     return {"engines_updated": len(engines_touched), "domains_updated": len(domains_touched)}
 

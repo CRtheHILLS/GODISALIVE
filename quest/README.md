@@ -29,6 +29,7 @@ quest/runs/<날짜>-<슬러그>/
 | `classify` | 검색 결과·확보 파일 분류 → `triage.json` |
 | `escalate <막힘> [--domain d] [--query q]` | 우회 사다리 + 금지선 |
 | `finding "<문장>" --url U [--grade A/B/C]` | findings.md에 출처 있는 발견 |
+| `addresult "<제목>" <url> [--snippet] [--engine websearch]` | 세션 도구(WebSearch)로 얻은 결과를 검색 기록에 편입 |
 | `check [--mark N]` · `done [--status] [--lesson]` · `learn report` · `status` | 완료 조건 · 종료+학습 · 플레이북 · 목록 |
 
 ## 검색 엔진
@@ -66,8 +67,10 @@ quest/runs/<날짜>-<슬러그>/
 4. 스킬 파일을 복사해 프로젝트 이름만 바꾼다. `python quest/selftest.py`가 전부 통과하면 준비 끝.
 
 ## 알려진 한계
-- Playwright 미설치 → `read --js`는 안내만. 설치: `pip install playwright && playwright install chromium`. 대안: gstack browse 스킬(헤드리스 브라우저 내장).
-- DDG/Bing은 HTML 파서라 깨질 수 있다 — 그래서 결과 0건은 "엔진 실패"로 따로 표시한다.
+- Playwright **설치됨(2026-10-25)** → `read --js`가 JS 페이지(대영박물관 소장 페이지 등)를 렌더링해 읽는다. 재설치: `pip install playwright && python -m playwright install chromium`.
+- DDG·Bing·Mojeek·LOC는 **이 PC의 IP에서 봇 차단**(2026-10-25 확인: DDG 202 챌린지, Bing 무관 결과, LOC/BM 403, Mojeek CAPTCHA). web 유형은
+  Peter의 세션 WebSearch로 URL을 얻고 `python quest/q.py addresult "<제목>" <url> --snippet "..."`로 기록에 편입한다. 파서는 픽스처로 검증돼 있어 차단이 풀리면 바로 동작.
+- Git Bash에서 `--remote /srv/...` 는 MSYS가 `C:/Program Files/Git/srv/...`로 바꾼다 — `MSYS_NO_PATHCONV=1`을 붙이거나 storage의 자동 정규화에 맡긴다.
 - 박물관 중 API 없는 곳(대영박물관·이스라엘 박물관·페르가몬)은 Commons·Wikidata 경로가 기본이다.
 - 두뇌는 Claude Code 세션의 Peter다. 무인 데몬이 아니다 (설계서 §13).
 

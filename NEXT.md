@@ -16,16 +16,26 @@
 - 끊어진 링크(그래프 할 일): `ev-hist-tacitus-annals`, `ev-manu-dead-sea-scrolls` — 아래 3번 A등급 노트 확장 때 만든다.
 - 도구 점검: `python study/tools/selftest.py` 전부 통과(2026-10-25). yt-dlp 2026.08.19 — JS 런타임(deno) 미설치 경고는 자막 수집에 영향 없음.
 
+## 퀘스트 모드 (목표지향 검색·확보 — 2026-10-25 창설, Manus 개념)
+
+- **1호 완료 (2026-10-25) 라기스 부조**: 완료 조건 4/4 ✓, 26행동. 이미지 2장(Wellcome 드로잉 CC BY 4.0 · 실물 사진 CC BY-SA 4.0 → img-0004·0005,
+  Railway /srv/archaeology/lachish-reliefs/), BM 등록번호 1856,0909.14(124904-124915)·출토 Room XXXVI·전시실, 1차 문헌 5건, evidence 노트 A등급.
+  BM 직접 접근 403 → 웨이백·Playwright JS 둘 다 통함(플레이북 기록). 기록: `quest/runs/2026-10-25-lachish-reliefs/`.
+- **다음 퀘스트 후보 (A등급 대기 목록 그대로)**: 블랙 오벨리스크, 키루스 실린더, 메사 석비, 바벨론 연대기, 히스기야 인장, 게셀 달력, 성전 경고석,
+  이슈타르 문, 여호야긴 토판, 메르넵타 석비, 사해사본(이사야), 타키투스 15.44, 플리니우스 10.96 — 각각 `python quest/q.py new ... --type object`.
+- 알아둘 것: DDG·Bing·LOC·Mojeek은 이 PC IP에서 봇 차단(web 유형은 세션 WebSearch → `q.py addresult`). europeana·smithsonian 키 발급하면 엔진 2종 추가.
+  Playwright 설치됨(2026-10-25) → `read --js` 동작. 끊어진 링크 2건(`ev-hist-tacitus-annals`, `ev-manu-dead-sea-scrolls`)은 위 목록의 퀘스트로 해소.
+
 ## 대기 중 (우선순위 순)
 
 1. **[CR 액션] filebrowser 관리자 비밀번호 변경** — 주소·초기 암호: `.omc/secrets/railway.md`.
    변경 후 Peter에게 새 비밀번호 알려주기 (자산 업로드 자동화용).
 2. **[CR 선택] api.bible 대시보드에서 NASB 확인** — NIV·NLT는 연결 완료, NASB만 목록에 없음 (급하지 않음).
-3. **[Peter] A등급 증거 노트 확장** — 6/20 완료 (고고학 5 + 사본 1). 다음 14건: 블랙 오벨리스크, 키루스
-   실린더, 메사 석비, 라기스 부조, 바벨론 연대기, 히스기야 인장, 게셀 달력, 성전 경고석, 이슈타르 문,
-   여호야긴 토판, 메르넵타 석비, 사해사본(이사야), 타키투스 15.44, 플리니우스 10.96.
-4. **[Peter] 유물 이미지 수집 계속** — 2건 완료 (11Q5, 레닌그라드). 파이프라인 검증됨: Commons 라이선스
-   확인 → catalog.json → Railway 업로드.
+3. **[Peter] A등급 증거 노트 확장** — 8/20 완료 (고고학 6 + 사본 1 + 문헌 1: 요세푸스 야고보 10-25, 라기스 부조 10-25 퀘스트). 다음 13건:
+   블랙 오벨리스크, 키루스 실린더, 메사 석비, 바벨론 연대기, 히스기야 인장, 게셀 달력, 성전 경고석, 이슈타르 문,
+   여호야긴 토판, 메르넵타 석비, 사해사본(이사야), 타키투스 15.44, 플리니우스 10.96 — **퀘스트 모드로 한 건씩**.
+4. **[Peter] 유물 이미지 수집 계속** — 5건 완료 (11Q5, 레닌그라드, 타작마당, 라기스 2장). 이제 `q.py grab --upload`가
+   라이선스 확인 → catalog.json → Railway 업로드를 한 번에 한다.
 5. **[Peter] NET Bible 확보** + LXX 굴절형 본문 교체 (저순위).
 6. 요한복음 21장 봉독 — 시편 시리즈와 병행 가능 (CR 선택).
 
@@ -36,6 +46,9 @@
 - 매주 정기 봉독 요일/분량
 
 ## 완료
+
+- 2026-10-25 (2차): **퀘스트 모드 창설** — 설계서·계획(docs/superpowers/), quest/ (q.py · 엔진 15종 · read/grab/storage · classify/learn/escalate ·
+  godisalive 플러그인 · selftest 214건), godisalive-quest 스킬, Playwright 설치. 실전 1호 라기스 부조 완료(이미지 2·등록번호·문헌 5·A등급 노트).
 
 - 2026-10-25: **공부 모드 창설** — study/ (fetch.py 자막 수집 · graph.py 지식 그래프 · map.html 지도 · selftest), knowledge/lectures/,
   godisalive-study 스킬, 저작권 원칙(자막 원문 git 제외 → 로컬+Railway /srv/study/). 1호 설교 소화 완료, 3중 보관(git·바탕화면·Railway).
