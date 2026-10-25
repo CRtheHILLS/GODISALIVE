@@ -12,7 +12,7 @@
       "captions": {
         "ko-orig": "auto"
       },
-      "fetched_at": "2026-10-25T11:22:26",
+      "fetched_at": "2026-10-25T16:50:00",
       "note": "knowledge/lectures/2026-10-25-james-2-partiality-jo-jungmin.md",
       "report": "reports/2026-10-25-공부-야고보서-2장-차별하지-말라.html",
       "status": "공부완료",
@@ -21,6 +21,20 @@
         "약 2:1-13"
       ],
       "studied_at": "2026-10-25"
+    },
+    {
+      "id": "EfHDZHwaecQ",
+      "url": "https://www.youtube.com/watch?v=EfHDZHwaecQ",
+      "title": "[주일예배] 네가 어디 있느냐? (창 3:8-13)_조정민 목사_20261025",
+      "channel": "베이스캠프교회",
+      "upload_date": "20261025",
+      "duration": "57:53",
+      "language": null,
+      "captions": {},
+      "fetched_at": "2026-10-25T16:27:39",
+      "note": null,
+      "report": null,
+      "status": "수집됨"
     }
   ]
 }

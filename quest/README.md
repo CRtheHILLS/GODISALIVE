@@ -80,5 +80,6 @@ quest/runs/<날짜>-<슬러그>/
   부분 파일 finally 정리·고유 .part 이름, fetch 본문 50MB 상한, yt-dlp `--ignore-config --no-cookies-from-browser`, 영상 외 모든 grab에 robots 확인,
   Playwright finally 종료, storage usage 무예외·스트리밍 업로드·용량 확인 실패 시 중단, `read --force` 기록, 200·본문 없음 → js-required 판정과
   empty-js 사다리, 검색 유형별 적립·addresult 통계 제외·엔진 오류 통계 제외, done 중복 적립 방지, 플레이북 원자적 저장, 폴더 이름 독립(HOME).
-- **남긴 LOW(후속)**: manifest가 절대 경로를 저장(폴더 이동 시 깨짐) · robots.txt를 못 받으면 허용으로 간주 · 403 뒤 다른 브라우저 UA로 1회 재시도(차단 회피가
-  아니라 통상 재시도지만 명시함) · ddg/bing/louvre 검색 결과 HTML은 단건 질의라 robots 확인 생략 · `--all-iiif` 최대 50장.
+- 2차 정리(같은 날, CR 지시 "검증 반복·남은 일 완료"): LOW 5건 해소 — manifest 상대경로 저장(기존 manifest 변환), robots.txt 수신 실패 정책(4xx=허용·5xx/연결실패=금지,
+  RFC 9309), ddg/bing/louvre 검색에도 robots 확인, `--all-iiif` 최대 50장 상수화. 403 뒤 1회 재시도는 다른 브라우저 UA로 하는 **통상 재시도**로 남기고 여기 명시한다
+  (같은 요청을 반복 두드리지 않음, 사다리 1단 '지연 후 재시도 1회'와 같은 정책).

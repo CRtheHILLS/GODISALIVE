@@ -38,7 +38,7 @@
    라이선스 확인 → catalog.json → Railway 업로드를 한 번에 한다.
 5. **[Peter] NET Bible 확보** + LXX 굴절형 본문 교체 (저순위).
 6. 요한복음 21장 봉독 — 시편 시리즈와 병행 가능 (CR 선택).
-7. **[Peter·저순위] quest 후속(검증 LOW)**: manifest 경로를 ROOT 상대경로로, robots 수신 실패 정책, 엔진 HTML 질의 robots 확인 — quest/README.md '검증 기록' 참조.
+
 
 ## 논의 필요
 

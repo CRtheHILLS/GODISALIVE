@@ -93,7 +93,9 @@ def robots_allowed(url: str, ua: str = "*") -> bool:
     if dom not in _robots_cache:
         p = urlparse(url)
         r = fetch(f"{p.scheme}://{dom}/robots.txt", timeout=10, retries=0)
-        _robots_cache[dom] = r["text"] if r["ok"] and r["text"] else ""
+        if r["ok"]: _robots_cache[dom] = r["text"] or ""
+        elif 400 <= (r["status"] or 0) < 500: _robots_cache[dom] = ""          # robots.txt 없음 → 허용
+        else: _robots_cache[dom] = "User-agent: *\nDisallow: /\n"     # 5xx·연결 실패 → 보수적으로 금지 (RFC 9309 §2.3.1.4)
     txt = _robots_cache[dom]
     if not txt: return True
     try: return _allowed(txt, url, ua)

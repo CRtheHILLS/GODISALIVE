@@ -115,13 +115,24 @@ def iiif_image_urls(manifest: dict) -> list:
 
 # ── manifest ─────────────────────────────────────────────────────────────
 def load_manifest(dest_dir: Path) -> list:
+    """manifest의 path는 manifest 폴더 기준 상대경로로 저장한다(폴더를 옮겨도 깨지지 않게). 읽을 때 절대경로로 돌려준다."""
     p = Path(dest_dir) / "manifest.json"
     if not p.exists(): return []
-    try: return json.loads(p.read_text(encoding="utf-8"))
+    try: rows = json.loads(p.read_text(encoding="utf-8"))
     except Exception: return []
+    for e in rows:
+        q = Path(str(e.get("path", "")))
+        if e.get("path") and not q.is_absolute(): e["path"] = str((Path(dest_dir) / q).resolve())
+    return rows
 
 def _save_manifest(dest_dir, rows):
-    (Path(dest_dir) / "manifest.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    out = []
+    for e in rows:
+        e = dict(e)
+        try: e["path"] = Path(e["path"]).resolve().relative_to(Path(dest_dir).resolve()).as_posix()
+        except Exception: pass
+        out.append(e)
+    (Path(dest_dir) / "manifest.json").write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 def _sha_file(path):
     h = hashlib.sha256()

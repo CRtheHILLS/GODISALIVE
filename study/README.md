@@ -46,6 +46,16 @@ NEXT.md 갱신 → git 커밋(+push)              ⑧ 세션 종료
 - `graph.py --check`는 끊어진 링크가 있으면 종료코드 1 — 세션 종료 전 한 번 돈다.
 - 산출물 `knowledge/graph/graph.json`(기계용 — Phase 5 RAG·지식그래프의 씨앗) · `map.html`(사람용, 외부 의존성 없음)
 
+## 자막 추출 방식 (2026-10-25 최신 조사 → 재작성)
+| 단계 | 도구 | 언제 |
+|---|---|---|
+| ① | **yt-dlp** PyPI 최신판(2026.10.21, `python -m yt_dlp`) + `--ignore-config` + JS 런타임 node | 기본. 수동 자막 → 원어 자동자막(`<lang>-orig`) |
+| ② | **youtube-transcript-api** 1.2 | ①이 유튜브 개편으로 깨졌을 때 같은 자막을 다른 경로로 |
+| ③ | **faster-whisper** `large-v3-turbo` · 배치 추론 · CPU int8 · VAD · 성경 어휘 힌트(hotwords) · 반복 환각 억제 | 자막이 아예 없을 때 **자동** (fetch가 바로 이어서 실행) |
+- 근거: yt-dlp 위키(PO 토큰은 영상별·단기, 기본 클라이언트는 토큰 불요) · 한국어는 large-v3가 가장 정확하나 CPU에서 느리고, turbo가 수 배 빠르며 small보다 훨씬 정확.
+  정밀이 필요하면 `--model large-v3`. 이 PC는 GPU 없음(CPU 8코어) — 속도가 더 필요하면 GPU 또는 유료 API(키 필요)가 다음 단계.
+- 실패 사례 기록: faster-whisper 내장 PyAV 디코더가 PyAV 신버전과 충돌 → ffmpeg 직접 디코딩으로 우회. `yt-dlp -U`는 GitHub 접속 불가로 실패 → PyPI판 사용.
+
 ## 저작권 원칙
 - 설교·강의 자막 **원문은 git에 넣지 않는다** (공개 저장소). 로컬 `study/sources/<id>/transcript.*`(gitignore) + Railway Volume `/srv/study/<id>/`에 영구 보관.
 - git에는 `meta.json`과 `catalog.json`(영상 정보), 그리고 Peter의 **소화 노트**(인용은 짧게)만 들어간다.
@@ -55,13 +65,14 @@ NEXT.md 갱신 → git 커밋(+push)              ⑧ 세션 종료
 | 파일 | 역할 |
 |---|---|
 | `tools/fetch.py` | URL → meta.json + transcript (yt-dlp 자막: 수동 우선 → 원어 자동자막 → 없으면 Whisper 필요 보고) |
+| `tools/transcribe.py` | 자막 없는 영상 → 오디오 다운로드 → 로컬 Whisper(faster-whisper, CPU) 받아쓰기 → 같은 형식의 transcript (오디오는 git 제외) |
 | `tools/graph.py` | 노트 스캔 → graph.json + map.html, 끊어진 링크·고아·허브 보고 (`--check`, `--open`) |
 | `tools/graph_html.py` | 지도 렌더러 (캔버스 힘-배치 직접 구현, 라이브러리 없음) |
 | `tools/common.py` | 영상 ID · VTT 정제(굴러가는 중복 제거) · frontmatter · 위키링크 · 구절 정규화(bible/lookup.py 책 이름표 재사용) |
 | `tools/selftest.py` | 자가 테스트 — 수정 후 `python study/tools/selftest.py` 전부 통과가 증거 |
 
 ## 아직 없는 것 (필요해지면)
-- Whisper 음성 인식 (자막 없는 영상) — 오디오 다운로드가 크므로 CR 승인 후 설치·실행
+- (2026-10-25 해결) Whisper 음성 인식 — `transcribe.py`. 58분 설교 오디오 ≈ 55MB. CR이 링크를 준 것 자체를 승인으로 본다.
 - 플레이리스트/채널 일괄 수집 — 지금은 영상 단위 (fetch.py에 URL 여러 개는 가능)
 - 노드 수천 개가 되면 지도의 힘-배치를 격자 근사(Barnes-Hut)로 교체
 

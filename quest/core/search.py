@@ -12,7 +12,7 @@ from pathlib import Path
 try: sys.stdout.reconfigure(encoding="utf-8")
 except Exception: pass
 
-from core.http import fetch, domain_of, polite_delay
+from core.http import fetch, domain_of, polite_delay, robots_allowed
 from core.workspace import CONFIG, ROOT
 
 # ── 공용 헬퍼 ────────────────────────────────────────────────────────────
@@ -221,6 +221,7 @@ def _parse_louvre(html: str) -> list:
 # ── 엔진 함수 ────────────────────────────────────────────────────────────
 @_safe("ddg")
 def _e_ddg(q, lang, n):
+    if not robots_allowed("https://html.duckduckgo.com/html/"): raise RuntimeError("robots.txt 금지")
     r = _get("https://html.duckduckgo.com/html/", method="POST", data={"q": q, "kl": "wt-wt"}, retries=0)
     res = parse_ddg(r["text"])[:n]
     if not res: raise RuntimeError(f"0건 — 봇 차단 또는 구조 변경 (HTTP {r['status']})")
@@ -228,6 +229,7 @@ def _e_ddg(q, lang, n):
 
 @_safe("bing")
 def _e_bing(q, lang, n):
+    if not robots_allowed("https://www.bing.com/search?q=x"): raise RuntimeError("robots.txt 금지")
     r = _get("https://www.bing.com/search", params={"q": q, "setlang": "en"})
     res = parse_bing(r["text"])[:n]
     if not res: raise RuntimeError("0건 — 구조 변경 가능")
@@ -289,6 +291,7 @@ def _e_s2(q, lang, n):
 
 @_safe("louvre")
 def _e_louvre(q, lang, n):
+    if not robots_allowed("https://collections.louvre.fr/recherche?q=x"): raise RuntimeError("robots.txt 금지")
     r = _get("https://collections.louvre.fr/recherche", params={"q": q}, retries=0)
     res = _parse_louvre(r["text"])[:n]
     if not res: raise RuntimeError("louvre: 셀렉터 미확인 (봇 차단 또는 구조 변경)")
