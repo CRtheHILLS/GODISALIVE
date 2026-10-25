@@ -23,3 +23,9 @@ study/sources/*/transcript.*
 study/sources/*/raw*
 __pycache__/
 *.pyc
+
+# QUEST 컴퓨터 캐시 — 큰 결과물은 git 제외 (goal·todo·log·findings·state·triage는 추적)
+quest/runs/*/downloads/
+quest/runs/*/pages/
+quest/runs/*/search/
+quest/runs/CURRENT
