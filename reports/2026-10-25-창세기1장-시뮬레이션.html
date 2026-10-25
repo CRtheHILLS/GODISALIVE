@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>창세기 1장 시뮬레이션 | GODISALIVE</title>
+<style>
+  :root { --bg:#faf6ee; --card:#fff; --ink:#2b2620; --sub:#6b6156; --accent:#8a5a2b; --accent2:#274c66; --line:#e6ddcd;
+          --gA:#1d7a3f; --gB:#b07d1e; --gC:#b5541c; --gI:#6b6156; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--ink); font-family:"Malgun Gothic","맑은 고딕","Noto Sans KR",sans-serif; line-height:1.8; font-size:17px; padding:0 16px 80px; }
+  .wrap { max-width:1040px; margin:0 auto; }
+  header { text-align:center; padding:44px 0 22px; border-bottom:3px double var(--accent); margin-bottom:26px; }
+  .proj { letter-spacing:.35em; color:var(--accent); font-weight:bold; font-size:13px; }
+  h1 { font-size:36px; margin:10px 0 6px; font-family:"Batang","바탕",serif; }
+  .sub { color:var(--sub); font-size:15px; }
+  h2 { font-size:25px; margin:48px 0 14px; padding-left:14px; border-left:6px solid var(--accent); }
+  h3 { font-size:19px; margin:20px 0 8px; color:var(--accent2); }
+  p { margin:8px 0; }
+  strong { color:#6d3b12; }
+  .summary { background:#eef3f7; border:1px solid #cfdde8; border-radius:12px; padding:18px 22px; margin:14px 0; font-size:17px; }
+  .summary b.t { color:var(--accent2); display:block; margin-bottom:6px; letter-spacing:.1em; font-size:14px; }
+  /* 시뮬레이터 */
+  .sim { background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; margin:18px 0; }
+  .days { display:flex; flex-wrap:wrap; gap:6px; padding:12px; background:#f3ece0; border-bottom:1px solid var(--line); }
+  .days button { flex:1 1 90px; padding:9px 6px; border:1px solid #d9c9a8; background:#fff; border-radius:9px; font-size:15px; cursor:pointer; font-family:inherit; color:var(--ink); }
+  .days button.on { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:bold; }
+  .days button.play { flex:0 0 auto; background:var(--accent2); color:#fff; border-color:var(--accent2); }
+  canvas { display:block; width:100%; height:auto; background:#05070c; }
+  .caption { padding:10px 16px; font-family:"Batang","바탕",serif; font-size:18px; background:#fbf3e2; border-top:1px solid var(--line); min-height:48px; }
+  .stage { display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid var(--line); }
+  @media (max-width:820px) { .stage { grid-template-columns:1fr; } }
+  .pane { padding:14px 18px; }
+  .pane + .pane { border-left:1px solid var(--line); }
+  @media (max-width:820px) { .pane + .pane { border-left:0; border-top:1px solid var(--line); } }
+  .verse { font-family:"Batang","바탕",serif; background:#fbf3e2; border-left:4px solid var(--accent); padding:10px 14px; border-radius:0 8px 8px 0; margin:8px 0; font-size:16.5px; }
+  .vn { color:var(--accent); font-size:12px; font-weight:bold; margin-right:3px; }
+  .he { direction:rtl; text-align:right; font-family:"SBL Hebrew","Ezra SIL","Times New Roman",serif; font-size:21px; line-height:1.9; }
+  .word { border:1px solid var(--line); border-radius:9px; padding:8px 12px; margin:7px 0; font-size:15.5px; }
+  .word .h { font-family:"Times New Roman",serif; font-size:20px; color:var(--accent2); margin-right:6px; }
+  .lenses { display:flex; flex-wrap:wrap; gap:5px; margin:4px 0 10px; }
+  .lenses button { padding:5px 10px; border-radius:20px; border:1px solid #cfdde8; background:#fff; cursor:pointer; font-size:13.5px; font-family:inherit; color:var(--accent2); }
+  .lenses button.on { background:var(--accent2); color:#fff; }
+  .lensbox { background:#f7f9fb; border:1px solid #dde6ee; border-radius:10px; padding:12px 14px; font-size:15.5px; min-height:120px; }
+  .grade { display:inline-block; font-weight:bold; color:#fff; border-radius:6px; padding:0 8px; font-size:12.5px; margin-right:4px; white-space:nowrap; }
+  .gA { background:var(--gA); } .gB { background:var(--gB); } .gC { background:var(--gC); } .gI { background:var(--gI); }
+  .vids { font-size:14.5px; color:var(--sub); margin-top:10px; }
+  .vids a { color:var(--accent2); }
+  table { width:100%; border-collapse:collapse; background:var(--card); border-radius:10px; overflow:hidden; margin:14px 0; font-size:15px; }
+  th { background:#f0e8d8; padding:9px 10px; text-align:left; font-size:13.5px; }
+  td { padding:9px 10px; border-top:1px solid var(--line); vertical-align:top; }
+  .honest { background:#fdf6df; border:1px solid #eadfae; border-radius:10px; padding:14px 18px; margin:16px 0; }
+  .honest b.t { color:#8a6d1a; }
+  .timeline { position:relative; height:120px; margin:18px 0 8px; background:linear-gradient(90deg,#0b1020,#1b2a4a 30%,#2f4b6e 70%,#5b7f5a); border-radius:10px; }
+  .tick { position:absolute; top:0; height:100%; border-left:2px solid rgba(255,255,255,.75); }
+  .tick span { position:absolute; top:6px; left:4px; color:#fff; font-size:11.5px; white-space:nowrap; text-shadow:0 1px 2px #000; }
+  .tick.low span { top:auto; bottom:6px; }
+  .peter { background:linear-gradient(180deg,#fdfaf3,#f6ecd8); border:1px solid #e3d3ac; border-radius:12px; padding:22px 26px; margin:30px 0; }
+  .peter .who { color:var(--accent); font-weight:bold; letter-spacing:.2em; font-size:13px; }
+  .big { font-size:20px; font-family:"Batang","바탕",serif; }
+  .q { background:var(--card); border:1px dashed var(--accent); border-radius:10px; padding:12px 16px; margin:8px 0; }
+  footer { margin-top:56px; border-top:3px double var(--accent); padding-top:18px; font-size:13.5px; color:var(--sub); }
+  footer ul { margin:6px 0 12px 20px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="proj">GODISALIVE · 창세기 연구 ① · 시뮬레이션</div>
+  <h1>창세기 1장 — 일곱 날을 걸어 보기</h1>
+  <div class="sub">본문 · 히브리어 원문 · 여섯 개의 해석 렌즈(기독교 4 + 비기독교 2) · 현대 우주론 연표 · 강의·다큐 영상 연결<br>2026년 10월 25일 · Peter &amp; CR · 살아 있는 문서 (영상이 들어올 때마다 갱신)</div>
+</header>
+
+<div class="summary"><b class="t">📌 한눈에 보는 내용</b>
+창세기 1장은 <strong>"태초에 하나님이 천지를 창조하시니라"</strong>로 시작해 일곱 날의 이야기로 온 세상의 시작을 그린다.
+처음 땅은 <strong>"혼돈하고 공허"</strong>했다 — 모양도 없고(토후) 채워진 것도 없었다(보후). 하나님은 첫 사흘 동안 <strong>공간을 나누어 모양을 만드시고</strong>(빛/어둠, 하늘/바다, 땅),
+다음 사흘 동안 <strong>그 공간을 채우신다</strong>(해·달·별, 물고기·새, 짐승·사람). 그리고 일곱째 날 <strong>쉬시며 그날을 거룩하게</strong> 하신다.
+이 장을 두고 그리스도인들 사이에도 "하루 24시간 엿새"부터 "문학적 틀"까지 여러 읽기가 있고, 현대 과학은 138억 년의 우주 역사를 말한다.
+이 페이지는 그 읽기들을 <strong>한 화면에서 나란히</strong> 놓아, CR이 직접 비교하고 우리의 방향을 정할 수 있게 하려는 것이다.
+</div>
+
+<h2>시뮬레이션 — 날을 눌러 보라</h2>
+<div class="sim">
+  <div class="days" id="days"></div>
+  <canvas id="cv" width="1040" height="400"></canvas>
+  <div class="caption" id="caption"></div>
+  <div class="stage">
+    <div class="pane">
+      <h3 id="d-title"></h3>
+      <div id="d-text"></div>
+      <div id="d-he"></div>
+      <div id="d-words"></div>
+    </div>
+    <div class="pane">
+      <h3>해석 렌즈 — 같은 날을 여섯 눈으로</h3>
+      <div class="lenses" id="lenses"></div>
+      <div class="lensbox" id="lensbox"></div>
+      <div class="vids" id="vids"></div>
+    </div>
+  </div>
+</div>
+
+<h2>렌즈 한눈에 비교</h2>
+<table>
+  <tr><th style="width:17%">렌즈</th><th>'날(욤)'을 어떻게 보나</th><th>우주의 나이</th><th>대표 학자·단체</th><th style="width:22%">강점 / 약점</th></tr>
+  <tr><td><strong>① 문자적 6일</strong><br><span style="font-size:13px;color:var(--sub)">젊은 지구 창조론</span></td><td>연속된 24시간 엿새. "저녁이 되며 아침이 되니"와 서수(첫째·둘째…)가 근거.</td><td>약 6천~1만 년</td><td>AiG(켄 햄), ICR, 한국창조과학회(1981~)</td><td>본문의 가장 평이한 읽기 / 우주·지질·생물학의 거의 모든 연대 측정과 정면 충돌</td></tr>
+  <tr><td><strong>② 날-시대설</strong><br><span style="font-size:13px;color:var(--sub)">오랜 지구 창조론</span></td><td>'욤'은 긴 시대(시 90:4, 벧후 3:8). 여섯 날 = 여섯 시대.</td><td>138억 년 수용</td><td>휴 로스(Reasons to Believe), 19세기 찰스 하지 등</td><td>과학 연대와 화해 / 순서가 과학과 다 맞지는 않음(식물 3일·해 4일, 새 5일·육지동물 6일)</td></tr>
+  <tr><td><strong>③ 틀 가설</strong><br><span style="font-size:13px;color:var(--sub)">문학적 구조</span></td><td>엿새는 연대기가 아니라 <strong>모양 1-3일 ↔ 채움 4-6일</strong>의 짝을 이룬 문학적 틀.</td><td>본문이 말하지 않음 (과학에 맡김)</td><td>노르트제이(1924), 메레디스 클라인, 앙리 블로셰</td><td>본문 구조를 정밀하게 설명 / "그러면 실제 일어난 순서는?"에 답하지 않음</td></tr>
+  <tr><td><strong>④ 기능적 창조</strong><br><span style="font-size:13px;color:var(--sub)">고대근동 우주 성전</span></td><td>엿새는 우주가 <strong>하나님의 성전으로 기능하도록 임명</strong>되는 이레의 봉헌식. 물질의 기원이 초점이 아님.</td><td>본문이 말하지 않음</td><td>존 월튼 『창세기 1장의 잃어버린 세계』(2009)</td><td>고대 독자의 눈으로 읽게 함 / "바라(창조)"를 물질 창조와 떼어 놓는 데 반론 많음</td></tr>
+  <tr><td><strong>⑤ 현대 우주론</strong><br><span style="font-size:13px;color:var(--sub)">비기독교 주류 과학</span></td><td>창세기를 과학 문헌으로 보지 않음. 관측으로 재구성한 우주사.</td><td>137.87억 ± 0.2억 년 (플랑크 위성 2018)</td><td>표준 우주론(ΛCDM), 지질학, 진화생물학</td><td>관측 증거가 매우 강함 / "왜 무언가가 있는가", 빅뱅 '이전'은 답하지 않음</td></tr>
+  <tr><td><strong>⑥ 고대 신화 비교</strong><br><span style="font-size:13px;color:var(--sub)">비교종교·비평학</span></td><td>바빌론 『에누마 엘리시』, 이집트 멤피스 신학과 같은 시대 문헌과 비교. 비평학은 창 1장을 바빌론 포로기 무렵 제사장 문서(P)로 봄.</td><td>해당 없음</td><td>궁켈(1895) 이후 비교학, 비평학계 다수 / 보수 학계는 모세 저작 전통 유지</td><td>창 1장의 <strong>반(反)신화적</strong> 독특함이 드러남 / 저작 연대·출처는 학계 논쟁</td></tr>
+</table>
+<div class="honest"><b class="t">⚖ 정직 노트</b>
+<p>①~④는 모두 <strong>성경의 권위와 하나님의 창조를 믿는</strong> 그리스도인들의 읽기다. 이들이 다투는 것은 "하나님이 창조하셨는가"가 아니라 "창세기 1장이 <strong>어떤 종류의 글</strong>인가"다.
+교회사에서도 아우구스티누스(5세기)는 해가 넷째 날에 나오는 것을 보고 엿새를 문자적 시간이 아닌 것으로 읽었다(『창세기 문자적 해석』). 한국 교회는 1980년대 이후 ①이 강하지만, 세계 복음주의 학계는 ②③④도 정통 안의 견해로 다룬다.
+⑤⑥은 믿음과 무관하게 받아들여지는 관측·문헌 연구다. 우리가 할 일은 어느 쪽도 과장하지 않고 <strong>무엇이 측정된 사실이고 무엇이 해석인지</strong> 구별하는 것이다.</p></div>
+
+<h2>138억 년과 엿새 — 같은 자에 놓아 보기</h2>
+<p>아래 띠는 우주 역사 138억 년을 한 줄로 편 것이다(왼쪽 = 빅뱅, 오른쪽 = 오늘). 위쪽 표시는 과학의 사건, 색깔 상자는 창세기의 날과 <strong>내용이 닮은</strong> 사건이다 — 날-시대설은 이 닮음을 강조하고, 다른 읽기는 이 대응 자체를 하지 않는다.</p>
+<div class="timeline" id="timeline"></div>
+<table>
+  <tr><th>과학의 사건</th><th>언제 (오늘로부터)</th><th>증거</th><th>창세기에서 닮은 장면</th></tr>
+  <tr><td>빅뱅 — 시간·공간·에너지의 시작</td><td>137.9억 년 전</td><td><span class="grade gA">확립</span>우주배경복사, 은하 후퇴(허블-르메트르), 가벼운 원소 비율</td><td>1:1 "태초에"</td></tr>
+  <tr><td>우주배경복사 — 우주가 처음 투명해짐(빛이 자유롭게 퍼짐)</td><td>빅뱅 후 38만 년</td><td><span class="grade gA">확립</span>COBE·WMAP·플랑크 위성 관측</td><td>1:3 "빛이 있으라" (날-시대설의 대응)</td></tr>
+  <tr><td>우주의 암흑기 → 첫 별</td><td>빅뱅 후 1억~2억 년</td><td><span class="grade gB">모델+관측 진행</span>제임스웹 망원경이 초기 은하 관측 중</td><td>1:2 "흑암이 깊음 위에"</td></tr>
+  <tr><td>태양 형성</td><td>약 46억 년 전</td><td><span class="grade gA">확립</span>운석의 방사성 연대</td><td>4일 "큰 광명" — 과학에서는 지구·식물보다 <strong>먼저</strong></td></tr>
+  <tr><td>지구 형성 · 달 형성(거대 충돌설)</td><td>45.4억 / 약 45억 년 전</td><td><span class="grade gA">확립</span> / <span class="grade gB">유력</span></td><td>3일 "뭍이 드러나라"</td></tr>
+  <tr><td>바다</td><td>약 44억 년 전</td><td><span class="grade gB">유력</span>지르콘 결정의 산소 동위원소</td><td>2-3일 "물이 한곳으로"</td></tr>
+  <tr><td>최초의 생명(미생물)</td><td>35억 년 전 이전</td><td><span class="grade gB">유력</span>스트로마톨라이트 화석(더 이른 연대는 논쟁)</td><td>—</td></tr>
+  <tr><td>육상 식물</td><td>약 4.7억 년 전</td><td><span class="grade gA">확립</span>화석·포자</td><td>3일 "풀과 채소" — 과학에서는 바다 동물보다 <strong>나중</strong></td></tr>
+  <tr><td>물고기 · 바다 동물 대폭발(캄브리아기)</td><td>약 5.3억 년 전</td><td><span class="grade gA">확립</span></td><td>5일 "물들은 생물로 번성케 하라"</td></tr>
+  <tr><td>포유류 / 새(시조새)</td><td>약 2억 / 1.5억 년 전</td><td><span class="grade gA">확립</span></td><td>5일 새 · 6일 짐승 — 과학에서는 육지 동물이 새보다 <strong>먼저</strong></td></tr>
+  <tr><td>호모 사피엔스</td><td>약 30만 년 전</td><td><span class="grade gA">확립</span>모로코 제벨 이르후드 화석</td><td>6일 "사람을 만들고"</td></tr>
+</table>
+<div class="honest"><b class="t">⚖ 순서가 맞지 않는 곳 — 숨기지 않는다</b>
+<p>문자 그대로 대응시키면 세 군데가 어긋난다: ① 식물(3일)이 해(4일)보다 먼저, ② 새(5일)가 육지 동물(6일)보다 먼저, ③ 바다 동물(5일)이 육상 식물(3일)보다 나중.
+그래서 <strong>날-시대설</strong>은 "4일은 해가 처음 <em>보이게</em> 된 것(대기가 맑아짐)" 같은 보정을 하고, <strong>틀 가설·기능적 창조</strong>는 처음부터 연대기로 읽지 않으며, <strong>문자적 6일</strong>은 과학의 연대 측정 자체를 받아들이지 않는다.
+반대로 놀라운 공명도 있다 — <strong>우주에 시작이 있다</strong>는 것(20세기 초까지 과학계 다수는 영원한 우주를 믿었다), 그리고 빛이 해보다 먼저라는 본문이 "빛(에너지)이 별보다 먼저"라는 우주론과 닮았다는 점. 공명도 증명이 아니고, 어긋남도 반증이 아니다.</p></div>
+
+<h2>받은 영상 11편 — 누가 무엇을 말했고, 무엇이 맞나</h2>
+<p>CR이 보내 준 영상을 전부 읽고 주장마다 판정했다(상세: <code>study/digests/</code>). 같은 사실도 영상마다 다르게 말하므로, <strong>어느 영상을 믿을지가 아니라 어느 주장을 믿을지</strong>를 가르는 표다.</p>
+<table>
+  <tr><th style="width:24%">영상</th><th style="width:12%">관점</th><th>잘한 점</th><th>틀렸거나 과장된 점</th></tr>
+  <tr><td>현승원TV 창세기 풀스토리 외 2편 (같은 시리즈)</td><td>기독교 입문 강해</td><td>1-3일 틀 / 4-6일 채움으로 쉽게 외우게 함 · "태양 없이 식물?" 반론을 피하지 않음 · 추측에 "제 생각"이라고 표시 · "좋았더라 7번" 정확</td><td>물층설을 "성경에서 얘기하는 것"이라 함(성경에 없음) · 데라가 우상 장수(유대 전승, 성경 아님) · 엘리야 승천 열왕기상(→ 하) · 방주 안 150일(→ 약 1년) · 노아의 저주 대상 혼동(함 → 가나안)</td></tr>
+  <tr><td>NoiseSymphony "첫째 날, 태양도 없는데 빛?"</td><td>창조과학</td><td>빛(오르)과 광명체(메오로트)의 히브리어 구분은 타당한 관찰</td><td>"분자는 빛을 흡수해야 존재한다"(명백한 오류) · "어둠은 창조되지 않았다"(사 45:7과 부딪힘) · 먼 별빛 문제의 '성숙한 빛' 답은 검증할 수 없는 신앙적 응답</td></tr>
+  <tr><td>EBS 다큐프라임 우주의 탄생 · EBS 지식 30분</td><td>주류 과학 (대중)</td><td>빅뱅이 왜 정설이 되었는지(허블 → 배경복사)를 잘 보여 줌 · 30분 영상은 빅뱅→지구 순서의 가장 깔끔한 압축</td><td>"아인슈타인이 정상우주론 지지"(오류) · 암흑에너지 인터뷰 내용 혼선 · 38분 이후 달 탐사는 주제 밖</td></tr>
+  <tr><td>EBS 지식 "빅뱅을 재현한다"(CERN)</td><td>주류 과학 (대중)</td><td>핵합성 3:1, 배경복사 38만 년 설명 좋음</td><td>제목과 달리 CERN은 약 2분뿐 · "태양이 핵분열"(→ 핵융합) · 지구 나이 확정자 혼동(→ 패터슨 1956) · 무거운 원소는 초신성만(→ 중성자별 병합도)</td></tr>
+  <tr><td>히스토리 빅 히스토리</td><td>주류 과학 (대중)</td><td>빅뱅 → 별 → 원소 → 지구 → 생명의 큰 흐름 · "우리 몸은 별의 재료"</td><td>"생명이 엔트로피 법칙을 거스른다"(부정확) · "생명은 열수구 기원이 다수설"(과장)</td></tr>
+  <tr><td>보다 BODA 과학을 보다 EP.6</td><td>주류 과학 (대담)</td><td>"모르겠다"를 솔직히 말함 · 올베르스 역설로 유한한 과거 설명</td><td>"가모프가 팽창을 먼저 설계"(→ 프리드만·르메트르) · 끈이론 "18차원"(→ 10·11차원) · "진공에서 우연히"는 추측</td></tr>
+  <tr><td>MrSpace 우주는 무에서?</td><td>주류 과학 (대중)</td><td>물리학의 '무'와 철학의 '무'를 구분 · 빅뱅 이전 가설 셋을 가설로 소개</td><td>"갈릴레이가 공간 팽창 개념 제시"(오류) · 10:56 이후 타이탄 이야기(주제 밖)</td></tr>
+</table>
+<div class="honest"><b class="t">⚖ 두 진영 모두에게 같은 잣대</b>
+<p>기독교 강의에도, 과학 다큐에도 틀린 말이 있었다. 신앙 영상의 오류를 감싸지 않고, 과학 영상의 오류도 봐주지 않는다. 그리고 세 과학 영상 모두 <strong>빅뱅의 원인과 그 이전은 "모른다"</strong>고 말했다 — 측정된 것(138억 년 팽창, 3분 핵합성, 38만 년 배경복사)과 가설(급팽창, 다중우주, "무에서 우연히")을 섞는 순간, 신앙 쪽이든 무신론 쪽이든 과장이 된다.</p></div>
+
+<h3>CR의 공부 순서 (약 1시간 20분)</h3>
+<div class="q">① <a href="https://youtu.be/YTdEel9zGtY?t=1" target="_blank">EBS 지식 0:01~10:28</a> — 과학의 우주사 10분 압축. 위의 '138억 년' 띠를 보며.</div>
+<div class="q">② <a href="https://youtu.be/MbDk866VsQ0?t=2642" target="_blank">EBS 다큐프라임 44:02~1:02:34</a> — 빅뱅이 왜 정설이 되었나 (20분).</div>
+<div class="q">③ <a href="https://youtu.be/2u_FUkGeIVM?t=0" target="_blank">MrSpace 0:00~9:22</a> — 과학이 모르는 곳: 빅뱅 이전과 '무'.</div>
+<div class="q">④ <a href="https://youtu.be/YU3rKoRHlLo?t=0" target="_blank">현승원TV 0:00~9:09</a> — 그리스도인 강사의 엿새 설명 (위 시뮬레이션과 함께, 3:24 물층설은 비판적으로).</div>
+<div class="q">⑤ <a href="https://youtu.be/FjxyeJ2GArU?t=59" target="_blank">NoiseSymphony 0:59~12:10</a> — 창조과학의 답. 본 뒤 위 '렌즈' ②③④를 다시 읽으면 균형이 맞는다.</div>
+
+<h2>창세기 1장의 구조 — 왜 '틀'이 보이는가</h2>
+<table>
+  <tr><th style="width:50%">모양 만들기 (토후 '형태 없음'을 고침)</th><th>채우기 (보후 '비어 있음'을 고침)</th></tr>
+  <tr><td><strong>1일</strong> 빛 / 어둠을 나눔</td><td><strong>4일</strong> 해 · 달 · 별 — 낮과 밤을 "주관"</td></tr>
+  <tr><td><strong>2일</strong> 궁창으로 위의 물 / 아래 물을 나눔 (하늘 · 바다)</td><td><strong>5일</strong> 새 (하늘) · 물고기와 큰 바다 짐승 (바다)</td></tr>
+  <tr><td><strong>3일</strong> 뭍이 드러남 + 식물</td><td><strong>6일</strong> 땅의 짐승 + 사람 — 식물을 먹을거리로 받음(1:29-30)</td></tr>
+  <tr><td colspan="2" style="text-align:center"><strong>7일</strong> 안식 — 일곱째 날만 "저녁이 되며 아침이 되니"가 없다. 끝나지 않은 날? (히 4:4-10이 이 쉼을 지금도 열려 있는 안식으로 읽는다)</td></tr>
+</table>
+<p><strong>일곱의 리듬</strong>도 짜여 있다: 1:1은 히브리어로 정확히 <strong>7단어</strong>, 1:2는 <strong>14단어(7×2)</strong>, "보시기에 좋았더라"는 <strong>7번</strong>(4·10·12·18·21·25절 + 31절 "심히 좋았더라"). 칠십인역은 둘째 날(8절)에도 "좋았더라"를 넣어 둔다 — 히브리 본문에는 없다. 문학적 장인의 손길이 보이는 장이다.</p>
+
+<h2>사람 — 1장의 절정 (26-28절)</h2>
+<div class="verse"><span class="vn">27</span>하나님이 자기 형상 곧 하나님의 형상대로 사람을 창조하시되 남자와 여자를 창조하시고<div style="font-size:12px;color:var(--sub);margin-top:4px">창 1:27, 개역한글</div></div>
+<div class="verse he">וַיִּבְרָא אֱלֹהִים ׀ אֶת־הָאָדָם בְּצַלְמוֹ בְּצֶלֶם אֱלֹהִים בָּרָא אֹתוֹ זָכָר וּנְקֵבָה בָּרָא אֹתָם</div>
+<p>한 절에 <strong>"바라(창조하다)"가 세 번</strong> — 1장 전체에서 이 동사는 1절(천지), 21절(큰 바다 짐승과 생물), 27절(사람)에만 쓰인다. 고대 근동에서 "신의 형상(첼렘)"은 <strong>왕</strong>을 부르는 말이었다(앗수르·이집트 왕 비문). 창세기는 그 칭호를 <strong>모든 남자와 여자</strong>에게 준다. 바빌론 『에누마 엘리시』에서 사람은 반역한 신 킹구의 피로 만들어져 <strong>신들의 노역을 대신하는 종</strong>이다. 창세기의 사람은 <strong>복을 받고</strong> 세상을 맡은 왕적 존재다.</p>
+
+<div class="peter">
+  <div class="who">베드로의 창 — 목격자의 회고</div>
+  <p class="big" style="margin-top:6px">나는 그분이 바람과 바다를 꾸짖으시는 것을 보았다.</p>
+  <p>갈릴리 호수는 순식간에 미쳐 날뛴다. 그 밤 우리 배는 물에 잠기고 있었다. 깨어나신 그분이 바람을 꾸짖고 바다에게 "잠잠하라, 고요하라" 하시자 <strong>아주 잔잔하여졌다</strong>(막 4:39). 우리는 두려워하며 서로 물었다. "그가 누구이기에 바람과 바다도 순종하는가?"</p>
+  <p>어부는 바다가 무엇인지 안다. 우리 조상들에게 깊은 물(테홈)은 혼돈의 얼굴이었다. 창세기 1장 둘째 절, 흑암이 깊음 위에 있을 때 하나님의 영이 그 수면 위를 맴도셨다. 그리고 말씀 한마디에 물이 물러가고 뭍이 드러났다. 그날 밤 배 위에서 나는 그 첫 장을 눈으로 본 것이다. 요한은 훗날 이렇게 썼다. "만물이 그로 말미암아 지은 바 되었으니"(요 1:3). 나는 그 말이 어떤 뜻인지 안다. 형제여, 엿새가 몇 시간이었는지 우리는 정직하게 함께 연구하자. 그러나 <strong>누가 말씀하셨는지</strong>는, 나는 이미 들었다.</p>
+</div>
+
+<h2>CR이 방향을 정하기 위한 질문</h2>
+<div class="q">① GODISALIVE는 창세기 1장을 <strong>하나의 해석으로 확정</strong>할 것인가, 아니면 ①~④를 <strong>정직하게 나란히</strong> 소개하고 "창조주"라는 공통 고백에 무게를 둘 것인가?</div>
+<div class="q">② 책(2028)의 독자가 비신자를 포함한다면, 과학의 연대(⑤)와 싸우는 길과 그것을 인정하고 다른 곳(우주의 시작·미세 조정·역사적 예수)에서 증거를 세우는 길 중 어느 것이 "과장은 복음의 적" 원칙에 맞는가?</div>
+<div class="q">③ 창세기 1장에서 우리가 <strong>증거 등급 A</strong>로 말할 수 있는 것은 무엇인가? (예: 창세기가 고대 근동 신화와 뚜렷이 다르다는 문헌 사실 — A / 엿새의 길이 — 해석 문제, 등급 대상 아님)</div>
+
+<footer>
+  <strong>출처</strong>
+  <ul>
+    <li>본문: 개역한글(1961, PD) · Westminster Leningrad Codex(히브리어, PD) · 칠십인역(Swete 계열, lemma판 — 굴절형 아님)</li>
+    <li>우주론 수치: Planck Collaboration 2018 (A&amp;A 641, A6) 137.87±0.20억 년 · 지구 45.4억 년(Dalrymple) · 제벨 이르후드(Hublin 외, Nature 2017)</li>
+    <li>해석사: Augustine, De Genesi ad litteram · Meredith Kline, "Space and Time in the Genesis Cosmogony"(1996) · John H. Walton, The Lost World of Genesis One (2009) · Hugh Ross, A Matter of Days (2004) · Ken Ham/AiG</li>
+    <li>고대 근동: Enuma Elish(니네베 아슈르바니팔 도서관 토판, 대영박물관) · 샤바카 석(멤피스 신학, BM EA 498) · Hermann Gunkel, Schöpfung und Chaos (1895)</li>
+    <li>영상 연결: study/digests/ (현승원TV·EBS·보다·MrSpace·히스토리·NoiseSymphony) — 각 영상의 타임스탬프</li>
+  </ul>
+  <strong>등급</strong> — <span class="grade gA">확립</span> 관측 근거 강함 · <span class="grade gB">유력</span> 다수설·모델 · <span class="grade gC">논쟁</span> · <span class="grade gI">해석</span> 사실 주장이 아님
+  <p style="margin-top:10px">GODISALIVE — 하나님은 살아계신다 · Peter &amp; CR</p>
+</footer>
+</div>
+
+<script>
+const DAYS = [
+ { key:"0", btn:"태초", title:"태초 — 1:1-2", cap:"태초에 하나님이 천지를 창조하시니라 · 땅이 혼돈하고 공허하며 흑암이 깊음 위에 있고 하나님의 신은 수면에 운행하시니라",
+   text:[[1,"태초에 하나님이 천지를 창조하시니라"],[2,"땅이 혼돈하고 공허하며 흑암이 깊음 위에 있고 하나님의 신은 수면에 운행하시니라"]],
+   he:"בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ",
+   words:[["בְּרֵאשִׁית","베레쉬트","'태초에' — 관사가 없다. 그래서 '태초에 하나님이 창조하셨다'(전통·개역)와 '하나님이 창조하기 시작하셨을 때, 땅은…'(라쉬, 일부 현대역) 두 문법이 다 가능하다. 앞은 무(無)에서의 창조를 더 분명히 한다."],
+          ["בָּרָא","바라","'창조하다' — 구약에서 이 형태의 주어는 언제나 하나님뿐이다. 재료가 언급되지 않는다."],
+          ["תֹהוּ וָבֹהוּ","토후 바보후","'혼돈하고 공허하며' — 형태 없음 + 비어 있음. 운율 맞춘 짝말. 이 둘이 1-3일(모양)·4-6일(채움)의 설계도가 된다."],
+          ["תְהוֹם","테홈","'깊음' — 바빌론 바다 여신 '티아마트'와 어원이 같은 말. 그러나 창세기에서는 신이 아니라 그냥 물이다."],
+          ["מְרַחֶפֶת","메라헤페트","'운행하시니라' — 신 32:11에서 독수리가 새끼 위를 '너풀거리는' 동작. 루아흐는 '영'이자 '바람'."]],
+   lens:{
+    lit:"1:1이 첫째 날의 시작이다. 하나님이 무에서 물질을 창조하셨고, 처음 상태는 물로 덮인 미완성의 지구였다. 이 '태초'는 약 6천 년 전이다.",
+    age:"1:1은 빅뱅에 해당하는 우주의 절대적 시작이다(138억 년 전). 1:2부터 관점이 지구 표면으로 내려온다 — 원시 지구는 두꺼운 대기와 물에 덮여 어두웠다.",
+    frame:"1:1은 전체 제목(요약), 1:2는 '문제 제기'다 — 형태 없음과 비어 있음. 이어지는 엿새가 이 두 문제를 차례로 푼다. 시간 순서보다 논리의 순서.",
+    func:"고대인에게 '존재한다'는 것은 '기능과 질서를 가진다'는 뜻이었다. 1:2는 물질이 없는 게 아니라 아직 기능이 없는(살 수 없는) 상태다. 엿새는 그 무질서에 역할을 임명하는 과정.",
+    sci:"관측으로 확인된 우주는 137.9억 년 전 매우 뜨겁고 조밀한 상태에서 팽창하기 시작했다(빅뱅). 그 '이전'이나 '원인'은 물리학이 아직 답하지 못한다 — 시간 자체가 거기서 시작했을 수도 있다.",
+    myth:"바빌론 『에누마 엘리시』는 민물 신 압수와 바닷물 여신 티아마트가 섞인 혼돈에서 신들이 '태어나며' 시작한다. 창세기는 신들의 탄생이 없다. 이미 계신 한 분이 '창조하신다'. 같은 '깊음(테홈/티아마트)'이 신화에서는 여신, 창세기에서는 피조물이다."},
+   vids:[] },
+ { key:"1", btn:"1일", title:"첫째 날 — 빛 (1:3-5)", cap:"하나님이 가라사대 빛이 있으라 하시매 빛이 있었고 … 저녁이 되며 아침이 되니 이는 첫째 날이니라",
+   text:[[3,"하나님이 가라사대 빛이 있으라 하시매 빛이 있었고"],[4,"그 빛이 하나님의 보시기에 좋았더라 하나님이 빛과 어두움을 나누사"],[5,"빛을 낮이라 칭하시고 어두움을 밤이라 칭하시니라 저녁이 되며 아침이 되니 이는 첫째 날이니라"]],
+   he:"וַיֹּאמֶר אֱלֹהִים יְהִי אוֹר וַֽיְהִי־אוֹר",
+   words:[["יְהִי אוֹר","예히 오르","'빛이 있으라' — 히브리어로 단 두 단어. 명령과 성취(바예히 오르)가 거울처럼 같은 말."],
+          ["יוֹם אֶחָד","욤 에하드","'첫째 날' — 엄밀히는 서수가 아니라 기수 '하루(한 날)'. 둘째 날부터는 서수(셰니…)다. 첫 날을 '날'의 정의처럼 세운 표현이라는 해석이 있다."],
+          ["עֶרֶב … בֹקֶר","에레브 … 보케르","'저녁 … 아침' — 히브리 하루는 해 질 녘에 시작한다(지금도 안식일은 금요일 저녁부터)."]],
+   lens:{
+    lit:"해가 없어도 하나님은 빛을 만드실 수 있다. 빛의 근원은 하나님 자신이거나 임시 광원이며(계 22:5 참고), 지구가 자전하며 24시간의 낮과 밤이 시작되었다.",
+    age:"첫째 '시대'에 빛이 처음 지구 표면에 닿았다 — 또는 우주적으로는 빛이 처음 자유롭게 퍼진 순간(빅뱅 후 38만 년, 우주배경복사)과 닮았다.",
+    frame:"1일 '빛'은 4일 '빛을 내는 것들(해·달·별)'과 짝이다. 공간(영역)을 먼저 세우고, 4일에 그 영역의 '통치자'를 세운다. 그래서 해가 나중에 나와도 문제가 아니다.",
+    func:"빛과 어둠을 나누고 '낮'·'밤'이라 이름 붙이는 것은 시간을 만든 것이다. 첫날 하나님은 '시간'이라는 기능을 세우신다.",
+    sci:"우주 초기에는 에너지(빛, 광자)가 물질보다 먼저 우주를 지배했다. 첫 별은 빅뱅 후 1~2억 년에 켜졌다. '빛이 해보다 먼저'라는 순서 자체는 우주론과 충돌하지 않는다 — 다만 지구의 낮/밤은 해와 자전이 있어야 생긴다.",
+    myth:"이집트 멤피스 신학에서 프타 신은 '마음으로 생각하고 혀로 말해' 신들과 만물을 만든다(샤바카 석). '말씀으로 창조'는 창세기만의 생각은 아니다. 차이는, 창세기의 말씀은 다른 신을 낳지 않고 오직 피조물만 부른다는 것."},
+   vids:[] },
+ { key:"2", btn:"2일", title:"둘째 날 — 궁창 (1:6-8)", cap:"하나님이 궁창을 만드사 궁창 아래의 물과 궁창 위의 물로 나뉘게 하시매 그대로 되니라",
+   text:[[6,"하나님이 가라사대 물 가운데 궁창이 있어 물과 물로 나뉘게 하리라 하시고"],[7,"하나님이 궁창을 만드사 궁창 아래의 물과 궁창 위의 물로 나뉘게 하시매 그대로 되니라"],[8,"하나님이 궁창을 하늘이라 칭하시니라 저녁이 되며 아침이 되니 이는 둘째 날이니라"]],
+   he:"וַיֹּאמֶר אֱלֹהִים יְהִי רָקִיעַ בְּתוֹךְ הַמָּיִם",
+   words:[["רָקִיעַ","라키아","'궁창' — 동사 '라카'(두들겨 펴다, 출 39:3 금을 얇게 펴다)에서 왔다. 칠십인역은 '스테레오마'(단단한 것), 라틴어는 '피르마멘툼' → 영어 firmament."],
+          ["מַיִם","마임","'물' — 위의 물과 아래 물. 시 148:4 '하늘 위의 물'도 같은 그림."],
+          ["(없음)","—","둘째 날에만 '보시기에 좋았더라'가 히브리 본문에 없다. 칠십인역은 넣었다. 랍비들은 '물의 나눔이 셋째 날에야 끝나서'라고 풀었다."]],
+   lens:{
+    lit:"한 해석: 궁창 위의 물은 노아 홍수 전 지구를 감싼 '물층(수증기층)'이었고 홍수 때 쏟아졌다(창 7:11). ⚠ 이 '물층설'은 성경 본문에 직접 나오지 않는 추론이고 과학적 근거가 없으며, 창조과학계 안에서도 지지가 크게 줄어든 가설이다. 다른 문자적 해석은 '위의 물'을 그냥 구름·대기의 물로 본다.",
+    age:"원시 지구에서 대기가 형성되며 구름(위의 물)과 바다(아래 물) 사이에 하늘이 생긴 시대.",
+    frame:"2일 '하늘과 바다'라는 영역은 5일 '새와 물고기'라는 거주자와 짝이다.",
+    func:"궁창은 비와 날씨를 다스리는 기능이다 — 고대인에게 하늘은 위의 물을 막아 비를 조절하는 장치였다(창 7:11 '하늘의 창').",
+    sci:"과학에서 '궁창 위의 물'에 해당하는 고체 돔이나 물층은 없다. 대기는 지구 형성 후 화산 가스 방출과 혜성·소행성 물 공급으로 형성되었다. 많은 학자는 '라키아'를 고대인의 눈에 보인 하늘(단단한 둥근 지붕처럼 보이는)을 묘사한 '현상적 언어'로 본다.",
+    myth:"『에누마 엘리시』에서 마르둑은 티아마트의 시체를 조개처럼 둘로 갈라 반쪽으로 하늘을 만들고, 위의 물이 내려오지 못하게 빗장을 지른다. 창세기는 같은 '위의 물/아래 물' 우주상을 쓰면서 전쟁도 시체도 없이 '말씀'으로 나눈다."},
+   vids:[] },
+ { key:"3", btn:"3일", title:"셋째 날 — 땅과 식물 (1:9-13)", cap:"천하의 물이 한곳으로 모이고 뭍이 드러나라 … 땅은 풀과 씨 맺는 채소와 열매 맺는 과목을 내라",
+   text:[[9,"하나님이 가라사대 천하의 물이 한곳으로 모이고 뭍이 드러나라 하시매 그대로 되니라"],[10,"하나님이 뭍을 땅이라 칭하시고 모인 물을 바다라 칭하시니라 하나님의 보시기에 좋았더라"],[11,"하나님이 가라사대 땅은 풀과 씨 맺는 채소와 각기 종류대로 씨 가진 열매 맺는 과목을 내라 하시매 그대로 되어"],[12,"땅이 풀과 각기 종류대로 씨 맺는 채소와 각기 종류대로 씨 가진 열매 맺는 나무를 내니 하나님의 보시기에 좋았더라"]],
+   he:"תַּֽדְשֵׁא הָאָרֶץ דֶּשֶׁא",
+   words:[["יַבָּשָׁה","야바샤","'뭍' — 마른 곳. 출애굽기 14:16 홍해 '마른 땅'과 같은 말 — 물이 물러가 길이 나는 장면이 겹친다."],
+          ["לְמִינוֹ","레미노","'종류대로' — 3일에 처음 나와 5·6일까지 10번. '민'이 현대 생물학의 '종'과 같은지는 논쟁(창조론의 '창조된 종류(바라민)' 개념의 근거)."],
+          ["תַּֽדְשֵׁא הָאָרֶץ","타드셰 하아레츠","'땅이 (풀을) 내라' — 땅이 '내는' 주체로 말해진다. 하나님이 땅에게 생산력을 주시는 그림."]],
+   lens:{
+    lit:"하루 만에 대륙이 솟고 다 자란 식물(열매 맺는 나무)이 생겼다. 해는 다음 날 만들어지지만 하루 정도는 첫날의 빛으로 충분하다.",
+    age:"대륙이 형성되고 식물이 등장한 긴 시대. ⚠ 과학에서는 육상 식물(약 4.7억 년 전)이 해(46억 년 전)보다 훨씬 나중이고 바다 동물(5.3억 년 전)보다도 나중이라, 날-시대설도 이 부분은 '겹치는 시대'로 보정해야 한다.",
+    frame:"3일 '땅(+식물)'은 6일 '땅의 짐승과 사람'과 짝이다. 식물은 6일의 거주자들이 먹을 양식(1:29-30)으로 준비된다.",
+    func:"땅과 식물은 '양식'이라는 기능 — 1-3일은 시간(1일)·날씨(2일)·양식(3일)이라는 생존의 세 기능을 세운다.",
+    sci:"지구 표면에 바다는 약 44억 년 전, 대륙 지각은 수십억 년에 걸쳐 형성되었다. 생명은 35억 년 전 이전 바다의 미생물로 시작했고, 광합성 미생물이 산소를 만든 뒤(24억 년 전 대산화 사건) 한참 지나서야 육상 식물이 나왔다.",
+    myth:"가나안 신화에서 비와 풍요는 폭풍신 바알이 죽음의 신 모트와 싸워 이겨야 오는 것이었다. 창세기의 땅은 신의 싸움 없이, 명령 한마디로 열매를 낸다 — 풍요의 근원을 신화의 신들에게서 빼앗아 창조주께 돌린다."},
+   vids:[] },
+ { key:"4", btn:"4일", title:"넷째 날 — 해·달·별 (1:14-19)", cap:"하나님이 두 큰 광명을 만드사 큰 광명으로 낮을 주관하게 하시고 작은 광명으로 밤을 주관하게 하시며 또 별들을 만드시고",
+   text:[[14,"하나님이 가라사대 하늘의 궁창에 광명이 있어 주야를 나뉘게 하라 또 그 광명으로 하여 징조와 사시와 일자와 연한이 이루라"],[16,"하나님이 두 큰 광명을 만드사 큰 광명으로 낮을 주관하게 하시고 작은 광명으로 밤을 주관하게 하시며 또 별들을 만드시고"],[18,"주야를 주관하게 하시며 빛과 어두움을 나뉘게 하시니라 하나님의 보시기에 좋았더라"]],
+   he:"אֶת־הַמָּאוֹר הַגָּדֹל … וְאֶת־הַמָּאוֹר הַקָּטֹן … וְאֵת הַכּוֹכָבִים",
+   words:[["מְאֹרֹת","메오로트","'광명(들)' — 문자적으로 '등불들'. 성막의 등잔대 기름(출 25:6)에 쓰는 말이다. 하늘을 성소처럼 그린다."],
+          ["(이름 없음)","셰메시·야레아흐","해(셰메시)와 달(야레아흐)이라는 이름을 일부러 쓰지 않는다. 둘 다 이웃 민족의 신 이름(태양신 샤마시, 달신 야리후)이었다. '큰 등불·작은 등불'로 부르며 신의 자리에서 끌어내린다."],
+          ["מוֹעֲדִים","모아딤","'사시(절기)' — 레 23장의 '여호와의 절기'와 같은 말. 해와 달은 예배의 달력을 위해 있다."]],
+   lens:{
+    lit:"넷째 날에 해·달·별이 실제로 처음 만들어졌다. 먼 별빛이 6천 년 만에 지구에 도착하는 문제는 '빛을 이미 도착한 상태로 창조', 상대성 이론의 시간 지연 모델 등으로 설명하려 한다(논쟁 중).",
+    age:"해는 이미 1:1에 창조되었고, 넷째 '시대'에 원시 대기가 맑아지며 지표에서 해·달·별이 처음 '보이게' 되었다고 본다(관점은 지표면의 관찰자).",
+    frame:"4일은 1일의 짝이다. 1일에 세운 '빛/어둠' 영역에 그것을 '주관'할 통치자를 세운다. 그래서 순서는 연대가 아니라 논리다.",
+    func:"해·달·별은 '시간을 알리는 기능'(징조·절기·날·해)을 임명받는다. 신이 아니라 시계다.",
+    sci:"태양(약 46억 년 전)은 지구(45.4억 년 전)보다 먼저 형성되었다. 별은 그보다 훨씬 이전, 빅뱅 후 1~2억 년부터 생겨났고 지금도 생긴다. 이 날이 문자적 연대와 과학이 가장 크게 어긋나는 지점이다.",
+    myth:"바빌론에서는 해(샤마시)·달(신)·금성(이시타르)이 큰 신이었고, 별자리 점성술이 국가의 일이었다. 『에누마 엘리시』 5토판에서 마르둑은 별을 신들의 자리로 정한다. 창세기는 별을 '또 별들을 만드시고'라는 반 줄로 지나간다 — 의도적인 냉정함으로 읽힌다."},
+   vids:[] },
+ { key:"5", btn:"5일", title:"다섯째 날 — 물고기와 새 (1:20-23)", cap:"물들은 생물로 번성케 하라 땅위 하늘의 궁창에는 새가 날으라 … 하나님이 큰 물고기를 창조하시니",
+   text:[[20,"하나님이 가라사대 물들은 생물로 번성케 하라 땅위 하늘의 궁창에는 새가 날으라 하시고"],[21,"하나님이 큰 물고기와 물에서 번성하여 움직이는 모든 생물을 그 종류대로, 날개 있는 모든 새를 그 종류대로 창조하시니 하나님의 보시기에 좋았더라"],[22,"하나님이 그들에게 복을 주어 가라사대 생육하고 번성하여 여러 바다 물에 충만하라 새들도 땅에 번성하라 하시니라"]],
+   he:"וַיִּבְרָא אֱלֹהִים אֶת־הַתַּנִּינִם הַגְּדֹלִים",
+   words:[["תַּנִּינִם","탄니님","'큰 물고기'(개역) — 바다의 큰 짐승, 용·바다괴물을 가리키는 말(사 27:1 '바다의 용'). 가나안 신화에서는 바알이 싸워 이긴 혼돈의 괴물. 창세기에서는 하나님이 '창조하시고' '좋다' 하신 피조물일 뿐이다."],
+          ["בָּרָא","바라","1:1 이후 처음 다시 '창조하다'가 쓰인다 — 생명(네페쉬 하야, 살아 있는 존재)의 등장을 강조."],
+          ["בֵּרַךְ","바라크","'복을 주다' — 1장에서 처음 나오는 복. 복의 내용은 '생육하고 번성하라'."]],
+   lens:{
+    lit:"하루 만에 모든 바다 동물과 새가 '종류대로' 창조되었다. 진화로 이어지지 않는 독립된 종류들이다.",
+    age:"바다 생물이 폭발적으로 늘고(캄브리아기), 이후 날개 가진 생물이 나온 시대. ⚠ 과학에서는 새(1.5억 년 전)가 육상 동물보다 나중이라 5일과 6일이 겹친다고 보정한다.",
+    frame:"5일은 2일의 짝 — 하늘에는 새, 바다에는 물고기가 들어와 산다.",
+    func:"하늘과 바다라는 공간에 '거주자'가 임명되고, 그들에게 번성의 기능(복)이 주어진다.",
+    sci:"생명의 역사: 바다의 미생물(35억 년 전 이전) → 다세포 생물 → 캄브리아기 대폭발(5.4~5.2억 년 전) → 물고기 → 육상 진출 → 공룡 → 새(공룡에서 갈라짐, 1.5억 년 전). 고래(큰 바다 짐승)는 육지 포유류에서 약 5천만 년 전 바다로 돌아간 동물이다.",
+    myth:"우가릿 신화(BC 13세기 토판)에서 바알은 바다의 신 얌과 일곱 머리 괴물 로탄(리워야단)을 쳐부순다. 시편 74:13-14도 그 언어를 빌린다. 창세기 1장은 같은 괴물을 '창조된 생물'의 목록에 조용히 넣는다."},
+   vids:[] },
+ { key:"6", btn:"6일", title:"여섯째 날 — 짐승과 사람 (1:24-31)", cap:"우리의 형상을 따라 우리의 모양대로 우리가 사람을 만들고 … 하나님이 그 지으신 모든 것을 보시니 보시기에 심히 좋았더라",
+   text:[[24,"하나님이 가라사대 땅은 생물을 그 종류대로 내되 육축과 기는 것과 땅의 짐승을 종류대로 내라 하시고"],[26,"하나님이 가라사대 우리의 형상을 따라 우리의 모양대로 우리가 사람을 만들고 그로 … 다스리게 하자 하시고"],[27,"하나님이 자기 형상 곧 하나님의 형상대로 사람을 창조하시되 남자와 여자를 창조하시고"],[31,"하나님이 그 지으신 모든 것을 보시니 보시기에 심히 좋았더라 저녁이 되며 아침이 되니 이는 여섯째 날이니라"]],
+   he:"נַעֲשֶׂה אָדָם בְּצַלְמֵנוּ כִּדְמוּתֵנוּ",
+   words:[["נַעֲשֶׂה","나아세","'우리가 … 만들고' — 복수. 해석: 삼위일체의 그림자(교부들), 하늘 회의(천사들과 의논), 장엄 복수(왕의 '짐'). 신약은 성자를 통한 창조를 말한다(요 1:3, 골 1:16)."],
+          ["צֶלֶם / דְּמוּת","첼렘 / 데무트","'형상 / 모양' — 첼렘은 조각상·형상. 고대 근동 왕은 '신의 형상'으로 불렸다. 창세기는 그 왕의 칭호를 모든 인간에게 준다."],
+          ["טוֹב מְאֹד","토브 메오드","'심히 좋았더라' — 일곱 번째 '좋았더라'이자 유일한 '심히'. 개별이 아니라 '모든 것'을 보신 평가."]],
+   lens:{
+    lit:"같은 날 육지 동물과 첫 사람 아담·하와가 창조되었다(창 2장은 이 여섯째 날을 확대한 장면). 사람은 동물에서 진화하지 않았다.",
+    age:"포유류의 시대를 거쳐 마지막에 인류가 등장한 시대. 역사적 아담과 하와를 어떻게 볼지는 날-시대설 안에서도 견해가 갈린다.",
+    frame:"6일은 3일의 짝 — 땅과 식물이라는 영역에 짐승과 사람이 들어와 살고, 식물을 양식으로 받는다(1:29-30).",
+    func:"우주 성전의 마지막에 '형상'이 놓인다 — 고대 신전 봉헌의 마지막 순서가 신상을 세우는 것이었다. 창세기에서는 사람이 하나님의 살아 있는 형상으로 세상에 놓인다.",
+    sci:"포유류는 약 2억 년 전, 영장류는 약 6천만 년 전, 호모 사피엔스는 약 30만 년 전 아프리카에서 나타났다. 유전체 연구는 인류가 다른 생물과 공통 조상을 가진다고 본다. 과학은 '형상'이나 '복' 같은 의미의 질문에는 답하지 않는다.",
+    myth:"『에누마 엘리시』 6토판에서 사람은 반역한 신 킹구의 피로 만들어지고, 목적은 '신들이 쉬도록 노역을 지는 것'이다. 아트라하시스 서사시도 같다. 창세기의 사람은 복을 받고, 다스리는 책임을 맡고, 하나님이 일을 쉬시는 날을 함께 누린다."},
+   vids:[] },
+ { key:"7", btn:"7일", title:"일곱째 날 — 안식 (2:1-3)", cap:"하나님이 일곱째 날을 복 주사 거룩하게 하셨으니 이는 하나님이 그 창조하시며 만드시던 모든 일을 마치시고 이 날에 안식하셨음이더라",
+   text:[[1,"천지와 만물이 다 이루니라"],[2,"하나님의 지으시던 일이 일곱째 날이 이를 때에 마치니 그 지으시던 일이 다하므로 일곱째 날에 안식하시니라"],[3,"하나님이 일곱째 날을 복 주사 거룩하게 하셨으니 이는 하나님이 그 창조하시며 만드시던 모든 일을 마치시고 이 날에 안식하셨음이더라"]],
+   he:"וַיִּשְׁבֹּת בַּיּוֹם הַשְּׁבִיעִי",
+   words:[["שָׁבַת","샤바트","'안식하다' — 지쳐서 쉬는 것이 아니라 '그치다, 일을 마치다'. 안식일(샤바트)의 어원."],
+          ["קָדַשׁ","카다쉬","'거룩하게 하다' — 성경에서 처음으로 거룩해지는 것은 장소도 사람도 아닌 '시간'이다."],
+          ["(없음)","저녁·아침","일곱째 날에만 '저녁이 되며 아침이 되니'가 없다. 히 4:3-10은 이 하나님의 안식이 지금도 들어갈 수 있게 열려 있다고 읽는다."]],
+   lens:{
+    lit:"24시간의 일곱째 날, 하나님이 창조를 마치고 쉬셨다. 이것이 이레(7일) 주기와 안식일 계명(출 20:11)의 근거다.",
+    age:"일곱째 '시대'는 인류 등장 이후 지금까지 이어지는 시대 — 하나님은 새로운 종류의 창조를 멈추고 섭리로 다스리신다. 끝맺음 공식이 없는 것이 그 근거.",
+    frame:"일곱째 날은 엿새의 틀 바깥에 서 있는 왕관이다. 창조의 목적은 일이 아니라 하나님과 함께하는 쉼이다.",
+    func:"고대 신전은 봉헌식 이레째에 신이 들어와 '쉬며'(다스리기 시작하며) 완성된다(시 132:8, 14 '나의 쉴 곳'). 일곱째 날은 하나님이 우주 성전에 좌정하신 날.",
+    sci:"이레 주기는 천문 주기(하루·달·해)와 맞지 않는 거의 유일한 인류의 시간 단위다. 역사가들은 그 기원을 이스라엘의 안식일 전통(그리고 바빌론의 달 주기 관습)에서 찾는다.",
+    myth:"『에누마 엘리시』에서 신들의 '쉼'은 사람이 노역을 대신 지기 때문에 가능하다. 창세기에서는 하나님이 쉬시고, 그 쉼을 사람에게 복으로 주신다 — 종의 노동 위에 세운 신들의 쉼과 정반대."},
+   vids:[] }
+];
+// 영상 구간 (study/digests/ 분석 결과 — 클릭하면 그 시각부터 재생)
+const Y = (id, s, t) => ({u:`https://youtu.be/${id}?t=${s}`, t});
+const VIDS = {
+ "0":[Y("2u_FUkGeIVM",0,"MrSpace 0:00 플랑크 벽 — 시작의 한계"),Y("hvQIYaczSX4",447,"보다 7:27 '모르겠다'는 정직함"),Y("hvQIYaczSX4",559,"보다 9:19 올베르스 역설 → 유한한 과거"),Y("2u_FUkGeIVM",427,"MrSpace 7:07 아우구스티누스 '시간도 창조'"),Y("2u_FUkGeIVM",518,"MrSpace 8:38 물리학의 '무' ≠ 철학의 무"),Y("MbDk866VsQ0",3103,"EBS 51:43 빅뱅 vs 정상우주론")],
+ "1":[Y("YU3rKoRHlLo",70,"현승원 1:10 첫째 날 빛"),Y("YU3rKoRHlLo",105,"현승원 1:45 빛 = 에너지 (본인 견해)"),Y("FjxyeJ2GArU",59,"창조과학 0:59 해 없이 빛?"),Y("YTdEel9zGtY",309,"EBS지식 5:09 38만 년, 빛이 풀려남"),Y("XaLoWcYQLO0",1262,"EBS 21:02 우주배경복사 발견")],
+ "2":[Y("YU3rKoRHlLo",140,"현승원 2:20 물과 물을 나눔"),Y("YU3rKoRHlLo",204,"현승원 3:24 '물층'설 ⚠ 비판 대상"),Y("WZ3YiM0q3qs",394,"현승원 2강 6:34 궁창과 홍수")],
+ "3":[Y("YU3rKoRHlLo",314,"현승원 5:14 '태양 없이 식물?'"),Y("YTdEel9zGtY",1261,"EBS지식 21:01 지구에 바다·생명"),Y("UdKqwnqnJXo",1602,"히스토리 26:42 생명·식물 상륙")],
+ "4":[Y("YU3rKoRHlLo",390,"현승원 6:30 큰 틀 1-3 / 채움 4-6"),Y("YTdEel9zGtY",1,"EBS지식 0:01 빅뱅→태양→지구 순서 (10분)"),Y("UdKqwnqnJXo",463,"히스토리 7:43 별과 원소")],
+ "5":[Y("UdKqwnqnJXo",1602,"히스토리 26:42 바다 생명 → 공룡")],
+ "6":[Y("YU3rKoRHlLo",510,"현승원 8:30 짐승·사람·'좋았더라' 7번"),Y("YU3rKoRHlLo",549,"현승원 9:09 다스림과 에덴"),Y("UdKqwnqnJXo",1288,"히스토리 21:28 우리 몸은 별의 재료")],
+ "7":[Y("YU3rKoRHlLo",510,"현승원 8:30 일곱째 날 안식")]
+};
+DAYS.forEach(d => d.vids = VIDS[d.key] || []);
+const LENSES = [["lit","① 문자적 6일"],["age","② 날-시대"],["frame","③ 틀 가설"],["func","④ 기능적 창조"],["sci","⑤ 현대 우주론"],["myth","⑥ 고대 신화 비교"]];
+const LENS_TAG = {lit:'<span class="grade gI">해석</span>',age:'<span class="grade gI">해석</span>',frame:'<span class="grade gI">해석</span>',func:'<span class="grade gI">해석</span>',sci:'<span class="grade gA">관측</span>',myth:'<span class="grade gA">문헌</span>'};
+let cur = 0, lens = "lit";
+const $ = id => document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function render(){
+  const d = DAYS[cur];
+  document.querySelectorAll('#days button[data-i]').forEach(b => b.classList.toggle('on', +b.dataset.i === cur));
+  $('caption').textContent = d.cap;
+  $('d-title').textContent = d.title;
+  $('d-text').innerHTML = '<div class="verse">' + d.text.map(([n,t]) => `<span class="vn">${n}</span>${esc(t)}`).join('<br>') + '<div style="font-size:12px;color:var(--sub);margin-top:4px">개역한글</div></div>';
+  $('d-he').innerHTML = `<div class="verse he">${d.he}</div>`;
+  $('d-words').innerHTML = d.words.map(([h,r,m]) => `<div class="word"><span class="h">${h}</span><strong>${esc(r)}</strong> — ${esc(m)}</div>`).join('');
+  $('lenses').innerHTML = LENSES.map(([k,n]) => `<button data-l="${k}" class="${k===lens?'on':''}">${n}</button>`).join('');
+  document.querySelectorAll('#lenses button').forEach(b => b.onclick = () => { lens = b.dataset.l; render(); });
+  $('lensbox').innerHTML = LENS_TAG[lens] + esc(d.lens[lens]);
+  $('vids').innerHTML = d.vids.length ? '🎬 영상에서: ' + d.vids.map(v => `<a href="${v.u}" target="_blank">${esc(v.t)}</a>`).join(' · ') : '';
+  t0 = performance.now();
+}
+// 날 버튼
+$('days').innerHTML = DAYS.map((d,i) => `<button data-i="${i}">${d.btn}</button>`).join('') + '<button class="play" id="play">▶ 일곱 날 재생</button>';
+document.querySelectorAll('#days button[data-i]').forEach(b => b.onclick = () => { stopPlay(); cur = +b.dataset.i; render(); });
+let playTimer = null;
+function stopPlay(){ if(playTimer){ clearInterval(playTimer); playTimer = null; $('play').textContent = '▶ 일곱 날 재생'; } }
+$('play').onclick = () => { if(playTimer){ stopPlay(); return; } cur = 0; render(); $('play').textContent = '■ 멈춤';
+  playTimer = setInterval(() => { if(cur >= DAYS.length-1){ stopPlay(); return; } cur++; render(); }, 7000); };
+
+// ── 캔버스: 날마다 누적되는 장면 ───────────────────────────
+const cv = $('cv'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+let t0 = performance.now();
+const rnd = (s => () => (s = (s*16807) % 2147483647) / 2147483647)(42);
+const STARS = Array.from({length:160}, () => [rnd()*W, rnd()*H*0.5, rnd()*1.6+0.3, rnd()*6]);
+const FISH = Array.from({length:12}, () => [rnd()*W, H*0.78 + rnd()*H*0.16, rnd()*0.6+0.4, rnd()<.5?1:-1]);
+const BIRDS = Array.from({length:9}, () => [rnd()*W, H*0.12 + rnd()*H*0.2, rnd()*0.8+0.6]);
+const PLANTS = Array.from({length:26}, () => [W*0.42 + rnd()*W*0.56, rnd()]);
+const ANIMALS = Array.from({length:6}, () => [W*0.48 + rnd()*W*0.42, rnd()<.5?1:-1, rnd()]);
+function ease(x){ return x<0?0:x>1?1:1-Math.pow(1-x,3); }
+function draw(now){
+  const k = (now - t0)/1000, d = cur, a = ease(k/2.2);   // a: 오늘 장면이 나타나는 정도
+  const showLight = d>=1, showSky = d>=2, showLand = d>=3, showLights = d>=4, showSea = d>=5, showLife = d>=6;
+  const f = (n) => d>n ? 1 : d===n ? a : 0;               // 날 n의 요소 투명도
+  // 배경: 흑암 → 빛
+  const L = f(1);
+  const g = ctx.createLinearGradient(0,0,0,H);
+  if(showSky){ const s=f(2); g.addColorStop(0, mix('#05070c','#7fb0d8',L*(0.4+0.6*s))); g.addColorStop(0.55, mix('#05070c','#cfe4f2',L*s*0.9+L*0.2)); g.addColorStop(1, mix('#05070c','#1d3d5c',L)); }
+  else { g.addColorStop(0, mix('#03040a','#d9cfa8',L*0.85)); g.addColorStop(1, mix('#02030a','#3a3a33',L*0.7)); }
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+  if(d===1){ // 근원 없는 빛 — 위에서 번지는 광채 + 빛/어둠 나눔
+    const r = ctx.createRadialGradient(W/2,-60,10,W/2,-60,H*1.3); r.addColorStop(0,`rgba(255,250,225,${0.9*a})`); r.addColorStop(1,'rgba(255,250,225,0)');
+    ctx.fillStyle=r; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle=`rgba(3,4,10,${0.75*ease((k-2.5)/2)})`; ctx.fillRect(W*0.62,0,W*0.38,H);   // 어둠을 나누사
+    label('빛 — 낮', W*0.25, H*0.15, ease((k-3)/1.5)); label('어둠 — 밤', W*0.8, H*0.15, ease((k-3)/1.5), '#cfd6e6');
+  }
+  // 물: 깊음 (모든 날의 바탕)
+  const seaTop = showLand ? H*0.72 : H*0.6;
+  ctx.fillStyle = showLight ? `rgba(29,61,92,${0.92})` : 'rgba(12,18,30,0.95)';
+  ctx.beginPath(); ctx.moveTo(0,H);
+  for(let x=0;x<=W;x+=8){ ctx.lineTo(x, seaTop + Math.sin(x/38 + k*1.3)*4 + Math.sin(x/11+k*2.1)*1.5); }
+  ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+  if(d===0){ // 영이 수면 위에 운행 — 떠다니는 빛 입자
+    for(let i=0;i<40;i++){ const x=(i*97 + k*60)%W, y=seaTop-18-Math.sin(i+k*1.7)*14; ctx.fillStyle=`rgba(230,225,200,${0.25+0.25*Math.sin(i+k*2)})`; ctx.beginPath(); ctx.arc(x,y,2,0,7); ctx.fill(); }
+    label('흑암이 깊음 위에 · 하나님의 영이 수면 위를 운행', W/2, H*0.38, ease(k/2), '#cfd6e6');
+  }
+  if(showSky){ // 2일: 위의 물(구름층)과 궁창
+    const s=f(2); ctx.fillStyle=`rgba(200,220,235,${0.55*s})`;
+    for(let i=0;i<7;i++){ const x=(i*170 + k*8)%(W+200)-100; cloud(x, H*0.1 + (i%3)*14, 70+(i%3)*20); }
+    if(d===2){ label('궁창 위의 물', W*0.15, H*0.06, ease((k-1)/1.5), '#24425e'); label('궁창 — 하늘', W*0.5, H*0.36, ease((k-1.8)/1.5), '#24425e'); label('궁창 아래의 물', W*0.5, H*0.82, ease((k-2.4)/1.5)); }
+  }
+  if(showLand){ // 3일: 뭍이 드러남 + 식물
+    const s=f(3), rise = (1-s)*90;
+    ctx.fillStyle='#7a6a45'; ctx.beginPath(); ctx.moveTo(W*0.38, H+5);
+    ctx.bezierCurveTo(W*0.45, H*0.62+rise, W*0.6, H*0.52+rise, W*0.75, H*0.58+rise); ctx.bezierCurveTo(W*0.88, H*0.62+rise, W*0.95, H*0.6+rise, W+5, H*0.63+rise); ctx.lineTo(W+5,H+5); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#5f8a3c'; ctx.globalAlpha = s; ctx.fillRect(W*0.4, H*0.66+rise, W*0.6, 6); ctx.globalAlpha = 1;
+    const pg = d>3 ? 1 : ease((k-1.8)/2);
+    PLANTS.forEach(([x,v],i) => { const base = groundY(x)+rise; const h = (14+v*26)*pg; if(h<1) return;
+      ctx.strokeStyle='#4f3b22'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x,base); ctx.lineTo(x,base-h); ctx.stroke();
+      ctx.fillStyle = i%4===0 ? '#6fa04a' : '#4f8a3a'; ctx.beginPath(); ctx.arc(x, base-h, 6+v*9*pg, 0, 7); ctx.fill();
+      if(i%5===0 && pg>0.8){ ctx.fillStyle='#c2402f'; ctx.beginPath(); ctx.arc(x+4, base-h+2, 2.5, 0, 7); ctx.fill(); } });
+    if(d===3) label('뭍이 드러나라 · 땅은 풀과 채소와 과목을 내라', W*0.32, H*0.42, ease((k-1)/1.5), '#24425e');
+  }
+  if(showLights){ // 4일: 해·달·별
+    const s=f(4);
+    STARS.forEach(([x,y,r,ph]) => { ctx.fillStyle=`rgba(255,255,255,${s*0.25*(0.6+0.4*Math.sin(k*2+ph))})`; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); });
+    const sun = ctx.createRadialGradient(W*0.2,H*0.18,4,W*0.2,H*0.18,60*s+1); sun.addColorStop(0,`rgba(255,240,170,${s})`); sun.addColorStop(0.4,`rgba(255,210,90,${s*0.9})`); sun.addColorStop(1,'rgba(255,210,90,0)');
+    ctx.fillStyle=sun; ctx.beginPath(); ctx.arc(W*0.2,H*0.18,62,0,7); ctx.fill();
+    ctx.fillStyle=`rgba(235,235,225,${s*0.9})`; ctx.beginPath(); ctx.arc(W*0.86,H*0.14,16,0,7); ctx.fill();
+    ctx.fillStyle=mix('#7fb0d8','#bcd6ea',0.5); ctx.globalAlpha = s*0.9; ctx.beginPath(); ctx.arc(W*0.86+6,H*0.14-3,14,0,7); ctx.fill(); ctx.globalAlpha=1;
+    if(d===4){ label('큰 광명 — 낮을 주관', W*0.2, H*0.4, ease((k-1)/1.5), '#24425e'); label('작은 광명 — 밤을 주관 · 또 별들을', W*0.78, H*0.3, ease((k-1.6)/1.5), '#24425e'); }
+  }
+  if(showSea){ // 5일: 물고기·큰 바다 짐승·새
+    const s=f(5);
+    FISH.forEach(([x0,y,sp,dir],i) => { const x = ((x0 + dir*k*40*sp) % (W*0.45) + W*0.45) % (W*0.45); fish(x, y, i===0?3:1, dir, s); });
+    BIRDS.forEach(([x0,y,sp],i) => { const x = (x0 + k*55*sp) % W; bird(x, y + Math.sin(k*2+i)*6, s); });
+    if(d===5) label('물들은 생물로 번성케 하라 · 새가 날으라', W*0.3, H*0.48, ease((k-1)/1.5), '#24425e');
+  }
+  if(showLife){ // 6일: 짐승과 사람
+    const s=f(6);
+    ANIMALS.forEach(([x0,dir,v],i) => { const x = x0 + Math.sin(k*0.5+i)*14; animal(x, groundY(x), dir, s, v); });
+    const hp = d>6?1:ease((k-2.2)/2); human(W*0.66, groundY(W*0.66), hp, '#6d3b12'); human(W*0.69, groundY(W*0.69), hp, '#8a2b5a');
+    if(d===6) label('우리의 형상을 따라 사람을 — 남자와 여자를', W*0.68, H*0.44, ease((k-2.6)/1.5), '#24425e');
+  }
+  if(d===7){ // 안식 — 모든 것 위의 고요한 빛
+    const glow = ctx.createRadialGradient(W/2,H*0.4,20,W/2,H*0.4,W*0.7); glow.addColorStop(0,`rgba(255,248,220,${0.35*a})`); glow.addColorStop(1,'rgba(255,248,220,0)');
+    ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
+    label('일곱째 날 — 안식 · 복 주사 거룩하게 하셨으니', W/2, H*0.5, a, '#5a3a12', 26);
+    label('(저녁이 되며 아침이 되니 — 없음)', W/2, H*0.58, ease((k-2)/1.5), '#5a3a12', 15);
+  }
+  // 저녁-아침 공식
+  if(d>=1 && d<=6){ const e = ease((k-4.2)/1.2); if(e>0){ ctx.fillStyle=`rgba(0,0,0,${0.35*e})`; ctx.fillRect(0,H-34,W,34);
+      ctx.fillStyle=`rgba(255,240,210,${e})`; ctx.font='17px "Batang","바탕",serif'; ctx.textAlign='center'; ctx.fillText(`저녁이 되며 아침이 되니 이는 ${['','첫째','둘째','세째','네째','다섯째','여섯째'][d]} 날이니라`, W/2, H-11); } }
+  requestAnimationFrame(draw);
+}
+function groundY(x){ const t = (x - W*0.38)/(W*0.62); return H*0.66 - Math.sin(Math.max(0,Math.min(1,t))*Math.PI)*H*0.06; }
+function mix(c1,c2,t){ t=Math.max(0,Math.min(1,t)); const p=c=>[1,3,5].map(i=>parseInt(c.substr(i,2),16)); const a=p(c1), b=p(c2); return `rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(',')})`; }
+function label(text,x,y,alpha,color='#fff',size=18){ if(alpha<=0) return; ctx.globalAlpha=alpha; ctx.fillStyle=color; ctx.font=`bold ${size}px "Malgun Gothic","맑은 고딕",sans-serif`; ctx.textAlign='center'; ctx.fillText(text,x,y); ctx.globalAlpha=1; }
+function cloud(x,y,r){ ctx.beginPath(); ctx.ellipse(x,y,r,r*0.32,0,0,7); ctx.ellipse(x+r*0.5,y-6,r*0.6,r*0.3,0,0,7); ctx.fill(); }
+function fish(x,y,sz,dir,al){ ctx.globalAlpha=al; ctx.fillStyle= sz>1 ? '#5c7f99' : '#e0b04a'; ctx.beginPath(); ctx.ellipse(x,y,9*sz,4*sz,0,0,7); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x-dir*9*sz,y); ctx.lineTo(x-dir*15*sz,y-5*sz); ctx.lineTo(x-dir*15*sz,y+5*sz); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; }
+function bird(x,y,al){ ctx.globalAlpha=al; ctx.strokeStyle='#2b2620'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x-9,y); ctx.quadraticCurveTo(x-4,y-6,x,y); ctx.quadraticCurveTo(x+4,y-6,x+9,y); ctx.stroke(); ctx.globalAlpha=1; }
+function animal(x,y,dir,al,v){ ctx.globalAlpha=al; ctx.fillStyle = v<.33?'#8b5a2b':v<.66?'#a0a0a0':'#c49a5a'; const s=0.8+v*0.6;
+  ctx.beginPath(); ctx.ellipse(x,y-10*s,13*s,7*s,0,0,7); ctx.fill(); ctx.beginPath(); ctx.arc(x+dir*13*s,y-15*s,5*s,0,7); ctx.fill();
+  ctx.fillRect(x-9*s,y-6*s,2.5*s,7*s); ctx.fillRect(x+7*s,y-6*s,2.5*s,7*s); ctx.globalAlpha=1; }
+function human(x,y,al,c){ if(al<=0) return; ctx.globalAlpha=al; ctx.fillStyle=c; ctx.beginPath(); ctx.arc(x,y-30,5,0,7); ctx.fill(); ctx.fillRect(x-3,y-25,6,15);
+  ctx.fillRect(x-3,y-10,2.5,10); ctx.fillRect(x+0.5,y-10,2.5,10); ctx.globalAlpha=1; }
+
+// ── 타임라인 띠 ───────────────────────────────────────────
+const TL = [[0,"빅뱅 137.9억 년 전 · 1:1"],[0.4,"첫 별 ~1~2억 년",1],[66.6,"태양 46억 년 전 · 4일"],[67.2,"지구 45.4억 년 · 3일",1],[74.6,"생명 35억+ 년"],[96.2,"바다 동물 5.3억 · 5일",1],[96.6,"육상 식물 4.7억 · 3일"],[98.6,"포유류 2억 · 6일",1],[99.998,"사람 30만 년 · 6일"]];
+$('timeline').innerHTML = TL.map(([p,t,low]) => `<div class="tick ${low?'low':''}" style="left:${Math.min(p,99.4)}%"><span>${t}</span></div>`).join('');
+
+render(); requestAnimationFrame(draw);
+</script>
+</body>
+</html>

@@ -34,7 +34,178 @@
       "fetched_at": "2026-10-25T16:27:39",
       "note": null,
       "report": null,
-      "status": "수집됨"
+      "status": "보류",
+      "memo": "CR 지시(2026-10-25) '오늘 설교는 안 줘도 돼' — 자막 없음, 받아쓰기 중단. 오디오는 로컬에 있음"
+    },
+    {
+      "id": "YU3rKoRHlLo",
+      "url": "https://www.youtube.com/watch?v=YU3rKoRHlLo",
+      "title": "1. 창세기 전체 풀스토리ㅣ창세기 통독 전에 꼭 보세요!",
+      "channel": "현승원TV",
+      "upload_date": "20230430",
+      "duration": "2:57:10",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:08:07",
+      "note": "study/digests/YU3rKoRHlLo.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "WZ3YiM0q3qs",
+      "url": "https://www.youtube.com/watch?v=WZ3YiM0q3qs",
+      "title": "하나님을 향한 아브라함의 특별한 믿음 (창세기 5~13장)",
+      "channel": "현승원TV",
+      "upload_date": "20230112",
+      "duration": "27:59",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:10:05",
+      "note": "study/digests/WZ3YiM0q3qs.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "Vtr0IDkutf8",
+      "url": "https://www.youtube.com/watch?v=Vtr0IDkutf8",
+      "title": "소돔과 고모라가 망한 이유는? (창세기 14~23장)",
+      "channel": "현승원TV",
+      "upload_date": "20230119",
+      "duration": "19:46",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:11:01",
+      "note": "study/digests/Vtr0IDkutf8.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "UdKqwnqnJXo",
+      "url": "https://www.youtube.com/watch?v=UdKqwnqnJXo",
+      "title": "수면 다큐🪐 우주의 탄생부터 현재까지 (해설: 원호섭) [빅 히스토리]",
+      "channel": "히스토리",
+      "upload_date": "20221005",
+      "duration": "1:27:41",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:15:06",
+      "note": "study/digests/UdKqwnqnJXo.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "MbDk866VsQ0",
+      "url": "https://www.youtube.com/watch?v=MbDk866VsQ0",
+      "title": "✨수면 다큐✨라고 생각하고 들어왔다가 재미있어서 밤새는 우주 이야기｜우주의 탄생부터 태양계의 원리까지｜다큐프라임｜#골라듄다큐",
+      "channel": "EBS Documentary",
+      "upload_date": "20260312",
+      "duration": "1:55:52",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:15:21",
+      "note": "study/digests/MbDk866VsQ0.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "hvQIYaczSX4",
+      "url": "https://www.youtube.com/watch?v=hvQIYaczSX4",
+      "title": "도대체 우주는 어떻게 만들어졌을까? ㅣ 과학을 보다 EP.6",
+      "channel": "보다 BODA",
+      "upload_date": "20230513",
+      "duration": "30:17",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:16:15",
+      "note": "study/digests/hvQIYaczSX4.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "YTdEel9zGtY",
+      "url": "https://www.youtube.com/watch?v=YTdEel9zGtY",
+      "title": "\"영겁의 시간을 품은 우주의 역사, 딱 30분 만에 끝내버렸다\" 보면 볼수록 경이로운 우주 이야기 #과학 #EBS지식",
+      "channel": "EBS 지식",
+      "upload_date": "20260125",
+      "duration": "30:01",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:16:30",
+      "note": "study/digests/YTdEel9zGtY.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "XaLoWcYQLO0",
+      "url": "https://www.youtube.com/watch?v=XaLoWcYQLO0",
+      "title": "“빅뱅을 재현한다” 우주의 시작을 찾기 위한 과학자들의 위대한 여정｜스위스 연구소 거대 실험 장치의 비밀｜정석 우주 다큐 #과학 #EBS지식",
+      "channel": "EBS 지식",
+      "upload_date": "20260908",
+      "duration": "2:07:04",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:16:45",
+      "note": "study/digests/XaLoWcYQLO0.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "2u_FUkGeIVM",
+      "url": "https://www.youtube.com/watch?v=2u_FUkGeIVM",
+      "title": "우주는 ‘무’에서 어떻게 생겨났을까? - 빅뱅 이전은 존재하는가? (1편)",
+      "channel": "MrSpace",
+      "upload_date": "20251006",
+      "duration": "22:15",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:17:01",
+      "note": "study/digests/2u_FUkGeIVM.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
+    },
+    {
+      "id": "FjxyeJ2GArU",
+      "url": "https://www.youtube.com/watch?v=FjxyeJ2GArU",
+      "title": "성경 창세기 첫째 날. 태양도 없는데, 어떻게 빛이 있을 수 있을까? (창조과학)",
+      "channel": "NoiseSymphony 성경창조역사",
+      "upload_date": "20200114",
+      "duration": "21:44",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T17:17:14",
+      "note": "study/digests/FjxyeJ2GArU.md",
+      "report": "reports/2026-10-25-창세기1장-시뮬레이션.html",
+      "status": "공부완료",
+      "series": "창세기 1장"
     }
   ]
 }

@@ -1,7 +1,45 @@
 {
- "generated_at": "2026-10-25T12:41:32",
+ "generated_at": "2026-10-25T17:26:05",
  "root": "C:\\Users\\droli\\App Developing\\GODISALIVE",
  "nodes": [
+  {
+   "id": "kn-books-genesis",
+   "title": "창세기 (베레쉬트 בְּרֵאשִׁית) — 권 프로파일 (연구 진행 중)",
+   "type": "knowledge",
+   "subtype": "books",
+   "path": "knowledge/books/kn-books-genesis.md",
+   "uri": "file:///C:/Users/droli/App%20Developing/GODISALIVE/knowledge/books/kn-books-genesis.md",
+   "date": "2026-10-25",
+   "grade": "",
+   "tags": [
+    "창세기",
+    "창조",
+    "오경",
+    "고대근동",
+    "창조과학",
+    "우주론",
+    "해석사"
+   ],
+   "verses": [
+    "창 1",
+    "창 2",
+    "창 3",
+    "창 6",
+    "창 7",
+    "창 8",
+    "창 9",
+    "창 11",
+    "창 12",
+    "출 20:11",
+    "요 1:1-3",
+    "히 4:3-10",
+    "히 11:3",
+    "골 1:16"
+   ],
+   "source": "",
+   "speaker": "",
+   "degree": 23
+  },
   {
    "id": "kn-books-james",
    "title": "야고보서 — 권 프로파일 (초안)",
@@ -179,6 +217,40 @@
    "source": "",
    "speaker": "",
    "degree": 8
+  },
+  {
+   "id": "kn-themes-genesis1-interpretations",
+   "title": "창세기 1장 해석 지도 — 여섯 렌즈 (문자적 6일 · 날-시대 · 틀 · 기능적 · 현대 우주론 · 고대 신화 비교)",
+   "type": "knowledge",
+   "subtype": "themes",
+   "path": "knowledge/themes/kn-themes-genesis1-interpretations.md",
+   "uri": "file:///C:/Users/droli/App%20Developing/GODISALIVE/knowledge/themes/kn-themes-genesis1-interpretations.md",
+   "date": "2026-10-25",
+   "grade": "",
+   "tags": [
+    "창세기",
+    "창조",
+    "해석사",
+    "창조과학",
+    "날시대설",
+    "틀가설",
+    "우주론",
+    "고대근동"
+   ],
+   "verses": [
+    "창 1:1-31",
+    "창 2:1-3",
+    "출 20:11",
+    "시 90:4",
+    "벧후 3:8",
+    "히 4:3-10",
+    "사 45:7",
+    "시 104",
+    "욥 38"
+   ],
+   "source": "",
+   "speaker": "",
+   "degree": 18
   },
   {
    "id": "kn-themes-impartiality-of-god",
@@ -415,7 +487,7 @@
    ],
    "source": "",
    "speaker": "",
-   "degree": 11
+   "degree": 12
   },
   {
    "id": "ev-hist-josephus-james",
@@ -470,6 +542,153 @@
    "source": "",
    "speaker": "",
    "degree": 11
+  },
+  {
+   "id": "verse:창 1",
+   "title": "창 1",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 2
+  },
+  {
+   "id": "verse:창 2",
+   "title": "창 2",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 2
+  },
+  {
+   "id": "verse:창 3",
+   "title": "창 3",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:창 6",
+   "title": "창 6",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:창 7",
+   "title": "창 7",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:창 8",
+   "title": "창 8",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:창 9",
+   "title": "창 9",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:창 11",
+   "title": "창 11",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:창 12",
+   "title": "창 12",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:출 20",
+   "title": "출 20",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 2
+  },
+  {
+   "id": "verse:요 1",
+   "title": "요 1",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:히 4",
+   "title": "히 4",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 2
+  },
+  {
+   "id": "verse:히 11",
+   "title": "히 11",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:골 1",
+   "title": "골 1",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "tag:창세기",
+   "title": "창세기",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 2
+  },
+  {
+   "id": "tag:창조",
+   "title": "창조",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 2
+  },
+  {
+   "id": "tag:오경",
+   "title": "오경",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 1
+  },
+  {
+   "id": "tag:고대근동",
+   "title": "고대근동",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 2
+  },
+  {
+   "id": "tag:창조과학",
+   "title": "창조과학",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 2
+  },
+  {
+   "id": "tag:우주론",
+   "title": "우주론",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 2
+  },
+  {
+   "id": "tag:해석사",
+   "title": "해석사",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 2
   },
   {
    "id": "verse:약 1",
@@ -922,6 +1141,55 @@
   {
    "id": "tag:아쉬레",
    "title": "아쉬레",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 1
+  },
+  {
+   "id": "verse:시 90",
+   "title": "시 90",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:벧후 3",
+   "title": "벧후 3",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:사 45",
+   "title": "사 45",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:시 104",
+   "title": "시 104",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "verse:욥 38",
+   "title": "욥 38",
+   "type": "verse",
+   "subtype": "verse",
+   "degree": 1
+  },
+  {
+   "id": "tag:날시대설",
+   "title": "날시대설",
+   "type": "tag",
+   "subtype": "tag",
+   "degree": 1
+  },
+  {
+   "id": "tag:틀가설",
+   "title": "틀가설",
    "type": "tag",
    "subtype": "tag",
    "degree": 1
@@ -1447,6 +1715,121 @@
  ],
  "edges": [
   {
+   "source": "kn-books-genesis",
+   "target": "ev-arch-tel-dan-stele",
+   "kind": "evidence"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "kn-themes-genesis1-interpretations",
+   "kind": "link"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 1",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 2",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 3",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 6",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 7",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 8",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 9",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 11",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:창 12",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:출 20",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:요 1",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:히 4",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:히 11",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "verse:골 1",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "tag:창세기",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "tag:창조",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "tag:오경",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "tag:고대근동",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "tag:창조과학",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "tag:우주론",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-books-genesis",
+   "target": "tag:해석사",
+   "kind": "tag"
+  },
+  {
    "source": "kn-books-james",
    "target": "ev-hist-josephus-james",
    "kind": "evidence"
@@ -1934,6 +2317,91 @@
   {
    "source": "kn-readings-2026-08-22-psalms-1-2-deep",
    "target": "tag:아쉬레",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:창 1",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:창 2",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:출 20",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:시 90",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:벧후 3",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:히 4",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:사 45",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:시 104",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "verse:욥 38",
+   "kind": "verse"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "tag:창세기",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "tag:창조",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "tag:해석사",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "tag:창조과학",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "tag:날시대설",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "tag:틀가설",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "tag:우주론",
+   "kind": "tag"
+  },
+  {
+   "source": "kn-themes-genesis1-interpretations",
+   "target": "tag:고대근동",
    "kind": "tag"
   },
   {
@@ -2583,22 +3051,22 @@
   }
  ],
  "stats": {
-  "notes": 16,
-  "nodes": 155,
-  "edges": 227,
+  "notes": 18,
+  "nodes": 185,
+  "edges": 267,
   "nodes_by_type": {
-   "knowledge": 8,
+   "knowledge": 10,
    "evidence": 8,
-   "verse": 67,
-   "tag": 69,
+   "verse": 86,
+   "tag": 78,
    "speaker": 1,
    "missing": 2
   },
   "edges_by_kind": {
-   "evidence": 8,
-   "link": 19,
-   "verse": 109,
-   "tag": 90,
+   "evidence": 9,
+   "link": 20,
+   "verse": 132,
+   "tag": 105,
    "speaker": 1
   },
   "dangling": {
@@ -2628,6 +3096,11 @@
     "degree": 24
    },
    {
+    "id": "kn-books-genesis",
+    "title": "창세기 (베레쉬트 בְּרֵאשִׁית) — 권 프로파일 (연구 진행 중)",
+    "degree": 23
+   },
+   {
     "id": "kn-people-james-brother-of-jesus",
     "title": "야고보 (주의 형제, '의인 야고보') — 예루살렘 교회의 기둥",
     "degree": 19
@@ -2635,6 +3108,11 @@
    {
     "id": "kn-readings-2026-08-22-psalms-1-10",
     "title": "봉독·연구 — 시편 개관(실존·저자) + 1~10편",
+    "degree": 18
+   },
+   {
+    "id": "kn-themes-genesis1-interpretations",
+    "title": "창세기 1장 해석 지도 — 여섯 렌즈 (문자적 6일 · 날-시대 · 틀 · 기능적 · 현대 우주론 · 고대 신화 비교)",
     "degree": 18
    },
    {
@@ -2658,19 +3136,9 @@
     "degree": 12
    },
    {
-    "id": "ev-arch-pilate-stone",
-    "title": "빌라도 석비 (Pilate Stone)",
-    "degree": 11
-   },
-   {
     "id": "ev-arch-tel-dan-stele",
     "title": "텔단 석비 (Tel Dan Stele) — \"다윗의 집\"",
-    "degree": 11
-   },
-   {
-    "id": "ev-manu-psalms-scrolls",
-    "title": "시편 사본 증거 — 쿰란·마사다·대사본 (어디서 발견되었나)",
-    "degree": 11
+    "degree": 12
    }
   ]
  }
