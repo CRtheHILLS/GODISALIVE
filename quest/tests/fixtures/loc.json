@@ -1,0 +1,34 @@
+{
+ "pagination": {
+  "total": 2
+ },
+ "results": [
+  {
+   "title": "Lachish reliefs: Assyrian soldiers",
+   "id": "http://www.loc.gov/item/2018700001/",
+   "image_url": [
+    "https://tile.loc.gov/storage-services/service/pnp/matpc/00000/00001_150px.jpg",
+    "https://tile.loc.gov/storage-services/service/pnp/matpc/00000/00001v.jpg"
+   ],
+   "original_format": [
+    "photo, print, drawing"
+   ],
+   "date": "1900",
+   "description": [
+    "Photograph of relief from Nineveh."
+   ],
+   "rights": [
+    "No known restrictions on publication."
+   ]
+  },
+  {
+   "title": "Siege of Lachish, Nineveh",
+   "id": "https://www.loc.gov/item/2018700002/",
+   "image_url": [],
+   "original_format": [
+    "book"
+   ],
+   "date": "1853"
+  }
+ ]
+}

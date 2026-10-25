@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:syn="http://purl.org/rss/1.0/modules/syndication/" xmlns="http://purl.org/rss/1.0/">
+
+
+<channel rdf:about="https://pleiades.stoa.org/search_rss">
+  <title>Pleiades</title>
+  <link>https://pleiades.stoa.org</link>
+
+  <image rdf:resource="https://pleiades.stoa.org/logo.png"/>
+
+  <items>
+    <rdf:Seq>
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/news/blog/last-week-in-pleiades-17-24-november-2025"/>
+      
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/news/blog/last-week-in-pleiades-6-13-january-2025"/>
+      
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/news/blog/last-week-in-pleiades-17-24-october-2022"/>
+      
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/places/999180093"/>
+      
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/places/687951/iudaea-region"/>
+      
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/places/687951/lakisu"/>
+      
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/places/687951/lachish"/>
+      
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/places/687951"/>
+      
+      
+        <rdf:li rdf:resource="https://pleiades.stoa.org/places/690100"/>
+      
+    </rdf:Seq>
+  </items>
+
+</channel>
+
+
+  <item rdf:about="https://pleiades.stoa.org/news/blog/last-week-in-pleiades-17-24-november-2025">
+    <title>Last Week in Pleiades (17-24 November 2025)</title>
+    <link>https://pleiades.stoa.org/news/blog/last-week-in-pleiades-17-24-november-2025</link>
+    <description>Last week the Pleiades editorial college published 14 new and 286 updated place resources, reflecting the work of Jeffrey Becker, Anne Chen, Tom Elliott, Maxime Guénette, Brady Kiesling, Gabriel Mckee and Enes Yılandiloğlu.</description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights>Copyright © The Contributors. Sharing and remixing permitted under terms of the Creative Commons Attribution 3.0 License (cc-by).</dc:rights>
+    
+      <dc:subject>blog</dc:subject>
+    
+    <dc:date>2025/11/24 21:02:49 GMT-4</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="https://pleiades.stoa.org/news/blog/last-week-in-pleiades-6-13-january-2025">
+    <title>Last Week in Pleiades (6-13 January 2025)</title>
+    <link>https://pleiades.stoa.org/news/blog/last-week-in-pleiades-6-13-january-2025</link>
+    <description>Last week the Pleiades editorial college published 20 new and 437 updated place resources, reflecting the work of Jeffrey Becker, Tom Elliott, Maxime Guénette, Brady Kiesling, Chris de Lisle, Gabriel McKee and John Muccigrosso.</description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights>Copyright © The Contributors. Sharing and remixing permitted under terms of the Creative Commons Attribution 3.0 License (cc-by).</dc:rights>
+    
+      <dc:subject>blog</dc:subject>
+    
+    <dc:date>2025/01/13 11:41:44 GMT-4</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="https://pleiades.stoa.org/news/blog/last-week-in-pleiades-17-24-october-2022">
+    <title>Last Week in Pleiades (17-24 October 2022)</title>
+    <link>https://pleiades.stoa.org/news/blog/last-week-in-pleiades-17-24-october-2022</link>
+    <description>Last week we published 3 new place resources. In addition, 109 existing place resources were updated.</description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights>Copyright © The Contributors. Sharing and remixing permitted under terms of the Creative Commons Attribution 3.0 License (cc-by).</dc:rights>
+    
+      <dc:subject>blog</dc:subject>
+    
+    <dc:date>2022/10/27 11:40:00 GMT-4</dc:date>
+    <dc:type>News Item</dc:type>
+  </item>
+
+
+  <item rdf:about="https://pleiades.stoa.org/places/999180093">
+    <title>Tel Mor</title>
+    <link>https://pleiades.stoa.org/places/999180093</link>
+    <description>Archaeological site on the northern bank of the Lachish River with signs of habitation dated from the Late Bronze Age to the Hellenistic period.</description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights>Copyright © The Contributors. Sharing and remixing permitted under terms of the Creative Commons Attribution 3.0 License (cc-by).</dc:rights>
+    <dc:date>2021/06/14 14:37:15 GMT-4</dc:date>
+    <dc:type>Place</dc:type>
+  </item>
+
+
+  <item rdf:about="https://pleiades.stoa.org/places/687951/iudaea-region">
+    <title>Iudaea (region)</title>
+    <link>https://pleiades.stoa.org/places/687951/iudaea-region</link>
+    <description>Lachish is a city in Judah.</description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights>Copyright © The Contributors. Sharing and remixing permitted under terms of the Creative Commons Attribution 3.0 License (cc-by).</dc:rights>
+    
+      <dc:subject>ANE</dc:subject>
+    
+    
+      <dc:subject>Assyrian</dc:subject>
+    
+    <dc:date>2020/07/31 02:20:40 GMT-4</dc:date>
+    <dc:type>Connection</dc:type>
+  </item>
+
+
+  <item rdf:about="https://pleiades.stoa.org/places/687951/lakisu">
+    <title>Lakisu</title>
+    <link>https://pleiades.stoa.org/places/687951/lakisu</link>
+    <description>Name of the city Lachish in an inscription of the seventh-century-BC Assyrian king Sennacherib; the name appears in a short epigraph lining the wall of a room in the Southwest Palace at Nineveh.</description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights>Copyright © The Contributors. Sharing and remixing permitted under terms of the Creative Commons Attribution 3.0 License (cc-by).</dc:rights>
+    
+      <dc:subject>ANE</dc:subject>
+    
+    
+      <dc:subject>Assyrian</dc:subject>
+    
+    <dc:date>2020/07/30 09:32:22 GMT-4</dc:date>
+    <dc:type>Name</dc:type>
+  </item>
+
+
+  <item rdf:about="https://pleiades.stoa.org/places/687951/lachish">
+    <title>Lachish</title>
+    <link>https://pleiades.stoa.org/places/687951/lachish</link>
+    <description></description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights></dc:rights>
+    <dc:date></dc:date>
+    <dc:type>Name</dc:type>
+  </item>
+
+
+  <item rdf:about="https://pleiades.stoa.org/places/687951">
+    <title>Lachish</title>
+    <link>https://pleiades.stoa.org/places/687951</link>
+    <description>An ancient place, cited: BAtlas 70 F2 Lachish</description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights>Copyright © The Creators. Sharing and remixing permitted under terms of the Creative Commons Attribution 3.0 License (cc-by).</dc:rights>
+    
+      <dc:subject>dare:ancient=1</dc:subject>
+    
+    
+      <dc:subject>dare:feature=settlement</dc:subject>
+    
+    
+      <dc:subject>dare:major=0</dc:subject>
+    
+    <dc:date></dc:date>
+    <dc:type>Place</dc:type>
+  </item>
+
+
+  <item rdf:about="https://pleiades.stoa.org/places/690100">
+    <title>Untitled</title>
+    <link>https://pleiades.stoa.org/places/690100</link>
+    <description>Unnamed route or road</description>
+    
+    
+      <dc:publisher>No publisher</dc:publisher>
+      <dc:creator></dc:creator>
+    
+    <dc:rights>Copyright © The Creators. Sharing and remixing permitted under terms of the Creative Commons Attribution 3.0 License (cc-by).</dc:rights>
+    <dc:date></dc:date>
+    <dc:type>Place</dc:type>
+  </item>
+
+
+
+</rdf:RDF>

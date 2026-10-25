@@ -6,8 +6,8 @@ import re
 LICENSE_TABLE = [
     (re.compile(r"public\s*domain|\bpd\b|pd-us|pd-old|pd-art|pdm|no known copyright|cc-pd|publicdomain|퍼블릭\s*도메인|공유\s*저작물", re.I), "PD", True),
     (re.compile(r"\bcc0\b|cc-zero|creative commons zero|cc0 1\.0", re.I), "CC0", True),
-    (re.compile(r"\bby[-\s_]?nc", re.I), "CC-BY-NC", False),
-    (re.compile(r"\bby[-\s_]?nd", re.I), "CC-BY-ND", False),
+    (re.compile(r"\bby[-\s_]?nc|non[-\s]?commercial|비영리", re.I), "CC-BY-NC", False),
+    (re.compile(r"\bby[-\s_]?nd|no[-\s]?deriv|변경\s*금지", re.I), "CC-BY-ND", False),
     (re.compile(r"\bby[-\s_]?sa", re.I), "CC-BY-SA", True),
     (re.compile(r"\bcc[-\s_]?by\b|\bcc\s*by\s*\d|attribution(?!.*non)", re.I), "CC-BY", True),
     (re.compile(r"\bgfdl\b|gnu free documentation", re.I), "GFDL", True),
