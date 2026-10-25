@@ -1,0 +1,26 @@
+{
+  "_about": "공부 모드 영상 색인 — fetch.py가 갱신. note/report는 Peter가 소화 후 기입.",
+  "videos": [
+    {
+      "id": "6UTOoMArLkI",
+      "url": "https://www.youtube.com/watch?v=6UTOoMArLkI",
+      "title": "[뭇별예배] 차별하지 말라 (약 2:1-13)_베이직교회_조정민 목사_20261025",
+      "channel": "베이직교회",
+      "upload_date": "20261024",
+      "duration": "32:12",
+      "language": "ko",
+      "captions": {
+        "ko-orig": "auto"
+      },
+      "fetched_at": "2026-10-25T11:22:26",
+      "note": "knowledge/lectures/2026-10-25-james-2-partiality-jo-jungmin.md",
+      "report": "reports/2026-10-25-공부-야고보서-2장-차별하지-말라.html",
+      "status": "공부완료",
+      "speaker": "조정민",
+      "verses": [
+        "약 2:1-13"
+      ],
+      "studied_at": "2026-10-25"
+    }
+  ]
+}

@@ -17,3 +17,9 @@ outputs/*.pdf
 Thumbs.db
 Desktop.ini
 .omc/
+
+# 공부 모드 — 설교·강의 자막 원문은 저작권상 git(공개 저장소) 제외. 로컬 + Railway Volume /srv/study/ 보관.
+study/sources/*/transcript.*
+study/sources/*/raw*
+__pycache__/
+*.pyc

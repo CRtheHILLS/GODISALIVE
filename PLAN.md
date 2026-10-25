@@ -49,6 +49,7 @@
 | 문서 출력 스킬 (docx/pdf/md/txt) | ✅ `.claude/skills/godisalive-export` |
 | **Railway Volume 프로비저닝** (시각자료 저장소) | ✅ 2026-08-22 — filebrowser 가동, 상세: [assets/README.md](assets/README.md) |
 | 퍼블릭 도메인 성경 본문 1차 다운로드 | ✅ 2026-08-22 — 6종 확보 + 조회기, 상세: [bible/README.md](bible/README.md) |
+| **공부 모드** (설교·강의 영상 → 보고서 + 지식 그래프) | ✅ 2026-10-25 — fetch.py·graph.py·지도, 1호 완료, 상세: [study/README.md](study/README.md) |
 
 ### Railway Volume 설계 (시각자료 저장소)
 - Railway 프로젝트 `godisalive-assets` 생성 → 서비스 1개 + **Volume** 마운트(`/data`).
@@ -161,6 +162,8 @@ CR의 요구: *"부모님이 보시던 성경을 현대인을 위해 쉽게 개�
 1. **RAG 시스템 (2031–2032)**: `knowledge/` + `evidence/` + `bible/` 전체를 임베딩 →
    검색증강 질의응답 ("텔단 석비가 왜 중요한가?" → 출처 붙은 답). Claude API + 벡터 DB.
 2. **지식 그래프 (2032–2034)**: 인물–장소–사건–유물–구절 관계 그래프. 노트의 상호 링크가 원료.
+   **씨앗은 2026-10-25부터 자란다** — `study/tools/graph.py`가 모든 노트의 [[링크]]·구절·증거·설교자를 `knowledge/graph/graph.json`으로
+   뽑고 지도(map.html)를 그린다. 공부 모드로 설교 한 편이 들어올 때마다 점과 선이 늘어난다.
 3. **파인튜닝 검토 (2034–2036)**: 그 시점 기술 평가 후 결정. RAG로 충분하면 하지 않는다 (YAGNI).
    목적: 한국 교회·다음 세대가 쓸 수 있는 "근거 있는 성경 지식 도우미".
 
